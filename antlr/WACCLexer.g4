@@ -69,6 +69,7 @@ CALL: 'call' ;
 NEWPAIR: 'newpair' ;
 FST: 'fst' ;
 SND: 'snd' ;
+IS: 'is' ;
 
 //brackets
 OPEN_PARENTHESES: '(' ;
