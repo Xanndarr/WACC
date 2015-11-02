@@ -4,45 +4,45 @@ options {
     tokenVocab=WACCLexer;
 }
 
-program: 'begin' func* stat 'end' ;
+program: BEGIN func* stat END ;
 
-func: type ident '(' param-list? ')' 'is' stat 'end' ;
+func: type ID OPEN_PARENTHESES param-list? CLOSE_PARENTHESES IS stat END ;
 
-param-list: param ( ',' param )* ;
+param-list: param ( COMMA param )* ;
 
-param: type ident ;
+param: type ID ;
 
-stat: 'skip'
-    | type ident '=' assign-rhs
-    | assign-lhs '=' assign-rhs
-    | 'read' assign-lhs
-    | 'free' expr
-    | 'return' expr
-    | 'exit' expr
-    | 'print' expr
-    | 'println' expr
-    | 'if' expr 'then' stat 'else' stat 'fi'
-    | 'while' expr 'do' stat 'done'
-    | 'begin' stat 'end'
-    | stat ';' stat
+stat: SKIP
+    | type ID ASSIGNMENT assign-rhs
+    | assign-lhs ASSIGNMENT assign-rhs
+    | READ assign-lhs
+    | FREE expr
+    | RETURN expr
+    | EXIT expr
+    | PRINT expr
+    | PRINTLN expr
+    | IF expr THEN stat ELSE stat IF
+    | WHILE expr DO stat DONE
+    | BEGIN stat END
+    | stat SEMICOLON stat
     ;
 
-assign-lhs: ident
+assign-lhs: ID
     | array-elem
     | pair-elem
     ;
 
 assign-rhs: expr
     | array-elem
-    | 'newpair' '(' expr ',' expr ')'
+    | NEWPAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES
     | pair-elem
-    | 'call' ident '(' arg-list? ')'
+    | CALL ID OPEN_PARENTHESES arg-list? CLOSE_PARENTHESES
     ;
 
-arg-list: expr (',' expr )* ;
+arg-list: expr (COMMA expr )* ;
 
-pair-elem: 'fst' expr
-    | 'snd' expr
+pair-elem: FST expr
+    | SND expr
     ;
 
 type: base-type
@@ -50,64 +50,50 @@ type: base-type
     | pair-type
     ;
 
-base-type: 'int'
-    | 'bool'
-    | 'char'
-    | 'string'
+base-type: INT_TYPE
+    | BOOL_TYPE
+    | CHAR_TYPE
+    | STRING_TYPE
     ;
 
-array-type: type '[' ']' ;
+array-type: type OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET ;
 
-pair-type: 'pair' '(' pair-elem-type ',' pair-elem-type ')' ;
+pair-type: PAIR_TYPE OPEN_PARENTHESES pair-elem-type COMMA pair-elem-type CLOSE_PARENTHESES ;
 
 pair-elem-type: base-type
     | array-type
-    | 'pair'
+    | PAIR_TYPE
     ;
 
 expr: int-liter
     | bool-liter
     | char-liter
-    | str-liter
+    | string-liter
     | pair-liter
-    | ident
+    | ID
     | array-elem
     | unary-oper expr
     | expr binary-oper expr
-    | '(' expr ')'
+    | OPEN_PARENTHESES expr CLOSE_PARENTHESES
     ;
 
-unary-oper: '!' | '-' | 'len' | 'ord' | 'chr' ;
+unary-oper: NOT | NEG | LEN | ORD | CHR ;
 
-binary-oper: '*' | '/' | '%' | '+' 
-    | '-' | '>' | '>=' | '<' | '<=' 
-    | '==' | '!=' | '&&' | '||'
+binary-oper: MULT | DIV | MOD | ADD 
+    | SUB | GT | GTE | LT | LTE 
+    | EQ | NEQ | AND | OR
     ;
 
-ident: ( ' ' | 'a'-'z' | 'A'-'Z' ) ( ' ' | 'a'-'z' | 'A'-'Z' | '0'-'9' )* ;
+array-elem: ID (OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET)+ ;
 
-array-elem: ident ('[' expr ']')+ ;
+array-liter: OPEN_SQUARE_BRACKET ( expr (COMMA expr)* )? CLOSE_SQUARE_BRACKET ;
 
-int-liter: int-sign? digit+ ;
+char-liter: APOSTROPHE CHAR APOSTROPHE ;
 
-digit: ('0'-'9') ;
+string-liter: DOUBLEQUOTE CHAR* DOUBLEQUOTE ;
 
-int-sign: '+' | '-' ;
+bool-liter: BOOL ;
 
-bool-liter: 'true' | 'false' ;
+pair-liter: NULL ;
 
-char-liter: ''' character ''' ;
-
-str-liter: '"' character* '"' ;
-
-character: ~['\'-'''-'"']
-    | '\' escaped-char
-    ;
-
-escaped-char: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '"' | ''' | `\' ;
-
-array-liter: '[' ( expr (',' expr)* )? ']' ;
-
-pair-liter: 'null' ;
-
-comment: '#' (~[EOL])* EOL ;
+comment: HASH (~[EOL])* EOL ;
