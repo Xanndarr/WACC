@@ -1,9 +1,25 @@
 lexer grammar WACCLexer;
 
-ID : [a-zA-Z]+ ; // match identifiers
-INT : [0-9]+ ; // match integers
-NEWLINE:'\r'? '\n' ; // return newlines to parser
-WS : [ \t]+ -> skip ; //white space
+//identifiers
+ID: [a-zA-Z]+ ;
+
+//numbers
+INTEGER: DIGIT+ ; 
+fragment DIGIT: [0-9] ;
+
+//misc
+NEWLINE:'\r'? '\n' ; 
+WS: [ \t]+ -> skip ;
+
+//operators
+PLUS: '+' ;
+MINUS: '-' ;
+
+//brackets
+OPEN_PARENTHESES : '(' ;
+CLOSE_PARENTHESES : ')' ;
+
+
 
 
 
