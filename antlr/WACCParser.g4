@@ -1,4 +1,8 @@
-grammar WACCParser;
+parser grammar WACCParser;
+
+options {
+    tokenVocab=WACCLexer;
+}
 
 program: 'begin' func* stat 'end' ;
 
