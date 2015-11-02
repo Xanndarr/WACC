@@ -1,4 +1,4 @@
-grammer WACCLexer;
+grammar WACCLexer;
 
 program: 'begin' func* stat 'end' ;
 
