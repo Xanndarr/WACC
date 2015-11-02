@@ -35,7 +35,7 @@ assign-rhs: expr
     | 'call' ident '(' arg-list? ')'
     ;
 
-arg-list: expr (`,' expr )* ;
+arg-list: expr (',' expr )* ;
 
 pair-elem: 'fst' expr
     | 'snd' expr
@@ -76,8 +76,8 @@ expr: int-liter
 unary-oper: '!' | '-' | 'len' | 'ord' | 'chr' ;
 
 binary-oper: '*' | '/' | '%' | '+' 
-    | '-' | '>' | '>=' | '<' 
-    | '<=' | '==' | '!=' | '&&' | '||'
+    | '-' | '>' | '>=' | '<' | '<=' 
+    | '==' | '!=' | '&&' | '||'
     ;
 
 ident: ( ' ' | 'a'-'z' | 'A'-'Z' ) ( ' ' | 'a'-'z' | 'A'-'Z' | '0'-'9' )* ;
