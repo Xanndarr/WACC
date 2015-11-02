@@ -6,16 +6,16 @@ options {
 
 program: BEGIN func* stat END ;
 
-func: type ID OPEN_PARENTHESES param-list? CLOSE_PARENTHESES IS stat END ;
+func: type ID OPEN_PARENTHESES param_list? CLOSE_PARENTHESES IS stat END ;
 
-param-list: param ( COMMA param )* ;
+param_list: param ( COMMA param )* ;
 
 param: type ID ;
 
 stat: SKIP
-    | type ID ASSIGNMENT assign-rhs
-    | assign-lhs ASSIGNMENT assign-rhs
-    | READ assign-lhs
+    | type ID ASSIGNMENT assign_rhs
+    | assign_lhs ASSIGNMENT assign_rhs
+    | READ assign_lhs
     | FREE expr
     | RETURN expr
     | EXIT expr
@@ -27,73 +27,78 @@ stat: SKIP
     | stat SEMICOLON stat
     ;
 
-assign-lhs: ID
-    | array-elem
-    | pair-elem
+assign_lhs: ID
+    | array_elem
+    | pair_elem
     ;
 
-assign-rhs: expr
-    | array-elem
+assign_rhs: expr
+    | array_elem
     | NEWPAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES
-    | pair-elem
-    | CALL ID OPEN_PARENTHESES arg-list? CLOSE_PARENTHESES
+    | pair_elem
+    | CALL ID OPEN_PARENTHESES arg_list? CLOSE_PARENTHESES
     ;
 
-arg-list: expr (COMMA expr )* ;
+arg_list: expr (COMMA expr )* ;
 
-pair-elem: FST expr
+pair_elem: FST expr
     | SND expr
     ;
 
-type: base-type
-    | array-type
-    | pair-type
+type: base_type
+    | pair_type
+    | array_type
     ;
 
-base-type: INT_TYPE
+base_type: INT_TYPE
     | BOOL_TYPE
     | CHAR_TYPE
     | STRING_TYPE
     ;
 
-array-type: type OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET ;
+array_type: base_type OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET
+    | pair_type OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET
+    | array_type OPEN_SQUARE_BRACKET CLOSE_SQUARE_BRACKET
+    ;
 
-pair-type: PAIR_TYPE OPEN_PARENTHESES pair-elem-type COMMA pair-elem-type CLOSE_PARENTHESES ;
+pair_type: PAIR_TYPE OPEN_PARENTHESES pair_elem_type COMMA pair_elem_type CLOSE_PARENTHESES ;
 
-pair-elem-type: base-type
-    | array-type
+pair_elem_type: base_type
+    | array_type
     | PAIR_TYPE
     ;
 
-expr: int-liter
-    | bool-liter
-    | char-liter
-    | string-liter
-    | pair-liter
+expr: int_liter
+    | bool_liter
+    | char_liter
+    | string_liter
+    | pair_liter
     | ID
-    | array-elem
-    | unary-oper expr
-    | expr binary-oper expr
+    | array_elem
+    | unary_oper expr
+    | expr binary_oper expr
     | OPEN_PARENTHESES expr CLOSE_PARENTHESES
     ;
 
-unary-oper: NOT | NEG | LEN | ORD | CHR ;
+unary_oper: NOT | MINUS | LEN | ORD | CHR ;
 
-binary-oper: MULT | DIV | MOD | ADD 
+binary_oper: MULT | DIV | MOD | ADD 
     | SUB | GT | GTE | LT | LTE 
     | EQ | NEQ | AND | OR
     ;
 
-array-elem: ID (OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET)+ ;
+array_elem: ID (OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET)+ ;
 
-array-liter: OPEN_SQUARE_BRACKET ( expr (COMMA expr)* )? CLOSE_SQUARE_BRACKET ;
+array_liter: OPEN_SQUARE_BRACKET ( expr (COMMA expr)* )? CLOSE_SQUARE_BRACKET ;
 
-char-liter: APOSTROPHE CHAR APOSTROPHE ;
+int_liter: INT_SIGN? INT;
 
-string-liter: DOUBLEQUOTE CHAR* DOUBLEQUOTE ;
+char_liter: APOSTROPHE CHAR APOSTROPHE ;
 
-bool-liter: BOOL ;
+string_liter: DOUBLEQUOTE CHAR* DOUBLEQUOTE ;
 
-pair-liter: NULL ;
+bool_liter: BOOL ;
 
-comment: HASH (~[EOL])* EOL ;
+pair_liter: NULL ;
+
+comment: HASH (~EOL)* EOL ;

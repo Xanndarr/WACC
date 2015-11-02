@@ -1,12 +1,11 @@
 lexer grammar WACCLexer;
 
 //identifiers
-ID: ( ' ' | 'a'-'z' | 'A'-'Z' ) ( ' ' | 'a'-'z' | 'A'-'Z' | '0'-'9' )* ;
+ID: ( ' ' | 'a'..'z' | 'A'..'Z' ) ( ' ' | 'a'..'z' | 'A'..'Z' | '0'..'9' )* ;
 
 //numbers
 fragment DIGIT: [0-9] ;
 INT: DIGIT+ ;
-INT_LIT: INT_SIGN? INT ;
 
 //signs
 fragment POS: '+' ;
@@ -20,12 +19,12 @@ BOOL : TRUE | FALSE ;
 
 //char & string
 CHAR: ~[ BACKSLASH | APOSTROPHE | DOUBLEQUOTE ]
-    | BACKSLASH escaped-char
+    | BACKSLASH ESCAPED_CHAR
     ;
-ESCAPED_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '"' | ''' | `\' ;
+ESCAPED_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
 
 //misc
-NEWLINE:'\r'? '\n' ; 
+EOL: '\r'? '\n' ; 
 WS: [ \t ]+ -> skip ;
 
 //base types
@@ -37,6 +36,7 @@ PAIR_TYPE: 'pair' ;
 
 //unary operators
 NOT: '!' ;
+MINUS: '-' ;
 ORD: 'ord' ;
 CHR: 'chr' ;
 LEN: 'len' ;
@@ -50,7 +50,7 @@ MOD: '%' ;
 AND: '&&' ;
 OR: '||' ;
 GT: '>' ;
-GTE '>=' ;
+GTE: '>=' ;
 LT: '<' ;
 LTE: '<=' ;
 EQ: '==' ;
@@ -88,9 +88,9 @@ CLOSE_SQUARE_BRACKET: ']' ;
 
 //punctuation
 COMMA: ',' ;
-APOSTROPHE: ''' ;
-DOUBLEQUOTE: '"' ;
-BACKSLASH: '/' ;
+APOSTROPHE: '\'' ;
+DOUBLEQUOTE: '\"' ;
+BACKSLASH: '\\' ;
 SEMICOLON: ';' ;
 HASH: '#' ;
 NULL: 'null' ;
