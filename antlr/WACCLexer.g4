@@ -1,7 +1,37 @@
 lexer grammar WACCLexer;
 
+//ignore
+//EOL: '\r'? '\n' ;
+WS: [ \n\t]+ -> skip ;
+COMMENTS: '#' ~[\n]* '\n' -> skip ;
+
+//stat nonterminals
+BEGIN: 'begin' ;
+END: 'end' ;
+SKIP: 'skip' ;
+EXIT: 'exit' ;
+IS: 'is' ;
+ASSIGNMENT: '=' ;
+READ: 'read' ;
+FREE: 'free' ;
+RETURN: 'return' ;
+PRINT: 'print' ;
+PRINTLN: 'println' ;
+IF: 'if' ;
+THEN: 'then' ;
+ELSE: 'else' ;
+FI: 'fi' ;
+WHILE: 'while' ;
+DO: 'do' ;
+DONE: 'done' ;
+CALL: 'call' ;
+NEWPAIR: 'newpair' ;
+FST: 'fst' ;
+SND: 'snd' ;
+NULL: 'null' ;
+
 //identifiers
-ID: ( ' ' | 'a'..'z' | 'A'..'Z' ) ( ' ' | 'a'..'z' | 'A'..'Z' | '0'..'9' )* ;
+ID: ( '_' | 'a'..'z' | 'A'..'Z' ) ( '_' | 'a'..'z' | 'A'..'Z' | '0'..'9' )* ;
 
 //numbers
 fragment DIGIT: [0-9] ;
@@ -23,23 +53,12 @@ CHAR: ~[ BACKSLASH | APOSTROPHE | DOUBLEQUOTE ]
     ;
 ESCAPED_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
 
-//misc
-EOL: '\r'? '\n' ; 
-WS: [ \t ]+ -> skip ;
-
 //base types
 INT_TYPE: 'int' ;
 BOOL_TYPE: 'bool' ;
 CHAR_TYPE: 'char' ;
 STRING_TYPE: 'string' ;
 PAIR_TYPE: 'pair' ;
-
-//unary operators
-NOT: '!' ;
-MINUS: '-' ;
-ORD: 'ord' ;
-CHR: 'chr' ;
-LEN: 'len' ;
 
 //binary operators
 ADD: '+' ;
@@ -56,29 +75,12 @@ LTE: '<=' ;
 EQ: '==' ;
 NEQ: '!=' ;
 
-//stat nonterminals
-SKIP: 'skip' ;
-ASSIGNMENT: '=' ;
-READ: 'read' ;
-FREE: 'free' ;
-RETURN: 'return' ;
-EXIT: 'exit' ;
-PRINT: 'print' ;
-PRINTLN: 'println' ;
-IF: 'if' ;
-THEN: 'then' ;
-ELSE: 'else' ;
-FI: 'fi' ;
-WHILE: 'while' ;
-DO: 'do' ;
-DONE: 'done' ;
-BEGIN: 'begin' ;
-END: 'end' ;
-CALL: 'call' ;
-NEWPAIR: 'newpair' ;
-FST: 'fst' ;
-SND: 'snd' ;
-IS: 'is' ;
+//unary operators
+NOT: '!' ;
+MINUS: '-' ;
+ORD: 'ord' ;
+CHR: 'chr' ;
+LEN: 'len' ;
 
 //brackets
 OPEN_PARENTHESES: '(' ;
@@ -92,6 +94,3 @@ APOSTROPHE: '\'' ;
 DOUBLEQUOTE: '\"' ;
 BACKSLASH: '\\' ;
 SEMICOLON: ';' ;
-HASH: '#' ;
-NULL: 'null' ;
-
