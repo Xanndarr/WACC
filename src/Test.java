@@ -11,13 +11,13 @@ public class Test {
 		ANTLRInputStream input = new ANTLRInputStream(System.in);
 		
 		//create a lexer that feeds off of input charStream
-		WACCLexer lexer = new WACCLexer(input);
+		tempLexer lexer = new tempLexer(input);
 		
 		//create a buffer of tokens pulled from the lexer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		
 		//create a parser that feeds off a tokens buffer
-		WACCParser parser = new WACCParser(tokens);
+		tempParser parser = new tempParser(tokens);
 		
 		ParseTree tree = parser.program(); //begin parsing at prog rule
 		System.out.println(tree.toStringTree(parser)); //print LISP-style tree
