@@ -25,4 +25,8 @@ PRINT: 'print' ;
 PRINTLN: 'println' ;
 FREE: 'free' ;
 RETURN: 'return' ;
+IF: 'if' ;
+THEN: 'then' ;
+ELSE: 'else' ;
+FI: 'fi' ;
 SEMICOLON: ';' ;

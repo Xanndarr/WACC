@@ -7,11 +7,12 @@ options {
 program: BEGIN stat END;
 
 stat: SKIP
-    | EXIT INT
+    | EXIT INT_LIT
     | PRINT exp
     | PRINTLN exp
     | FREE exp
     | RETURN exp
+    | IF exp THEN stat ELSE stat FI
     | stat SEMICOLON stat
     ;
 
