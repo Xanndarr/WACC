@@ -29,4 +29,7 @@ IF: 'if' ;
 THEN: 'then' ;
 ELSE: 'else' ;
 FI: 'fi' ;
+WHILE: 'while' ;
+DO: 'do' ;
+DONE: 'done' ;
 SEMICOLON: ';' ;

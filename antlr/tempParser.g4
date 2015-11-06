@@ -13,6 +13,7 @@ stat: SKIP
     | FREE exp
     | RETURN exp
     | IF exp THEN stat ELSE stat FI
+    | WHILE exp DO stat DONE
     | stat SEMICOLON stat
     ;
 
