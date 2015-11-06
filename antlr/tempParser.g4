@@ -14,6 +14,7 @@ stat: SKIP
     | RETURN exp
     | IF exp THEN stat ELSE stat FI
     | WHILE exp DO stat DONE
+    | BEGIN stat END
     | stat SEMICOLON stat
     ;
 

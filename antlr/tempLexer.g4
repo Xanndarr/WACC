@@ -25,11 +25,14 @@ PRINT: 'print' ;
 PRINTLN: 'println' ;
 FREE: 'free' ;
 RETURN: 'return' ;
+//if
 IF: 'if' ;
 THEN: 'then' ;
 ELSE: 'else' ;
 FI: 'fi' ;
+//while
 WHILE: 'while' ;
 DO: 'do' ;
 DONE: 'done' ;
+//punctuation
 SEMICOLON: ';' ;
