@@ -14,14 +14,14 @@ def run_tests(dir, show_out=true)
 		next if item == "." or item == ".."
 		if File.directory?(dir+"/"+item)
 			run_tests(dir+"/"+item)
-		else
+		elsif File.extname(item) == ".wacc"
 			puts "\n#{dir + "/" + item}\n"
 
 			out = `./compile #{dir+"/"+item} 2>&1`
 			puts out unless show_out
 
 			$num_tests += 1
-			if out.include? "error"
+			if out.include? "line"
 				$num_tests_failed += 1
 				puts "\e[31mTEST FAILED\e[0m"
 			else
