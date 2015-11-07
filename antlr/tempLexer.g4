@@ -1,5 +1,28 @@
 lexer grammar tempLexer;
 
+BEGIN: 'begin' ;
+END: 'end' ;
+SKIP: 'skip' ;
+EXIT: 'exit' ;
+PRINT: 'print' ;
+PRINTLN: 'println' ;
+FREE: 'free' ;
+RETURN: 'return' ;
+//pair
+PAIR: 'pair' ;
+NEWPAIR: 'newpair' ;
+FST: 'fst' ;
+SND: 'snd' ;
+//if
+IF: 'if' ;
+THEN: 'then' ;
+ELSE: 'else' ;
+FI: 'fi' ;
+//while
+WHILE: 'while' ;
+DO: 'do' ;
+DONE: 'done' ;
+
 WS: [ \n\t]+ -> skip ;
 fragment HASH: '#' ;
 COMMENTS: HASH ~[\n]* '\n' -> skip ;
@@ -28,29 +51,6 @@ BINARY_OP: '*' | '/' | '%' | '+' | '-'
          | '>' | '>=' | '<' | '<=' 
          | '==' | '!=' | '&&' | '||'
          ;
-
-BEGIN: 'begin' ;
-END: 'end' ;
-SKIP: 'skip' ;
-EXIT: 'exit' ;
-PRINT: 'print' ;
-PRINTLN: 'println' ;
-FREE: 'free' ;
-RETURN: 'return' ;
-//pair
-PAIR: 'pair' ;
-NEWPAIR: 'newpair' ;
-FST: 'fst' ;
-SND: 'snd' ;
-//if
-IF: 'if' ;
-THEN: 'then' ;
-ELSE: 'else' ;
-FI: 'fi' ;
-//while
-WHILE: 'while' ;
-DO: 'do' ;
-DONE: 'done' ;
 
 //punctuation
 SEMICOLON: ';' ;

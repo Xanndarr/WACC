@@ -18,9 +18,9 @@ stat: SKIP
     | stat SEMICOLON stat
     ;
 
-//array_type: type OPEN_SQ_BRACK CLOSE_SQ_BRACK
+//array_type: type OPEN_SQ_BRACK CLOSE_SQ_BRACK ;
 
-//array_elem: IDENT (OPEN_SQ_BRACK exp CLOSE_SQ_BRACK)+
+array_elem: IDENT (OPEN_SQ_BRACK exp CLOSE_SQ_BRACK)+ ;
 
 array_lit: OPEN_SQ_BRACK ( exp (COMMA exp )* )? CLOSE_SQ_BRACK ;
 
@@ -41,6 +41,6 @@ exp: INT_LIT
    | STRING_LIT
    | PAIR_LIT
    | array_lit
-   //| IDENT
+   | IDENT
    ;
 
