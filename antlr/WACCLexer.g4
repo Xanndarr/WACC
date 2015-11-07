@@ -31,7 +31,7 @@ SND: 'snd' ;
 NULL: 'null' ;
 
 //identifiers
-ID: ( '_' | 'a'..'z' | 'A'..'Z' ) ( '_' | 'a'..'z' | 'A'..'Z' | '0'..'9' )* ;
+//ID: ( '_' | 'a'..'z' | 'A'..'Z' ) ( '_' | 'a'..'z' | 'A'..'Z' | '0'..'9' )* ;
 
 //numbers
 fragment DIGIT: [0-9] ;
