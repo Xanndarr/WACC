@@ -6,6 +6,4 @@
 MAIN_FILE="Test"
 TEST_FILE=$1
 
-make
-
 java -cp bin:lib/antlr-4.4-complete.jar ${MAIN_FILE} < ${TEST_FILE}
