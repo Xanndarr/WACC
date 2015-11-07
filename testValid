@@ -39,6 +39,7 @@ puts "==================================================================="
 
 tests_dir = "../wacc_examples/valid"
 
+specified_dir = ""
 specified_dir = "/" + ARGV[0] unless ARGV.empty?
 show_program_out = ARGV[1]
 
