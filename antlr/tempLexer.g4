@@ -22,10 +22,13 @@ FI: 'fi' ;
 WHILE: 'while' ;
 DO: 'do' ;
 DONE: 'done' ;
+//function
+IS: 'is' ;
 
 WS: [ \n\t]+ -> skip ;
+fragment NEWLINE: '\n' ;
 fragment HASH: '#' ;
-COMMENTS: HASH ~[\n]* '\n' -> skip ;
+COMMENTS: HASH ~[\n]* NEWLINE -> skip ;
 
 fragment DIGIT: [0-9] ;
 fragment SIGN: '-' | '+' ;
@@ -46,10 +49,29 @@ PAIR_LIT: NULL ;
 fragment ALPHABET: [A-z] ;
 IDENT: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
 
-UNARY_OP: '!' | '-' | 'len' | 'ord' | 'chr' ;
-BINARY_OP: '*' | '/' | '%' | '+' | '-' 
-         | '>' | '>=' | '<' | '<=' 
-         | '==' | '!=' | '&&' | '||'
+fragment NOT: '!' ;
+fragment NEG: '-' ;
+fragment LEN: 'len' ;
+fragment ORD: 'ord' ;
+fragment CHR: 'chr' ;
+UNARY_OP: NOT | NEG | LEN | ORD | CHR ;
+
+fragment MULT: '*' ;
+fragment DIV: '/' ;
+fragment MOD: '%' ;
+fragment ADD: '+' ;
+fragment SUB: '-' ;
+fragment GT: '>' ;
+fragment GTE: '>=' ;
+fragment LT: '<' ;
+fragment LTE: '<=' ;
+fragment EQ: '==' ;
+fragment NEQ: '!=' ;
+fragment AND: '&&' ;
+fragment OR: '||' ;
+BINARY_OP: MULT | DIV | MOD | ADD | SUB
+         | GT | GTE | LT | LTE 
+         | EQ | NEQ | AND | OR
          ;
 
 //punctuation
@@ -59,10 +81,10 @@ CLOSE_PAR: ')' ;
 OPEN_SQ_BRACK: '[' ;
 CLOSE_SQ_BRACK: ']' ;
 COMMA: ',' ;
+ASSIGN: '=' ;
 
 //base types
 INT: 'int' ;
 CHAR: 'char' ;
 STRING: 'string' ;
-BOOLEAN : 'bool' ;
-BASE_TYPE: INT | CHAR | STRING | BOOLEAN ;
+BOOL: 'bool' ;
