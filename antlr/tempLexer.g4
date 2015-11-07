@@ -10,7 +10,6 @@ FREE: 'free' ;
 RETURN: 'return' ;
 //pair
 PAIR: 'pair' ;
-NEWPAIR: 'newpair' ;
 FST: 'fst' ;
 SND: 'snd' ;
 //if
@@ -24,6 +23,9 @@ DO: 'do' ;
 DONE: 'done' ;
 //function
 IS: 'is' ;
+//assigning
+CALL: 'call' ;
+NEWPAIR: 'newpair' ;
 
 WS: [ \n\t]+ -> skip ;
 fragment NEWLINE: '\n' ;
@@ -46,8 +48,6 @@ STRING_LIT: '"' CHARACTER* '"' ;
 fragment NULL: 'null' ;
 PAIR_LIT: NULL ;
 
-fragment ALPHABET: [A-z] ;
-IDENT: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
 
 fragment NOT: '!' ;
 fragment NEG: '-' ;
@@ -88,3 +88,7 @@ INT: 'int' ;
 CHAR: 'char' ;
 STRING: 'string' ;
 BOOL: 'bool' ;
+
+fragment ALPHABET: [A-z] ;
+ID: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
+
