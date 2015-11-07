@@ -34,10 +34,7 @@ PRINT: 'print' ;
 PRINTLN: 'println' ;
 FREE: 'free' ;
 RETURN: 'return' ;
-<<<<<<< HEAD
 PAIR: 'pair' ;
-=======
->>>>>>> ac54d78109c85e533c70d400e4fdcc08a28c4f10
 //if
 IF: 'if' ;
 THEN: 'then' ;
@@ -47,10 +44,7 @@ FI: 'fi' ;
 WHILE: 'while' ;
 DO: 'do' ;
 DONE: 'done' ;
-<<<<<<< HEAD
 
-=======
->>>>>>> ac54d78109c85e533c70d400e4fdcc08a28c4f10
 //punctuation
 SEMICOLON: ';' ;
 OPEN_PAR: '(' ;
