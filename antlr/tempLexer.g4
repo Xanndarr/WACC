@@ -27,13 +27,22 @@ IS: 'is' ;
 CALL: 'call' ;
 NEWPAIR: 'newpair' ;
 
+//punctuation
+SEMICOLON: ';' ;
+OPEN_PAR: '(' ;
+CLOSE_PAR: ')' ;
+OPEN_SQ_BRACK: '[' ;
+CLOSE_SQ_BRACK: ']' ;
+COMMA: ',' ;
+ASSIGN: '=' ;
+
 WS: [ \n\t]+ -> skip ;
 fragment NEWLINE: '\n' ;
 fragment HASH: '#' ;
 COMMENTS: HASH ~[\n]* NEWLINE -> skip ;
 
 fragment DIGIT: [0-9] ;
-fragment SIGN: '-' | '+' ;
+fragment SIGN: NEG | ADD ;
 INT_LIT: SIGN? DIGIT+ ;
 
 fragment FALSE: 'false' ;
@@ -47,7 +56,6 @@ STRING_LIT: '"' CHARACTER* '"' ;
 
 fragment NULL: 'null' ;
 PAIR_LIT: NULL ;
-
 
 fragment NOT: '!' ;
 fragment NEG: '-' ;
@@ -73,15 +81,6 @@ BINARY_OP: MULT | DIV | MOD | ADD | SUB
          | GT | GTE | LT | LTE 
          | EQ | NEQ | AND | OR
          ;
-
-//punctuation
-SEMICOLON: ';' ;
-OPEN_PAR: '(' ;
-CLOSE_PAR: ')' ;
-OPEN_SQ_BRACK: '[' ;
-CLOSE_SQ_BRACK: ']' ;
-COMMA: ',' ;
-ASSIGN: '=' ;
 
 //base types
 INT: 'int' ;

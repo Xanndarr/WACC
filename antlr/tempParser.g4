@@ -4,7 +4,7 @@ options {
       tokenVocab=tempLexer;
 }
 
-program: BEGIN stat END; //func*
+program: BEGIN func* stat END; 
 
 stat: SKIP
     | EXIT INT_LIT
@@ -65,7 +65,7 @@ param: type ident ;
 
 param_list: param ( COMMA param )* ;
 
-//func: type ident OPEN_PAR param_list? CLOSE_PAR IS stat END ;
+func: type ident OPEN_PAR param_list? CLOSE_PAR IS stat END ;
 
 assign_lhs: ident
           | array_elem
