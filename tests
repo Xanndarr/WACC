@@ -1,27 +1,49 @@
 #!/usr/bin/ruby
 #script to run all valid tests through our wacc language.
+# USAGE: ./tests {dirOfTests} {showOutput}?
+# for showOutput, leave empty for true, anything for false
 
 #build parser
 puts `make`
 
-def run_tests(dir)
+$num_tests = 0
+$num_tests_failed = 0
+
+def run_tests(dir, show_out=true)
 	Dir.foreach(dir) do | item |
 		next if item == "." or item == ".."
 		if File.directory?(dir+"/"+item)
 			run_tests(dir+"/"+item)
 		else
-			puts "#{dir + "/" + item}"
-			puts "\t" + `./compile #{dir+"/"+item}`
+			puts "\n#{dir + "/" + item}\n"
+
+			out = `./compile #{dir+"/"+item} 2>&1`
+			puts out unless show_out
+
+			$num_tests += 1
+			if out.include? "error"
+				$num_tests_failed += 1
+				puts "\e[31mTEST FAILED\e[0m"
+			else
+				puts "\e[32mTEST PASSED\e[0m"
+			end
+
+			#puts out unless out.include?("error")
 		end
 	end
 end
 
+puts "==================================================================="
 puts "Running tests..."
+puts "==================================================================="
 
 tests_dir = "../wacc_examples/valid"
 
 specified_dir = "/" + ARGV[0] unless ARGV.empty?
+show_program_out = ARGV[1]
 
-run_tests(tests_dir + specified_dir)
+run_tests(tests_dir + specified_dir, show_program_out)
 
-puts "...Tests finished"
+puts "==================================================================="
+puts "...Tests finished = #{$num_tests - $num_tests_failed}/#{$num_tests} PASSED"
+puts "==================================================================="
