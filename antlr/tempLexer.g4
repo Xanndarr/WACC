@@ -8,11 +8,9 @@ fragment DIGIT: [0-9] ;
 fragment SIGN: '-' | '+' ;
 INT_LIT: SIGN? DIGIT+ ;
 
-
 fragment FALSE: 'false' ;
 fragment TRUE: 'true' ;
 BOOL_LIT: TRUE | FALSE ;
-
 
 fragment ESC_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
 fragment CHARACTER: ~[\\\-\"] | '\\' ESC_CHAR ;
@@ -22,9 +20,14 @@ STRING_LIT: '"' CHARACTER* '"' ;
 fragment NULL: 'null' ;
 PAIR_LIT: NULL ;
 
-
 fragment ALPHABET: [A-z] ;
-//IDENT: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
+IDENT: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
+
+UNARY_OP: '!' | '-' | 'len' | 'ord' | 'chr' ;
+BINARY_OP: '*' | '/' | '%' | '+' | '-' 
+         | '>' | '>=' | '<' | '<=' 
+         | '==' | '!=' | '&&' | '||'
+         ;
 
 BEGIN: 'begin' ;
 END: 'end' ;
@@ -34,7 +37,11 @@ PRINT: 'print' ;
 PRINTLN: 'println' ;
 FREE: 'free' ;
 RETURN: 'return' ;
+//pair
 PAIR: 'pair' ;
+NEWPAIR: 'newpair' ;
+FST: 'fst' ;
+SND: 'snd' ;
 //if
 IF: 'if' ;
 THEN: 'then' ;
