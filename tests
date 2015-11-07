@@ -1,0 +1,27 @@
+#!/usr/bin/ruby
+#script to run all valid tests through our wacc language.
+
+#build parser
+puts `make`
+
+def run_tests(dir)
+	Dir.foreach(dir) do | item |
+		next if item == "." or item == ".."
+		if File.directory?(dir+"/"+item)
+			run_tests(dir+"/"+item)
+		else
+			puts "#{dir + "/" + item}"
+			puts "\t" + `./compile #{dir+"/"+item}`
+		end
+	end
+end
+
+puts "Running tests..."
+
+tests_dir = "../wacc_examples/valid"
+
+specified_dir = "/" + ARGV[0] unless ARGV.empty?
+
+run_tests(tests_dir + specified_dir)
+
+puts "...Tests finished"
