@@ -8,6 +8,7 @@ PRINT: 'print' ;
 PRINTLN: 'println' ;
 FREE: 'free' ;
 RETURN: 'return' ;
+READ: 'read' ;
 //pair
 PAIR: 'pair' ;
 FST: 'fst' ;

@@ -11,6 +11,7 @@ stat: SKIP
     | PRINT exp
     | PRINTLN exp
     | FREE exp
+    | READ assign_lhs
     | RETURN exp
     | IF exp THEN stat ELSE stat FI
     | WHILE exp DO stat DONE
