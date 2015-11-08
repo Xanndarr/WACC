@@ -32,7 +32,7 @@ array_type: base_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
           | array_type OPEN_SQ_BRACK CLOSE_SQ_BRACK 
           ;
 
-array_elem: ident (OPEN_SQ_BRACK exp CLOSE_SQ_BRACK)+ ;
+array_elem: ident (OPEN_SQ_BRACK INT_LIT CLOSE_SQ_BRACK)+ ;
 
 array_lit: OPEN_SQ_BRACK ( exp (COMMA exp )* )? CLOSE_SQ_BRACK ;
 

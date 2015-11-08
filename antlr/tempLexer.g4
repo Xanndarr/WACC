@@ -36,18 +36,18 @@ CLOSE_SQ_BRACK: ']' ;
 COMMA: ',' ;
 ASSIGN: '=' ;
 
-WS: [ \n\t]+ -> skip ;
-fragment NEWLINE: '\n' ;
-fragment HASH: '#' ;
-COMMENTS: HASH ~[\n]* NEWLINE -> skip ;
-
 fragment DIGIT: [0-9] ;
-fragment SIGN: NEG | ADD ;
+fragment SIGN: SUB | ADD ;
 INT_LIT: SIGN? DIGIT+ ;
 
 fragment FALSE: 'false' ;
 fragment TRUE: 'true' ;
 BOOL_LIT: TRUE | FALSE ;
+
+WS: [ \n\t]+ -> skip ;
+fragment NEWLINE: '\n' ;
+fragment HASH: '#' ;
+COMMENTS: HASH ~[\n]* NEWLINE -> skip ;
 
 fragment ESC_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
 fragment CHARACTER: ~[\\\-\"] | '\\' ESC_CHAR ;
@@ -58,11 +58,10 @@ fragment NULL: 'null' ;
 PAIR_LIT: NULL ;
 
 fragment NOT: '!' ;
-fragment NEG: '-' ;
 fragment LEN: 'len' ;
 fragment ORD: 'ord' ;
 fragment CHR: 'chr' ;
-UNARY_OP: NOT | NEG | LEN | ORD | CHR ;
+UNARY_OP: NOT | SUB | LEN | ORD | CHR ;
 
 fragment MULT: '*' ;
 fragment DIV: '/' ;
