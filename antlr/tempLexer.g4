@@ -28,6 +28,24 @@ IS: 'is' ;
 CALL: 'call' ;
 NEWPAIR: 'newpair' ;
 
+fragment MULT: '*' ;
+fragment DIV: '/' ;
+fragment MOD: '%' ;
+fragment ADD: '+' ;
+fragment SUB: '-' ;
+fragment GT: '>' ;
+fragment GTE: '>=' ;
+fragment LT: '<' ;
+fragment LTE: '<=' ;
+fragment EQ: '==' ;
+fragment NEQ: '!=' ;
+fragment AND: '&&' ;
+fragment OR: '||' ;
+BINARY_OP: MULT | DIV | MOD | ADD | SUB
+         | GT | GTE | LT | LTE 
+         | EQ | NEQ | AND | OR
+         ;
+
 //punctuation
 SEMICOLON: ';' ;
 OPEN_PAR: '(' ;
@@ -64,23 +82,6 @@ fragment ORD: 'ord' ;
 fragment CHR: 'chr' ;
 UNARY_OP: NOT | SUB | LEN | ORD | CHR ;
 
-fragment MULT: '*' ;
-fragment DIV: '/' ;
-fragment MOD: '%' ;
-fragment ADD: '+' ;
-fragment SUB: '-' ;
-fragment GT: '>' ;
-fragment GTE: '>=' ;
-fragment LT: '<' ;
-fragment LTE: '<=' ;
-fragment EQ: '==' ;
-fragment NEQ: '!=' ;
-fragment AND: '&&' ;
-fragment OR: '||' ;
-BINARY_OP: MULT | DIV | MOD | ADD | SUB
-         | GT | GTE | LT | LTE 
-         | EQ | NEQ | AND | OR
-         ;
 
 //base types
 INT: 'int' ;
