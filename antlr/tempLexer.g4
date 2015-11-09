@@ -89,6 +89,6 @@ CHAR: 'char' ;
 STRING: 'string' ;
 BOOL: 'bool' ;
 
-fragment ALPHABET: [A-z] ;
+fragment ALPHABET: [a-zA-Z] ;
 ID: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
 

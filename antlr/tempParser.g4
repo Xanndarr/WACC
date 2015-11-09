@@ -6,10 +6,13 @@ options {
 
 program: BEGIN func* stat END;
 
-type: (base_type | pair_type) (array_type)* ;
-    //| array_type
-    //| pair_type
-    //;
+type: //(base_type | pair_type) (array_type)* ;
+//    | array_type
+//    | pair_type
+//    ;
+        base_type array_type*
+      | pair_type array_type*
+      ;
 
 stat: SKIP
     | type ident ASSIGN assign_rhs
@@ -29,17 +32,17 @@ stat: SKIP
 base_type: INT | CHAR | STRING | BOOL ;
 
 array_type : OPEN_SQ_BRACK CLOSE_SQ_BRACK ; 
-          //base_type '[]'
-          //| pair_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
-          //| array_type OPEN_SQ_BRACK CLOSE_SQ_BRACK 
-          //;
+//             base_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
+//           | pair_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
+//           | array_type OPEN_SQ_BRACK CLOSE_SQ_BRACK 
+//           ;
 
-array_elem: ident (OPEN_SQ_BRACK INT_LIT CLOSE_SQ_BRACK)+ ;
+array_elem: ident (OPEN_SQ_BRACK exp CLOSE_SQ_BRACK)+ ;
 
 array_lit: OPEN_SQ_BRACK ( exp (COMMA exp )* )? CLOSE_SQ_BRACK ;
 
 pair_elem_type: base_type
-              //w| array_type
+              | array_type
               | PAIR
               ;
 
