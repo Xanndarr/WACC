@@ -63,7 +63,7 @@ fragment FALSE: 'false' ;
 fragment TRUE: 'true' ;
 BOOL_LIT: TRUE | FALSE ;
 
-WS: [ \n\t]+ -> skip ;
+WS: [ \n\t\r]+ -> skip ;
 fragment NEWLINE: '\n' ;
 fragment HASH: '#' ;
 COMMENTS: HASH ~[\n]* NEWLINE -> skip ;

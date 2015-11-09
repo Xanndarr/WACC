@@ -4,41 +4,42 @@ options {
       tokenVocab=tempLexer;
 }
 
-program: BEGIN func* stat END; 
+program: BEGIN func* stat END;
+
+type: (base_type | pair_type) (array_type)* ;
+    //| array_type
+    //| pair_type
+    //;
 
 stat: SKIP
+    | type ident ASSIGN assign_rhs
+    //| assign_lhs ASSIGN assign_rhs
+    | READ assign_lhs
+    | FREE exp
     | EXIT INT_LIT
     | PRINT exp
     | PRINTLN exp
-    | FREE exp
-    | READ assign_lhs
-    | RETURN exp
     | IF exp THEN stat ELSE stat FI
     | WHILE exp DO stat DONE
     | BEGIN stat END
     | stat SEMICOLON stat
-    | type ident ASSIGN assign_rhs
-    | assign_lhs ASSIGN assign_rhs
+    | RETURN exp
     ;
 
 base_type: INT | CHAR | STRING | BOOL ;
 
-type: base_type
-    | array_type
-    | pair_type
-    ;
-
-array_type: base_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
-          | pair_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
-          | array_type OPEN_SQ_BRACK CLOSE_SQ_BRACK 
-          ;
+array_type : OPEN_SQ_BRACK CLOSE_SQ_BRACK ; 
+          //base_type '[]'
+          //| pair_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
+          //| array_type OPEN_SQ_BRACK CLOSE_SQ_BRACK 
+          //;
 
 array_elem: ident (OPEN_SQ_BRACK INT_LIT CLOSE_SQ_BRACK)+ ;
 
 array_lit: OPEN_SQ_BRACK ( exp (COMMA exp )* )? CLOSE_SQ_BRACK ;
 
 pair_elem_type: base_type
-              | array_type
+              //w| array_type
               | PAIR
               ;
 
