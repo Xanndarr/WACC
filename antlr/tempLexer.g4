@@ -28,23 +28,24 @@ IS: 'is' ;
 CALL: 'call' ;
 NEWPAIR: 'newpair' ;
 
-fragment MULT: '*' ;
-fragment DIV: '/' ;
-fragment MOD: '%' ;
-fragment ADD: '+' ;
-fragment SUB: '-' ;
-fragment GT: '>' ;
-fragment GTE: '>=' ;
-fragment LT: '<' ;
-fragment LTE: '<=' ;
-fragment EQ: '==' ;
-fragment NEQ: '!=' ;
-fragment AND: '&&' ;
-fragment OR: '||' ;
-BINARY_OP: MULT | DIV | MOD | ADD | SUB
-         | GT | GTE | LT | LTE 
-         | EQ | NEQ | AND | OR
-         ;
+MULT: '*' ;
+DIV: '/' ;
+MOD: '%' ;
+ADD: '+' ;
+SUB: '-' ;
+GT: '>' ;
+GTE: '>=' ;
+LT: '<' ;
+LTE: '<=' ;
+EQ: '==' ;
+NEQ: '!=' ;
+AND: '&&' ;
+OR: '||' ;
+
+NOT: '!' ;
+LEN: 'len' ;
+ORD: 'ord' ;
+CHR: 'chr' ;
 
 //punctuation
 SEMICOLON: ';' ;
@@ -75,13 +76,6 @@ STRING_LIT: '\"' (CHARACTER)* '\"' ;
 
 fragment NULL: 'null' ;
 PAIR_LIT: NULL ;
-
-fragment NOT: '!' ;
-fragment LEN: 'len' ;
-fragment ORD: 'ord' ;
-fragment CHR: 'chr' ;
-UNARY_OP: NOT | SUB | LEN | ORD | CHR ;
-
 
 //base types
 INT: 'int' ;

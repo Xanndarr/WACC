@@ -41,8 +41,7 @@ array_elem: ident (OPEN_SQ_BRACK exp CLOSE_SQ_BRACK)+ ;
 
 array_lit: OPEN_SQ_BRACK ( exp (COMMA exp )* )? CLOSE_SQ_BRACK ;
 
-pair_elem_type: base_type
-              | array_type
+pair_elem_type: type
               | PAIR
               ;
 
@@ -59,10 +58,17 @@ exp: INT_LIT
    | PAIR_LIT
    | array_elem
    | ident
-   | UNARY_OP exp
-   | exp BINARY_OP exp
+   | unary_op exp
+   | exp binary_op exp
    | OPEN_PAR exp CLOSE_PAR
    ;
+
+unary_op: NOT | SUB | LEN | ORD | CHR ;
+
+binary_op: MULT | DIV | MOD | ADD | SUB
+         | GT | GTE | LT | LTE 
+         | EQ | NEQ | AND | OR
+         ;
 
 arg_list: exp (COMMA exp )* ;
 
