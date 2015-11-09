@@ -1,7 +1,7 @@
-parser grammar tempParser;
+parser grammar WACCParser;
 
 options {
-      tokenVocab=tempLexer;
+      tokenVocab=WACCLexer;
 }
 
 program: BEGIN func* stat END EOF;

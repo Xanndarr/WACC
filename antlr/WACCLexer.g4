@@ -1,4 +1,4 @@
-lexer grammar tempLexer;
+lexer grammar WACCLexer;
 
 BEGIN: 'begin' ;
 END: 'end' ;
