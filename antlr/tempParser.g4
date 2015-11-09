@@ -6,20 +6,20 @@ options {
 
 program: BEGIN func* stat END;
 
-type: //(base_type | pair_type) (array_type)* ;
+type: (base_type | pair_type) (array_type)* ;
 //    | array_type
 //    | pair_type
 //    ;
-        base_type array_type*
-      | pair_type array_type*
-      ;
+//        base_type array_type*
+//      | pair_type array_type*
+//      ;
 
 stat: SKIP
     | type ident ASSIGN assign_rhs
-    //| assign_lhs ASSIGN assign_rhs
+    | assign_lhs ASSIGN assign_rhs
     | READ assign_lhs
     | FREE exp
-    | EXIT INT_LIT
+    | EXIT exp
     | PRINT exp
     | PRINTLN exp
     | IF exp THEN stat ELSE stat FI
@@ -57,7 +57,7 @@ exp: INT_LIT
    | CHAR_LIT
    | STRING_LIT
    | PAIR_LIT
-   | array_lit
+   | array_elem
    | ident
    | UNARY_OP exp
    | exp BINARY_OP exp
