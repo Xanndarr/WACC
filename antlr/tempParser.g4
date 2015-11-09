@@ -85,7 +85,7 @@ param_list: param ( COMMA param )* ;
 
 func: type ident OPEN_PAR param_list? CLOSE_PAR IS stat END 
   {
-    $stat.text.contains("return")
+    $stat.text.contains("return") || $stat.text.contains("exit")
   }?<fail={"Function may not return anything"}> ;
 
 assign_lhs: ident
