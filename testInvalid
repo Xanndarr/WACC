@@ -9,11 +9,11 @@ puts `make`
 $num_tests = 0
 $num_tests_failed = 0
 
-def run_tests(dir, show_out=true)
+def run_tests(dir, show_out)
 	Dir.foreach(dir) do | item |
 		next if item == "." or item == ".."
 		if File.directory?(dir+"/"+item)
-			run_tests(dir+"/"+item)
+			run_tests(dir+"/"+item, show_out)
 		elsif File.extname(item) == ".wacc"
 			puts "\n#{dir + "/" + item}\n"
 
@@ -39,9 +39,11 @@ puts "==================================================================="
 
 tests_dir = "../wacc_examples/invalid"
 
-show_program_out = ARGV[0]
-
-run_tests(tests_dir, show_program_out)
+if ARGV.empty?
+	run_tests(tests_dir, true)
+else
+	run_tests(tests_dir + "/" + ARGV[0], false)
+end
 
 puts "==================================================================="
 puts "...Tests finished = #{$num_tests - $num_tests_failed}/#{$num_tests} PASSED"
