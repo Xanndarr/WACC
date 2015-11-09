@@ -70,7 +70,7 @@ fragment HASH: '#' ;
 COMMENTS: HASH ~[\n]* NEWLINE -> skip ;
 
 fragment ESC_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
-fragment CHARACTER: ~[\\\-\"] | '\\' ESC_CHAR ;
+fragment CHARACTER: ~[\\\'\"] | '\\' ESC_CHAR ;
 CHAR_LIT: '\'' CHARACTER '\'' ;
 STRING_LIT: '\"' (CHARACTER)* '\"' ;
 
