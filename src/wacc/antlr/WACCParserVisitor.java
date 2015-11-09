@@ -30,36 +30,6 @@ public interface WACCParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr(@NotNull WACCParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WACCParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitType(@NotNull WACCParser.TypeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WACCParser#unary_oper}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitUnary_oper(@NotNull WACCParser.Unary_operContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WACCParser#func}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunc(@NotNull WACCParser.FuncContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WACCParser#array_type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArray_type(@NotNull WACCParser.Array_typeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WACCParser#pair_elem}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPair_elem(@NotNull WACCParser.Pair_elemContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link WACCParser#base_type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -72,23 +42,17 @@ public interface WACCParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPair_type(@NotNull WACCParser.Pair_typeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WACCParser#assign_lhs}.
+	 * Visit a parse tree produced by {@link WACCParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssign_lhs(@NotNull WACCParser.Assign_lhsContext ctx);
+	T visitType(@NotNull WACCParser.TypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WACCParser#stat}.
+	 * Visit a parse tree produced by {@link WACCParser#str_liter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStat(@NotNull WACCParser.StatContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WACCParser#string_liter}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString_liter(@NotNull WACCParser.String_literContext ctx);
+	T visitStr_liter(@NotNull WACCParser.Str_literContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WACCParser#bool_liter}.
 	 * @param ctx the parse tree
@@ -96,11 +60,29 @@ public interface WACCParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBool_liter(@NotNull WACCParser.Bool_literContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WACCParser#stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStat(@NotNull WACCParser.StatContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WACCParser#assign_lhs}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssign_lhs(@NotNull WACCParser.Assign_lhsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WACCParser#param_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParam_list(@NotNull WACCParser.Param_listContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WACCParser#unary_oper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnary_oper(@NotNull WACCParser.Unary_operContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WACCParser#arg_list}.
 	 * @param ctx the parse tree
@@ -114,17 +96,11 @@ public interface WACCParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArray_elem(@NotNull WACCParser.Array_elemContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WACCParser#program}.
+	 * Visit a parse tree produced by {@link WACCParser#char_liter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgram(@NotNull WACCParser.ProgramContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WACCParser#pair_elem_type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPair_elem_type(@NotNull WACCParser.Pair_elem_typeContext ctx);
+	T visitChar_liter(@NotNull WACCParser.Char_literContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WACCParser#binary_oper}.
 	 * @param ctx the parse tree
@@ -132,11 +108,17 @@ public interface WACCParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBinary_oper(@NotNull WACCParser.Binary_operContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WACCParser#char_liter}.
+	 * Visit a parse tree produced by {@link WACCParser#pair_elem_type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitChar_liter(@NotNull WACCParser.Char_literContext ctx);
+	T visitPair_elem_type(@NotNull WACCParser.Pair_elem_typeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WACCParser#program}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProgram(@NotNull WACCParser.ProgramContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WACCParser#array_liter}.
 	 * @param ctx the parse tree
@@ -150,15 +132,27 @@ public interface WACCParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssign_rhs(@NotNull WACCParser.Assign_rhsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WACCParser#comment}.
+	 * Visit a parse tree produced by {@link WACCParser#func}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComment(@NotNull WACCParser.CommentContext ctx);
+	T visitFunc(@NotNull WACCParser.FuncContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WACCParser#int_liter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitInt_liter(@NotNull WACCParser.Int_literContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WACCParser#pair_elem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPair_elem(@NotNull WACCParser.Pair_elemContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WACCParser#array_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArray_type(@NotNull WACCParser.Array_typeContext ctx);
 }

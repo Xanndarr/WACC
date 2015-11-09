@@ -1,97 +1,88 @@
-lexer grammar WACCLexer;
+lexer grammar tempLexer;
 
-//identifiers
-ID: ( ' ' | 'a'..'z' | 'A'..'Z' ) ( ' ' | 'a'..'z' | 'A'..'Z' | '0'..'9' )* ;
+BEGIN: 'begin' ;
+END: 'end' ;
+SKIP: 'skip' ;
+EXIT: 'exit' ;
+PRINT: 'print' ;
+PRINTLN: 'println' ;
+FREE: 'free' ;
+RETURN: 'return' ;
+READ: 'read' ;
+//pair
+PAIR: 'pair' ;
+FST: 'fst' ;
+SND: 'snd' ;
+//if
+IF: 'if' ;
+THEN: 'then' ;
+ELSE: 'else' ;
+FI: 'fi' ;
+//while
+WHILE: 'while' ;
+DO: 'do' ;
+DONE: 'done' ;
+//function
+IS: 'is' ;
+//assigning
+CALL: 'call' ;
+NEWPAIR: 'newpair' ;
 
-//numbers
-fragment DIGIT: [0-9] ;
-INT: DIGIT+ ;
-
-//signs
-fragment POS: '+' ;
-fragment NEG: '-' ;
-INT_SIGN: POS | NEG ;
-
-//booleans
-fragment TRUE: 'true' ;
-fragment FALSE: 'false' ;
-BOOL : TRUE | FALSE ;
-
-//char & string
-CHAR: ~[ BACKSLASH | APOSTROPHE | DOUBLEQUOTE ]
-    | BACKSLASH ESCAPED_CHAR
-    ;
-ESCAPED_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
-
-//misc
-EOL: '\r'? '\n' ; 
-WS: [ \t ]+ -> skip ;
-
-//base types
-INT_TYPE: 'int' ;
-BOOL_TYPE: 'bool' ;
-CHAR_TYPE: 'char' ;
-STRING_TYPE: 'string' ;
-PAIR_TYPE: 'pair' ;
-
-//unary operators
-NOT: '!' ;
-MINUS: '-' ;
-ORD: 'ord' ;
-CHR: 'chr' ;
-LEN: 'len' ;
-
-//binary operators
-ADD: '+' ;
-SUB: '-' ;
 MULT: '*' ;
 DIV: '/' ;
 MOD: '%' ;
-AND: '&&' ;
-OR: '||' ;
+ADD: '+' ;
+SUB: '-' ;
 GT: '>' ;
 GTE: '>=' ;
 LT: '<' ;
 LTE: '<=' ;
 EQ: '==' ;
 NEQ: '!=' ;
+AND: '&&' ;
+OR: '||' ;
 
-//stat nonterminals
-SKIP: 'skip' ;
-ASSIGNMENT: '=' ;
-READ: 'read' ;
-FREE: 'free' ;
-RETURN: 'return' ;
-EXIT: 'exit' ;
-PRINT: 'print' ;
-PRINTLN: 'println' ;
-IF: 'if' ;
-THEN: 'then' ;
-ELSE: 'else' ;
-FI: 'fi' ;
-WHILE: 'while' ;
-DO: 'do' ;
-DONE: 'done' ;
-BEGIN: 'begin' ;
-END: 'end' ;
-CALL: 'call' ;
-NEWPAIR: 'newpair' ;
-FST: 'fst' ;
-SND: 'snd' ;
-IS: 'is' ;
-
-//brackets
-OPEN_PARENTHESES: '(' ;
-CLOSE_PARENTHESES: ')' ;
-OPEN_SQUARE_BRACKET: '[' ;
-CLOSE_SQUARE_BRACKET: ']' ;
+NOT: '!' ;
+LEN: 'len' ;
+ORD: 'ord' ;
+CHR: 'chr' ;
 
 //punctuation
-COMMA: ',' ;
-APOSTROPHE: '\'' ;
-DOUBLEQUOTE: '\"' ;
-BACKSLASH: '\\' ;
 SEMICOLON: ';' ;
-HASH: '#' ;
-NULL: 'null' ;
+OPEN_PAR: '(' ;
+CLOSE_PAR: ')' ;
+OPEN_SQ_BRACK: '[' ;
+CLOSE_SQ_BRACK: ']' ;
+COMMA: ',' ;
+ASSIGN: '=' ;
+
+fragment DIGIT: [0-9] ;
+fragment SIGN: SUB | ADD ;
+INT_LIT: SIGN? DIGIT+ ;
+
+fragment FALSE: 'false' ;
+fragment TRUE: 'true' ;
+BOOL_LIT: TRUE | FALSE ;
+
+WS: [ \n\t\r]+ -> skip ;
+fragment NEWLINE: '\n' ;
+fragment HASH: '#' ;
+COMMENTS: HASH ~[\n]* NEWLINE -> skip ;
+
+fragment ESC_CHAR: '0' | 'b' | 't' | 'n' | 'f' | 'r' | '\"' | '\'' | '\\' ;
+fragment CHARACTER: ~[\\\'\"] | '\\' ESC_CHAR ;
+CHAR_LIT: '\'' CHARACTER '\'' ;
+STRING_LIT: '\"' (CHARACTER)* '\"' ;
+
+fragment NULL: 'null' ;
+PAIR_LIT: NULL ;
+
+//base types
+INT: 'int' ;
+CHAR: 'char' ;
+STRING: 'string' ;
+BOOL: 'bool' ;
+
+fragment ALPHABET: [a-zA-Z] ;
+ID: ( '_' | ALPHABET ) ( '_' | ALPHABET | DIGIT )* ;
 
