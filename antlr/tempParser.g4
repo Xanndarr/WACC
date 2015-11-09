@@ -4,7 +4,7 @@ options {
       tokenVocab=tempLexer;
 }
 
-program: BEGIN func* stat END;
+program: BEGIN func* stat END EOF;
 
 type: (base_type | pair_type) (array_type)* ;
 //    | array_type
@@ -51,7 +51,7 @@ pair_elem: FST exp
 
 pair_type: PAIR OPEN_PAR pair_elem_type COMMA pair_elem_type CLOSE_PAR;
 
-exp: INT_LIT
+exp: int_lit
    | BOOL_LIT
    | CHAR_LIT
    | STRING_LIT
@@ -62,6 +62,13 @@ exp: INT_LIT
    | exp binary_op exp
    | OPEN_PAR exp CLOSE_PAR
    ;
+
+int_lit: number 
+  {
+    Long.valueOf($number.text) <= Integer.MAX_VALUE && Long.valueOf($number.text) >= (Integer.MIN_VALUE)
+  }?<fail={"Integer value not valid"}> ;
+
+number: INT_LIT ;
 
 unary_op: NOT | SUB | LEN | ORD | CHR ;
 
@@ -76,7 +83,10 @@ param: type ident ;
 
 param_list: param ( COMMA param )* ;
 
-func: type ident OPEN_PAR param_list? CLOSE_PAR IS stat END ;
+func: type ident OPEN_PAR param_list? CLOSE_PAR IS stat END 
+  {
+    $stat.text.contains("return")
+  }?<fail={"Function may not return anything"}> ;
 
 assign_lhs: ident
           | array_elem
