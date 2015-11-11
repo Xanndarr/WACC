@@ -1,8 +1,10 @@
+package wacc;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 //import antlr package
 import wacc.antlr.*;
+import wacc.semantics.MyVisitor;
 
 
 public class Test {
@@ -20,6 +22,9 @@ public class Test {
 		WACCParser parser = new WACCParser(tokens);
 		
 		ParseTree tree = parser.program(); //begin parsing at prog rule
-		System.out.println(tree.toStringTree(parser)); //print LISP-style tree
+		
+		MyVisitor visitor = new MyVisitor();
+		visitor.visit(tree);
+		//System.out.println(tree.toStringTree(parser)); //print LISP-style
 	}
 }
