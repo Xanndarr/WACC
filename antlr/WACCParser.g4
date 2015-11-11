@@ -14,19 +14,19 @@ type: (base_type | pair_type) (array_type)* ;
 //      | pair_type array_type*
 //      ;
 
-stat: SKIP
-    | type ident ASSIGN assign_rhs
-    | assign_lhs ASSIGN assign_rhs
-    | READ assign_lhs
-    | FREE exp
-    | EXIT exp
-    | PRINT exp
-    | PRINTLN exp
-    | IF exp THEN stat ELSE stat FI
-    | WHILE exp DO stat DONE
-    | BEGIN stat END
-    | stat SEMICOLON stat
-    | RETURN exp
+stat: SKIP 								#skip
+    | type ident ASSIGN assign_rhs 		#initialisation
+    | assign_lhs ASSIGN assign_rhs 		#assignment
+    | READ assign_lhs 					#read
+    | FREE exp 							#free
+    | EXIT exp 							#exit
+    | PRINT exp 						#print
+    | PRINTLN exp 						#println
+    | IF exp THEN stat ELSE stat FI 	#if
+    | WHILE exp DO stat DONE 			#while
+    | BEGIN stat END 					#begin
+    | stat SEMICOLON stat 				#sequence
+    | RETURN exp 						#return 
     ;
 
 base_type: INT | CHAR | STRING | BOOL ;
