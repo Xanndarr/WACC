@@ -51,10 +51,10 @@ pair_elem: FST exp
 
 pair_type: PAIR OPEN_PAR pair_elem_type COMMA pair_elem_type CLOSE_PAR;
 
-exp: int_lit
-   | BOOL_LIT
-   | CHAR_LIT
-   | STRING_LIT
+exp: int_lit         
+   | BOOL_LIT          
+   | CHAR_LIT              
+   | STRING_LIT             
    | PAIR_LIT
    | array_elem
    | ident
