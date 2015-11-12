@@ -142,7 +142,12 @@ public class MyVisitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitExit(@NotNull WACCParser.ExitContext ctx) {
-		System.out.println("Visiting 'Exit' node");
+		try {
+			Integer.parseInt(ctx.getChild(1).getText());
+		} catch (NumberFormatException e) {
+			System.out.println("Visiting 'Exit' node");
+			System.out.println("Error - Exit command contains a invalid parameter which is not of type int");	
+		}
 		return visitChildren(ctx);
 	}
 
