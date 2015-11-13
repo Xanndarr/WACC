@@ -5,13 +5,13 @@ import java.util.Map;
 
 class SymbolTable {
 	
-	private Map<String, Object> symbolTable;
+	private Map<String, String> symbolTable;
 	
 	public SymbolTable() {
-		symbolTable = new HashMap<String, Object>();
+		symbolTable = new HashMap<String, String>();
 	}
 	
-	public void put(String key, Object value) {
+	public void put(String key, String value) {
 		symbolTable.put(key, value);
 	}
 	
