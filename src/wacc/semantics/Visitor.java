@@ -1,58 +1,61 @@
 package wacc.semantics;
 
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import wacc.antlr.*;
+import wacc.symbolTable.ScopeHandler;
 
-public class MyVisitor extends WACCParserBaseVisitor<Void> {
+public class Visitor extends WACCParserBaseVisitor<Void> {
+	
+	ScopeHandler scopeHandler = new ScopeHandler();
 	
 	@Override
-	public Void visitProgram(WACCParser.ProgramContext ctx) {
-		System.out.println("Visiting 'Program' node");
+	public Void visitProgram(@NotNull WACCParser.ProgramContext ctx) {
 		return visitChildren(ctx);
 	}
 	
 	@Override
-	public Void visitFunc(WACCParser.FuncContext ctx) {
-		System.out.println("Visiting 'Function' node");
-//		System.out.println("I found a function definition!");
-//		System.out.println(ctx.ident().getText());
-//		System.out.print("Type info: ");
-//		for (int i = 0; i < ctx.param_list().depth(); i++) {
-//			visit(ctx.param_list().getChild(i));
-//		}
-//		System.out.print(" => ");
-//		visitChildren(ctx.param_list());
+	public Void visitFunc(@NotNull WACCParser.FuncContext ctx) {
+		String ident = ctx.getChild(1).getText();
+		String type = ctx.getChild(0).getText();
+		try {
+			scopeHandler.add(ident, type);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Void visitParam(@NotNull WACCParser.ParamContext ctx) {
-		System.out.println("Visiting 'Param' node");
+		String ident = ctx.getChild(1).getText();
+		String type = ctx.getChild(0).getText();
+		try {
+			scopeHandler.add(ident, type);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Void visitBinary_op(@NotNull WACCParser.Binary_opContext ctx) {
-		System.out.println("Visiting 'Binary_op' node");
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Void visitArray_lit(@NotNull WACCParser.Array_litContext ctx) {
-		System.out.println("Visiting 'Array_lit' node");
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Void visitSkip(@NotNull WACCParser.SkipContext ctx) {
-		System.out.println("Visiting 'Skip' node");
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Void visitWhile(@NotNull WACCParser.WhileContext ctx) {
-		System.out.println("Visiting 'While' node");
 		return visitChildren(ctx);
 	}
 
@@ -142,18 +145,12 @@ public class MyVisitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitExit(@NotNull WACCParser.ExitContext ctx) {
-		try {
-			Integer.parseInt(ctx.getChild(1).getText());
-		} catch (NumberFormatException e) {
-			System.out.println("Visiting 'Exit' node");
-			System.out.println("Error - Exit command contains a invalid parameter which is not of type int");	
-		}
+		System.out.println("Visiting 'Exit' node");
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Void visitParam_list(@NotNull WACCParser.Param_listContext ctx) {
-		System.out.println("Visiting 'Param_list' node");
 		return visitChildren(ctx);
 	}
 
