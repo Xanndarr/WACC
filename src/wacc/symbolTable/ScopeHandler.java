@@ -39,6 +39,15 @@ public class ScopeHandler {
 		throw new Exception("Error: symbol not found");
 	}
 	
+	public boolean exists(String ident) {
+		for(SymbolTable symtab : tables.values()) {
+			if (symtab.exists(ident)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void descend() {
 		currentScope++;
 		tables.put(currentScope, new SymbolTable());
