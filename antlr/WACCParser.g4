@@ -51,16 +51,16 @@ pair_elem: FST exp
 
 pair_type: PAIR OPEN_PAR pair_elem_type COMMA pair_elem_type CLOSE_PAR;
 
-exp: int_lit         
-   | BOOL_LIT          
-   | CHAR_LIT              
-   | STRING_LIT             
-   | PAIR_LIT
-   | array_elem
-   | ident
-   | unary_op exp
-   | exp binary_op exp
-   | OPEN_PAR exp CLOSE_PAR
+exp: int_lit                #int
+   | BOOL_LIT               #bool
+   | CHAR_LIT               #char
+   | STRING_LIT             #string
+   | PAIR_LIT               #pair
+   | array_elem             #arrayElem
+   | ident                  #identExp
+   | unary_op exp           #unaryOpExp
+   | exp binary_op exp      #binaryOpExp
+   | OPEN_PAR exp CLOSE_PAR #bracketedExp
    ;
 
 int_lit: number 
