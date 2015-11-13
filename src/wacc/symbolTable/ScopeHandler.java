@@ -16,6 +16,7 @@ public class ScopeHandler {
 		tables.put(GLOBAL_SCOPE, new SymbolTable());
 	}
 	
+	//Unsure whether we should throw exception here.
 	public void add(String ident, String type) throws Exception{
 		if (tables.get(currentScope).exists(ident)) {
 			throw new Exception("Error: variable already exists");
@@ -23,6 +24,7 @@ public class ScopeHandler {
 		tables.get(currentScope).put(ident, type);
 	}
 	
+	//Unsure whether we should throw exception here.
 	public void addGlobal(String ident, String type) throws Exception {
 		if (tables.get(currentScope).exists(ident)) {
 			throw new Exception("Error: global variable already exists");
