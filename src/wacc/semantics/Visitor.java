@@ -244,7 +244,12 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitParam(ParamContext ctx) {
-		// TODO Add param to current scope
+		// DONE Add param to current scope
+		try {
+			scopeHandler.add(ctx.ident().getText(), ctx.type().getText());
+		} catch (Exception e) {
+			System.err.println("Identifier already exists.");
+		}
 		return super.visitParam(ctx);
 	}
 	
