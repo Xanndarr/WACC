@@ -1,10 +1,12 @@
 package wacc.semantics;
 
 import wacc.antlr.WACCParser.*;
+import wacc.symbolTable.ScopeHandler;
 import wacc.antlr.WACCParserBaseVisitor;
 
 public class Visitor extends WACCParserBaseVisitor<Void> {
 	
+	private ScopeHandler scopeHandler = new ScopeHandler();
 	private String nodeType = "null";
 	
 	/*
@@ -41,6 +43,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitExit(ExitContext ctx) {
 		// TODO Expression must evaluate to an int
+		visit(ctx.exp());
+		if (!nodeType.equals("int")) {
+			System.err.println("Exit statements expressions must evaluate to an int.");
+		}
 		return super.visitExit(ctx);
 	}
 
@@ -49,6 +55,15 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// TODO Check condition is a valid boolean or evaluates to one
 		// TODO Increase symtab scope before visiting EACH child individually
 		// TODO Reduce symtab scope after visiting EACH child individually
+		visit(ctx.exp());
+		if (!nodeType.equals("bool")) {
+			System.err.println("If statement expressions must evaluate to bool type.");
+		}
+		for (StatContext stat : ctx.stat()) {
+			scopeHandler.descend();
+			visit(stat);
+			scopeHandler.ascend();
+		}
 		return super.visitIf(ctx);
 	}
 
@@ -57,6 +72,13 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// TODO Check condition is a valid boolean or evaluates to one
 		// TODO Increase symtab scope before visiting child
 		// TODO Reduce symtab scope afterwards
+		visit(ctx.exp());
+		if (!nodeType.equals("bool")) {
+			System.err.println("If statement expressions must evaluate to bool type.");
+		}
+		scopeHandler.descend();
+		visit(ctx.stat());
+		scopeHandler.ascend();
 		return super.visitWhile(ctx);
 	}
 	
@@ -99,11 +121,24 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		nodeType = "pair";
 		return super.visitPair(ctx);
 	}
-
+	
+	//This method is visited in instantiation of array literals
 	@Override
 	public Void visitArrayElem(ArrayElemContext ctx) {
 		// TODO check exp evaluates to a positive int
+		//System.out.println(ctx.array_elem().exp().get(0).getText());
 		return super.visitArrayElem(ctx);
+	}
+	
+	//This method is visited when a lookup into an array is being done
+	@Override
+	public Void visitArray_elem(Array_elemContext ctx) {
+		// TODO check exp evaluates to a (positive) int
+		visit(ctx.exp(0));
+		if (!nodeType.equals("int")) {
+			System.err.println("Arrays must be accessed using an int index.");
+		}
+		return super.visitArray_elem(ctx);
 	}
 
 	@Override
