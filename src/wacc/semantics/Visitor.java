@@ -107,7 +107,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitRead(ReadContext ctx) {
 		// TODO Check type is = program variable | pair elem | array elem
-		// TODO Type must be either int, string(?) or char
+		// TODO Type must be either int, string(?) or char().getText());
 		return super.visitRead(ctx);
 	}
 
@@ -166,6 +166,14 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitReturn(ReturnContext ctx) {
 		// TODO Expression must be same type as function return type
+		System.out.println("Visiting return");
+		visit(ctx.exp());
+		String returnType = nodeType;
+		String functionType = ((FuncContext)ctx.getParent()).type().getText();
+		if (!returnType.equals(functionType)) {
+			System.err.println("Error: Incompatible type at '" + ctx.getText() +
+					"' (Expected: " + functionType + ", Actual: " + returnType);
+		}
 		return super.visitReturn(ctx);
 	}
 	
@@ -327,7 +335,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitFunc(FuncContext ctx) {
 		// TODO Increase symtab scope, visit children, then decrease symtab scope
 		// TODO Possibly add parameters to a global function signature tracker
-		// TODO Check every path of execut1ion contains a return statement
+		// TODO Check every path of execution contains a return statement
 		return super.visitFunc(ctx);
 	}
 
