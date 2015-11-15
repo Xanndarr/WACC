@@ -27,8 +27,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
       System.out.println(e.getMessage());
     }
     visit(ctx.assign_rhs());
-    if (!nodeType.equals(type)) {
-      // Set exit status to 200 ? Not sure how to do this.
+    if (!type.contains(nodeType)) {
       System.err.println("Error: Incompatible type at ' "
           + ctx.assign_rhs().getText() + " ' (Expected: " + type + ", Actual: "
           + nodeType + ")");
@@ -39,17 +38,17 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
   @Override
   public Void visitAssignment(AssignmentContext ctx) {
-    String ident = ctx.start.getText();
-    try {
-      String type = (String) scopeHandler.get(ident);
-      visit(ctx.assign_rhs());
-      if (!nodeType.equals(type)){
-        System.err.println("Error: Incompatible type at ' "
-            + ctx.assign_rhs().getText() + " ' (Expected: " + type + ", Actual: "
-            + nodeType + ")");       
-      }
-    } catch (Exception e) {
-      System.err.println("Error: Undeclared Variable");
+    visit(ctx.assign_lhs());
+    String ident = ctx.assign_lhs().ident().getText();
+    String type = nodeType;
+    if (!scopeHandler.exists(ident)){
+      System.err.println("Error: Undeclared variable");
+    }
+    visit(ctx.assign_rhs());
+    if (!nodeType.equals(type)) {
+      System.err.println("Error: Incompatible type at ' "
+          + ctx.assign_rhs().getText() + " ' (Expected: " + type + ", Actual: "
+          + nodeType + ")");
     }
     return super.visitAssignment(ctx);
   }
@@ -159,6 +158,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
   public Void visitArray_elem(Array_elemContext ctx) {
     // DONE check exp evaluates to a (positive) int
     visit(ctx.exp(0));
+    System.out.println(ctx.getText());
     if (!nodeType.equals("int")) {
       System.err.println("Arrays must be accessed using an int index.");
     }
@@ -225,8 +225,14 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
     // ==, != take anything return bool
     // &&, || take bool return bool
     visit(ctx.exp(0));
+    if (!identExists) {
+      System.err.println("Error: undeclared variable");
+    }
     String firstType = nodeType;
     visit(ctx.exp(1));
+    if (!identExists) {
+      System.err.println("Error: undeclared variable");
+    }
     String secondType = nodeType;
 
     if (!firstType.equals(secondType)) {
