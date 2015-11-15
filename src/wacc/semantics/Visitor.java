@@ -51,12 +51,13 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		
 		IdentContext ident = lhs.ident();
 		if (ident != null) {
-			boolean exists = scopeHandler.exists(ident.getText());
-			if (!exists) {
+			visit(ident);
+//			boolean exists = scopeHandler.exists(ident.getText());
+			if (!identExists) {
 				System.err.println("Error: Variable " + ident.getText() +
 						" does not exist in the current scope");
 			} else {
-				visit(ident);
+//				visit(ident);
 				System.out.println("Context: " + lhs.getText());
 				lhsType = nodeType;
 				System.out.println("Type: " + lhsType);
@@ -154,8 +155,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
 			//System.out.println(nodeType);
-			System.err.println("If statement expressions must evaluate to bool type.");
-			//System.err.println("While condition expressions must evaluate to bool type.");
+			System.err.println("While condition expressions must evaluate to bool type.");
 		}
 		scopeHandler.descend();
 		visit(ctx.stat());
@@ -260,58 +260,64 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		return super.visitUnaryOpExp(ctx);
 	}
 
-	@Override
-	public Void visitBinaryOpExp(BinaryOpExpContext ctx) {
-		// DONE Check LHS and RHS have same types
-		// DONE set nodeType = return type
-		// *, /, %, +, - take int return int
-		// >, >=, <, <= take int/char return bool
-		// ==, != take anything return bool
-		// &&, || take bool return bool
-		visit(ctx.exp(0));
-		String firstType = nodeType;
-		visit(ctx.exp(1));
-		String secondType = nodeType;
-		
-		
-		System.out.println("Visiting binary op: " + ctx.getText());
-		System.out.println("firstType: " + firstType + ", secondType: " + secondType);
-		
-		if (!firstType.equals(secondType)) {
-			System.err.println("Both sides of a binary operator must have the same type.");
-		}
-		
-		switch (ctx.binary_op().getText()) {
-		case "*":
-		case "/":
-		case "%":
-		case "+":
-		case "-":
-			if (!firstType.equals("int")) System.err.println("*, /, %, +, - require ints.");
-			nodeType = "int";
-			break;
-		case ">":
-		case ">=":
-		case "<":
-		case "<=":
-			if (!firstType.equals("int") && !firstType.equals("char")) System.err.println(">, >=, <, <= require ints or chars.");
-			nodeType = "bool";
-			break;
-		case "==":
-		case "!=":
-			nodeType = "bool";
-			break;
-		case "&&":
-		case "||":
-			if (!firstType.equals("bool")) System.err.println("&&, || require bools.");
-			nodeType = "bool";
-			break;
-		default:
-			nodeType = "null";
-			break;
-		}
-		return super.visitBinaryOpExp(ctx);
-	}
+	 @Override
+	  public Void visitBinaryOpExp(BinaryOpExpContext ctx) {
+	    // DONE Check LHS and RHS have same types
+	    // DONE set nodeType = return type
+	    // *, /, %, +, - take int return int
+	    // >, >=, <, <= take int/char return bool
+	    // ==, != take anything return bool
+	    // &&, || take bool return bool
+	    visit(ctx.exp(0));
+	    if (!identExists) {
+	      System.err.println("Error: undeclared variable");
+	    }
+	    String firstType = nodeType;
+	    visit(ctx.exp(1));
+	    if (!identExists) {
+	      System.err.println("Error: undeclared variable");
+	    }
+	    String secondType = nodeType;
+
+	    if (!firstType.equals(secondType)) {
+	      System.err
+	          .println("Both sides of a binary operator must have the same type.");
+	    }
+
+	    switch (ctx.binary_op().getText()) {
+	    case "*":
+	    case "/":
+	    case "%":
+	    case "+":
+	    case "-":
+	      if (!firstType.equals("int"))
+	        System.err.println("*, /, %, +, - require ints.");
+	      nodeType = "int";
+	      break;
+	    case ">":
+	    case ">=":
+	    case "<":
+	    case "<=":
+	      if (!firstType.equals("int") && !firstType.equals("char"))
+	        System.err.println(">, >=, <, <= require ints or chars.");
+	      nodeType = "bool";
+	      break;
+	    case "==":
+	    case "!=":
+	      nodeType = "bool";
+	      break;
+	    case "&&":
+	    case "||":
+	      if (!firstType.equals("bool"))
+	        System.err.println("&&, || require bools.");
+	      nodeType = "bool";
+	      break;
+	    default:
+	      nodeType = "null";
+	      break;
+	    }
+	    return super.visitBinaryOpExp(ctx);
+	  }
 	
 	/*
 	 * Visit other rules
