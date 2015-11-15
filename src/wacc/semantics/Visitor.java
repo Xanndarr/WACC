@@ -45,7 +45,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
       System.err.println("Error: Undeclared variable");
     }
     visit(ctx.assign_rhs());
-    if (!nodeType.equals(type)) {
+    if (!type.contains(nodeType)) {
       System.err.println("Error: Incompatible type at ' "
           + ctx.assign_rhs().getText() + " ' (Expected: " + type + ", Actual: "
           + nodeType + ")");
