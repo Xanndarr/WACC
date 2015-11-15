@@ -18,7 +18,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitInitialisation(InitialisationContext ctx) {
 		// TODO Add variable to current scope
 		// TODO Check RHS type is equal to variable type
-		//System.out.println("Visiting initialisation context");
+		System.out.println("Visiting initialisation: " + ctx.getText());
 		String type = ctx.type().getText();
 		String ident = ctx.ident().getText();
 		try {
@@ -26,8 +26,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
 		visit(ctx.assign_rhs());
-		if (!nodeType.equals(type)) {
+		//if (!nodeType.equals(type)) { // hacked below
+		if (!type.contains(nodeType)) {
 			// Set exit status to 200 ? Not sure how to do this.
 			System.err.println("Error: Incompatible type at ' " + ctx.assign_rhs().getText() +
 			" ' (Expected: " + type + ", Actual: " + nodeType + ")");
@@ -40,8 +42,66 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitAssignment(AssignmentContext ctx) {
 		// TODO Check LHS type = RHS type
 		// TODO Check that idents exist
+		System.out.println("Visiting assignment: " + ctx.getText());
+		
+		
+		// LHS
+		Assign_lhsContext lhs = ctx.assign_lhs();
+		String lhsType = "";
+		
+		IdentContext ident = lhs.ident();
+		if (ident != null) {
+			boolean exists = scopeHandler.exists(ident.getText());
+			if (!exists) {
+				System.err.println("Error: Variable " + ident.getText() +
+						" does not exist in the current scope");
+			} else {
+				visit(ident);
+				System.out.println("Context: " + lhs.getText());
+				lhsType = nodeType;
+				System.out.println("Type: " + lhsType);
+			}
+		}
+		
+		Array_elemContext array_elem = lhs.array_elem();
+		if (array_elem != null) {
+			//System.out.println("Context: " + lhs.getText());
+			boolean exists = scopeHandler.exists(array_elem.ident().getText());
+			if (!exists) {
+				System.err.println("Error: Variable " + array_elem.ident().getText() +
+						" does not exist in the current scope");
+			} else {
+				visit(array_elem);
+				lhsType = nodeType;
+			}
+		}
+		
+		Pair_elemContext pair_elem = lhs.pair_elem();
+		if (pair_elem != null) {
+			boolean exists = scopeHandler.exists(pair_elem.exp().getText());
+			if (!exists) {
+				System.err.println("Error: Variable " + pair_elem.exp().getText() +
+						" does not exist in the current scope");
+			} else {
+				visit(pair_elem);
+				lhsType = nodeType;
+			}
+		}
+		
+		
+		// RHS
+		visit(ctx.assign_rhs());
+		String rhsType = nodeType;
+		if (!lhs.isEmpty()) {
+			if (!rhsType.equals(lhsType)) {
+				System.err.println("Error: Incompatible type at ' " + ctx.assign_rhs().getText() +
+						" ' (Expected: " + lhsType + ", Actual: " + rhsType + ")");
+			}
+		}
 		return super.visitAssignment(ctx);
 	}
+
+
 
 	@Override
 	public Void visitRead(ReadContext ctx) {
@@ -89,9 +149,13 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Check condition is a valid boolean or evaluates to one
 		// DONE Increase symtab scope before visiting child
 		// DONE Reduce symtab scope afterwards
+		//System.out.println("visiting while");
+		//System.out.println(ctx.exp().getText());
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
+			//System.out.println(nodeType);
 			System.err.println("If statement expressions must evaluate to bool type.");
+			//System.err.println("While condition expressions must evaluate to bool type.");
 		}
 		scopeHandler.descend();
 		visit(ctx.stat());
@@ -208,6 +272,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String firstType = nodeType;
 		visit(ctx.exp(1));
 		String secondType = nodeType;
+		
+		
+		System.out.println("Visiting binary op: " + ctx.getText());
+		System.out.println("firstType: " + firstType + ", secondType: " + secondType);
 		
 		if (!firstType.equals(secondType)) {
 			System.err.println("Both sides of a binary operator must have the same type.");
