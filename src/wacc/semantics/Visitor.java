@@ -18,6 +18,21 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitInitialisation(InitialisationContext ctx) {
 		// TODO Add variable to current scope
 		// TODO Check RHS type is equal to variable type
+		//System.out.println("Visiting initialisation context");
+		String type = ctx.type().getText();
+		String ident = ctx.ident().getText();
+		try {
+			scopeHandler.add(ident, type);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		visit(ctx.assign_rhs());
+		if (!nodeType.equals(type)) {
+			// Set exit status to 200 ? Not sure how to do this.
+			System.err.println("Error: Incompatible type at ' " + ctx.assign_rhs().getText() +
+			" ' (Expected: " + type + ", Actual: " + nodeType + ")");
+		}
+
 		return super.visitInitialisation(ctx);
 	}
 
