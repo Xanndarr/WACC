@@ -1,14 +1,16 @@
 package wacc.semantics;
 
 import wacc.antlr.WACCParser.*;
+import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
+
 import wacc.antlr.WACCParserBaseVisitor;
 
 public class Visitor extends WACCParserBaseVisitor<Void> {
 	
 	private ScopeHandler scopeHandler = new ScopeHandler();
+	private FunctionHandler functionHandler = new FunctionHandler();
 	private String nodeType = "null";
-	private boolean identExists = false;
 	
 	/*
 	 * Visits stats
@@ -21,10 +23,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		System.out.println("Visiting initialisation: " + ctx.getText());
 		String type = ctx.type().getText();
 		String ident = ctx.ident().getText();
-		try {
+		if (!scopeHandler.exists(ident)) {
 			scopeHandler.add(ident, type);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} else {
+			System.err.println("Error: The variable '" + ident + "' already exists.");
 		}
 		
 		visit(ctx.assign_rhs());
@@ -53,7 +55,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (ident != null) {
 			visit(ident);
 //			boolean exists = scopeHandler.exists(ident.getText());
-			if (!identExists) {
+			if (!scopeHandler.exists(ident.getText())) {
 				System.err.println("Error: Variable " + ident.getText() +
 						" does not exist in the current scope");
 			} else {
@@ -123,7 +125,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Expression must evaluate to an int
 		visit(ctx.exp());
 		if (!nodeType.equals("int")) {
-			System.err.println("Exit statements expressions must evaluate to an int.");
+			System.err.println("Error: Exit statements expressions must evaluate to an int.");
 		}
 		return super.visitExit(ctx);
 	}
@@ -135,7 +137,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Reduce symtab scope after visiting EACH child individually
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
-			System.err.println("If statement expressions must evaluate to bool type.");
+			System.err.println("Error: If statement expressions must evaluate to bool type.");
 		}
 		for (StatContext stat : ctx.stat()) {
 			scopeHandler.descend();
@@ -155,7 +157,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
 			//System.out.println(nodeType);
-			System.err.println("While condition expressions must evaluate to bool type.");
+			System.err.println("Error: While condition expressions must evaluate to bool type.");
 		}
 		scopeHandler.descend();
 		visit(ctx.stat());
@@ -217,7 +219,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE check exp evaluates to a (positive) int
 		visit(ctx.exp(0));
 		if (!nodeType.equals("int")) {
-			System.err.println("Arrays must be accessed using an int index.");
+			System.err.println("Error: Arrays must be accessed using an int index.");
 		}
 		return super.visitArray_elem(ctx);
 	}
@@ -225,7 +227,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitIdent(IdentContext ctx) {
 		// DONE Set identExists to correct value if ident exists
-		identExists = scopeHandler.exists(ctx.getText());
+		if (scopeHandler.exists(ctx.getText())) {
+			nodeType = scopeHandler.get(ctx.getText());
+		} else {
+			System.err.println("Error: Variable '" + ctx.getText() + "' does not exist.");
+		}
 		return super.visitIdent(ctx);
 	}
 	
@@ -241,24 +247,24 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.exp());
 		switch (ctx.unary_op().getText()) {
 		case "!":
-			if (!nodeType.equals("bool")) System.err.println("The '!' operator only works for boolean types.");
+			if (!nodeType.equals("bool")) System.err.println("Error: The '!' operator only works for boolean types.");
 			nodeType = "bool";
 			break;
 		case "-":
-			if (!nodeType.equals("int")) System.err.println("The '-' operator only works for integer types.");
+			if (!nodeType.equals("int")) System.err.println("Error: The '-' operator only works for integer types.");
 			nodeType = "int";
 			break;
 		case "len":
 			// TODO check node type is of array
-			if (!nodeType.equals("ARRAYS?!?!")) System.err.println("The 'len' operator only works for array types.");
+			if (!nodeType.equals("ARRAYS?!?!")) System.err.println("Error: The 'len' operator only works for array types.");
 			nodeType = "int";
 			break;
 		case "ord":
-			if (!nodeType.equals("char")) System.err.println("The 'ord' operator only works for char types.");
+			if (!nodeType.equals("char")) System.err.println("Error: The 'ord' operator only works for char types.");
 			nodeType = "int";
 			break;
 		case "chr":
-			if (!nodeType.equals("int")) System.err.println("The 'chr' operator only works for int types.");
+			if (!nodeType.equals("int")) System.err.println("Error: The 'chr' operator only works for int types.");
 			nodeType = "char";
 			break;
 		default:
@@ -276,20 +282,19 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	    // >, >=, <, <= take int/char return bool
 	    // ==, != take anything return bool
 	    // &&, || take bool return bool
-	    visit(ctx.exp(0));
-	    if (!identExists) {
+		 ExpContext lhs = ctx.exp(0);
+		 ExpContext rhs = ctx.exp(1);
+	    if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
 	      System.err.println("Error: undeclared variable");
 	    }
-	    String firstType = nodeType;
-	    visit(ctx.exp(1));
-	    if (!identExists) {
-	      System.err.println("Error: undeclared variable");
-	    }
-	    String secondType = nodeType;
+	    visit(lhs);
+	    String lhsType = nodeType;
+	    visit(rhs);
+	    String rhsType = nodeType;
 
-	    if (!firstType.equals(secondType)) {
+	    if (!lhsType.equals(rhsType)) {
 	      System.err
-	          .println("Both sides of a binary operator must have the same type.");
+	          .println("Error: Both sides of a binary operator must have the same type.");
 	    }
 
 	    switch (ctx.binary_op().getText()) {
@@ -298,16 +303,16 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	    case "%":
 	    case "+":
 	    case "-":
-	      if (!firstType.equals("int"))
-	        System.err.println("*, /, %, +, - require ints.");
+	      if (!lhs.equals("int"))
+	        System.err.println("Error: *, /, %, +, - require ints.");
 	      nodeType = "int";
 	      break;
 	    case ">":
 	    case ">=":
 	    case "<":
 	    case "<=":
-	      if (!firstType.equals("int") && !firstType.equals("char"))
-	        System.err.println(">, >=, <, <= require ints or chars.");
+	      if (!lhs.equals("int") && !lhs.equals("char"))
+	        System.err.println("Error: >, >=, <, <= require ints or chars.");
 	      nodeType = "bool";
 	      break;
 	    case "==":
@@ -316,8 +321,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	      break;
 	    case "&&":
 	    case "||":
-	      if (!firstType.equals("bool"))
-	        System.err.println("&&, || require bools.");
+	      if (!lhs.equals("bool"))
+	        System.err.println("Error: &&, || require bools.");
 	      nodeType = "bool";
 	      break;
 	    default:
@@ -333,21 +338,36 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitFunc(FuncContext ctx) {
-		// TODO Increase symtab scope, visit children, then decrease symtab scope
-		// TODO Possibly add parameters to a global function signature tracker
+		// DONE Increase symtab scope, visit children, then decrease symtab scope
+		// DONE Possibly add parameters to a global function signature tracker
 		// TODO Check every path of execution contains a return statement
-		return super.visitFunc(ctx);
-	}
-
-	@Override
-	public Void visitParam(ParamContext ctx) {
-		// DONE Add param to current scope
-		try {
-			scopeHandler.add(ctx.ident().getText(), ctx.type().getText());
-		} catch (Exception e) {
-			System.err.println("Identifier already exists.");
+		String functionIdent = ctx.ident().getText();
+		String functionType = ctx.type().getText();
+		
+		if (!functionHandler.exists(functionIdent)) {
+			functionHandler.add(functionIdent, functionType);
+		} else {
+			System.err.println("Error: Function '" + functionIdent + "' already exists.");
 		}
-		return super.visitParam(ctx);
+		
+		scopeHandler.descend();
+		
+		for (ParamContext param : ctx.param_list().param()) {
+			String paramIdent = param.ident().getText();
+			String paramType = param.type().getText();
+			
+			if (!functionHandler.existsParam(functionIdent, paramIdent)) {
+				functionHandler.addParam(functionIdent, paramIdent, paramType);
+			} else {
+				System.err.println("Error: Parameter with name '" + paramIdent + "' alerady exists within this function definition. ");
+			}
+			scopeHandler.add(paramIdent, paramType);
+		}
+		
+		visit(ctx.stat());
+		scopeHandler.ascend();
+		
+		return super.visitFunc(ctx);
 	}
 	
 	@Override
@@ -371,6 +391,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			}
 			nodeType = type + "[]";
 		}
+		System.out.println("Final node tpye at array_lit; " + nodeType);
 		return super.visitArray_lit(ctx);
 	}
 	
