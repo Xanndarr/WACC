@@ -1,5 +1,7 @@
 package wacc.semantics;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
@@ -239,10 +241,13 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitIdent(IdentContext ctx) {
 		// DONE Set identExists to correct value if ident exists
-		if (scopeHandler.exists(ctx.getText())) {
-			nodeType = scopeHandler.get(ctx.getText());
+		String ident = ctx.getText();
+		if (scopeHandler.exists(ident)) {
+			nodeType = scopeHandler.get(ident);
+		} else if (functionHandler.exists(ident)) {
+			nodeType = functionHandler.getReturnType(ident);
 		} else {
-			System.err.println("Error: Variable '" + ctx.getText() + "' does not exist.");
+			System.err.println("Error: Identifier '" + ctx.getText() + "' does not exist.");
 		}
 		return super.visitIdent(ctx);
 	}
@@ -303,7 +308,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		ExpContext lhs = ctx.exp(0);
 		ExpContext rhs = ctx.exp(1);
 		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
-			System.err.println("Error: undeclared variable");
+			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
 		}
 		visit(lhs);
 		String lhsType = nodeType;
@@ -359,6 +364,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// scope
 		// DONE Possibly add parameters to a global function signature tracker
 		// TODO Check every path of execution contains a return statement
+		System.out.println("VISITING FUNCTION");
 		String functionIdent = ctx.ident().getText();
 		String functionType = ctx.type().getText();
 
@@ -384,9 +390,15 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				scopeHandler.add(paramIdent, paramType);
 			}
 		}
+		
+//		for (ParseTree s : ctx.stat().children) {
+//			System.out.println(s.getText());
+//			System.out.println("==");
+//		}
 
 		visit(ctx.stat());
 		scopeHandler.ascend();
+		System.out.println("VISITING FUNCTION DONE");
 
 		return super.visitFunc(ctx);
 	}
@@ -395,9 +407,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitArray_lit(Array_litContext ctx) {
 		// TODO Check all children have same type
 		// TODO nodeType = CHILDTYPE + "[]"
-
-		nodeType = "[]";
-
 		if (ctx.exp().size() > 0) {
 			visit(ctx.exp(0));
 			String type = nodeType;
