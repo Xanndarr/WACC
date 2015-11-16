@@ -3,6 +3,8 @@ package wacc.semantics;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
@@ -112,6 +114,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Type must be either int, string(?) or char().getText());
 		System.out.println("READING : " + ctx.assign_lhs().getText());
 		String lhsAssign = ctx.assign_lhs().getText();
+		lhsAssign = lhsAssign.replace("fst", "").replace("snd", "");
 		if (scopeHandler.exists(lhsAssign)) {
 			String lhsType = scopeHandler.get(lhsAssign);
 			if (lhsType.contains("pair") && ctx.assign_lhs().pair_elem() == null) {
@@ -467,7 +470,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			nodeType = pairType.substring(commaPos + 1, pairType.length());
 		}
 
-		return super.visitPair_elem(ctx);
+		return null;
 	}
 
 	@Override
