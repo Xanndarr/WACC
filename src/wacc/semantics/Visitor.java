@@ -108,8 +108,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitRead(ReadContext ctx) {
-		// TODO Check type is = program variable | pair elem | array elem
-		// TODO Type must be either int, string(?) or char().getText());
+		// DONE Check type is = program variable | pair elem | array elem
+		// DONE Type must be either int, string(?) or char().getText());
 		System.out.println("READING : " + ctx.assign_lhs().getText());
 		String lhsAssign = ctx.assign_lhs().getText();
 		if (scopeHandler.exists(lhsAssign)) {
