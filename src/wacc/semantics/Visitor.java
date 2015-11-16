@@ -293,8 +293,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			nodeType = "int";
 			break;
 		case "len":
-			// TODO check node type is of array
-			if (!nodeType.equals("ARRAYS?!?!"))
+			if (!nodeType.contains("[]"))
 				System.err.println("Error: The 'len' operator only works for array types.");
 			nodeType = "int";
 			break;
