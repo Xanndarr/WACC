@@ -1,14 +1,16 @@
 package wacc.symbolTable;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
 
 class SymbolTable {
 	
 	private Map<String, String> symbolTable;
 	
 	public SymbolTable() {
-		symbolTable = new HashMap<String, String>();
+		symbolTable = new LinkedHashMap<String, String>();
 	}
 	
 	public void put(String key, String value) {
@@ -21,6 +23,10 @@ class SymbolTable {
 	
 	public boolean exists(String key) {
 		return symbolTable.containsKey(key);
+	}
+	
+	public Collection<String> getValues() {
+		return symbolTable.values();
 	}
 	
 }

@@ -1,5 +1,8 @@
 package wacc.semantics;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
@@ -194,19 +197,19 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		return super.visitWhile(ctx);
 	}
 
-	@Override
-	public Void visitReturn(ReturnContext ctx) {
-		// TODO Expression must be same type as function return type
-		System.out.println("Visiting return");
-		visit(ctx.exp());
-		String returnType = nodeType;
-		String functionType = ((FuncContext) ctx.getParent()).type().getText();
-		if (!returnType.equals(functionType)) {
-			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
-					+ ", Actual: " + returnType + ")");
-		}
-		return super.visitReturn(ctx);
-	}
+//	@Override
+//	public Void visitReturn(ReturnContext ctx) {
+//		// TODO Expression must be same type as function return type
+//		System.out.println("Visiting return");
+//		visit(ctx.exp());
+//		String returnType = nodeType;
+//		String functionType = functionHandler.getReturnType(ctx.exp().getText());
+//		if (!returnType.equals(functionType)) {
+//			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
+//					+ ", Actual: " + returnType + ")");
+//		}
+//		return super.visitReturn(ctx);
+//	}
 
 	/*
 	 * Visits expressions
@@ -256,10 +259,13 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitIdent(IdentContext ctx) {
 		// DONE Set identExists to correct value if ident exists
-		if (scopeHandler.exists(ctx.getText())) {
-			nodeType = scopeHandler.get(ctx.getText());
+		String ident = ctx.getText();
+		if (scopeHandler.exists(ident)) {
+			nodeType = scopeHandler.get(ident);
+		} else if (functionHandler.exists(ident)) {
+			nodeType = functionHandler.getReturnType(ident);
 		} else {
-			System.err.println("Error: Variable '" + ctx.getText() + "' does not exist.");
+			System.err.println("Error: Identifier '" + ctx.getText() + "' does not exist.");
 		}
 		return super.visitIdent(ctx);
 	}
@@ -320,7 +326,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		ExpContext lhs = ctx.exp(0);
 		ExpContext rhs = ctx.exp(1);
 		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
-			System.err.println("Error: undeclared variable");
+			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
 		}
 		visit(lhs);
 		String lhsType = nodeType;
@@ -376,6 +382,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// scope
 		// DONE Possibly add parameters to a global function signature tracker
 		// TODO Check every path of execution contains a return statement
+		System.out.println("VISITING FUNCTION");
 		String functionIdent = ctx.ident().getText();
 		String functionType = ctx.type().getText();
 
@@ -387,21 +394,29 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 		scopeHandler.descend();
 
-		for (ParamContext param : ctx.param_list().param()) {
-			String paramIdent = param.ident().getText();
-			String paramType = param.type().getText();
+		if (ctx.param_list() != null) {
+			for (ParamContext param : ctx.param_list().param()) {
+				String paramIdent = param.ident().getText();
+				String paramType = param.type().getText();
 
-			if (!functionHandler.existsParam(functionIdent, paramIdent)) {
-				functionHandler.addParam(functionIdent, paramIdent, paramType);
-			} else {
-				System.err.println("Error: Parameter with name '" + paramIdent
-						+ "' alerady exists within this function definition. ");
+				if (!functionHandler.existsParam(functionIdent, paramIdent)) {
+					functionHandler.addParam(functionIdent, paramIdent, paramType);
+				} else {
+					System.err.println("Error: Parameter with name '" + paramIdent
+							+ "' alerady exists within this function definition. ");
+				}
+				scopeHandler.add(paramIdent, paramType);
 			}
-			scopeHandler.add(paramIdent, paramType);
 		}
+		
+//		for (ParseTree s : ctx.stat().children) {
+//			System.out.println(s.getText());
+//			System.out.println("==");
+//		}
 
 		visit(ctx.stat());
 		scopeHandler.ascend();
+		System.out.println("VISITING FUNCTION DONE");
 
 		return super.visitFunc(ctx);
 	}
@@ -410,9 +425,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitArray_lit(Array_litContext ctx) {
 		// TODO Check all children have same type
 		// TODO nodeType = CHILDTYPE + "[]"
-
-		nodeType = "[]";
-
 		if (ctx.exp().size() > 0) {
 			visit(ctx.exp(0));
 			String type = nodeType;
@@ -449,8 +461,25 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitAssign_rhs(Assign_rhsContext ctx) {
-		// TODO When calling functions, check arg types are equal function
-		// signature types
+		// TODO When calling functions, check arg types are equal to function signature types
+		
+		if (ctx.CALL() != null) {
+			String functionName = ctx.ident().getText();
+			Collection<String> params = functionHandler.getParamList(functionName);
+			Iterator<String> it = params.iterator();
+			it.next();
+			if (ctx.arg_list() != null) {
+				for (int i = 0; i < ctx.arg_list().exp().size(); i++) {
+					visit(ctx.arg_list().exp(i));
+					String actualType = nodeType;
+					String expectedType ="";
+					if (!actualType.equals(expectedType)) {
+						System.err.println("Error: Incompatible type at ' " + ctx.arg_list().exp(i).getText() +
+								" ' (Expected: " + expectedType + ", Actual: " + actualType + ")");
+					}
+				}
+			}
+		}
 		return super.visitAssign_rhs(ctx);
 	}
 
