@@ -325,9 +325,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		ExpContext lhs = ctx.exp(0);
 		ExpContext rhs = ctx.exp(1);
 		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
-		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
-			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
-		}
+//		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
+//			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
+//		}
 		visit(lhs);
 		String lhsType = nodeType;
 		visit(rhs);
