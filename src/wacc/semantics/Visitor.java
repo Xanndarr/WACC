@@ -21,8 +21,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitInitialisation(InitialisationContext ctx) {
-		// TODO Add variable to current scope
-		// TODO Check RHS type is equal to variable type
+		// DONE Add variable to current scope
+		// DONE Check RHS type is equal to variable type
 		System.out.println("Visiting initialisation: " + ctx.getText());
 		String type = ctx.type().getText();
 		String ident = ctx.ident().getText();
@@ -47,8 +47,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitAssignment(AssignmentContext ctx) {
-		// TODO Check LHS type = RHS type
-		// TODO Check that idents exist
+		// DONE Check LHS type = RHS type
+		// DONE Check that idents exist
 		System.out.println("Visiting assignment: " + ctx.getText());
 
 		// LHS
@@ -199,7 +199,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 //	@Override
 //	public Void visitReturn(ReturnContext ctx) {
-//		// TODO Expression must be same type as function return type
+//		//  Expression must be same type as function return type
 //		System.out.println("Visiting return");
 //		visit(ctx.exp());
 //		String returnType = nodeType;
@@ -423,8 +423,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitArray_lit(Array_litContext ctx) {
-		// TODO Check all children have same type
-		// TODO nodeType = CHILDTYPE + "[]"
+		// DONE Check all children have same type
+		// DONE nodeType = CHILDTYPE + "[]"
 		if (ctx.exp().size() > 0) {
 			visit(ctx.exp(0));
 			String type = nodeType;
@@ -461,7 +461,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitAssign_rhs(Assign_rhsContext ctx) {
-		// TODO When calling functions, check arg types are equal to function signature types
+		// DONE When calling functions, check arg types are equal to function signature types
 		
 		if (ctx.CALL() != null) {
 			String functionName = ctx.ident().getText();
