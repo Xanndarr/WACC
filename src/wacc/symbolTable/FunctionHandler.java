@@ -31,7 +31,7 @@ public class FunctionHandler {
 		return functions.get(functionIdent).get(paramIdent);
 	}
 	
-	public Collection<String> getParamList(String funcIdent) {
+	public Collection<String> getParamTypeList(String funcIdent) {
 		return functions.get(funcIdent).getValues();
 	}
 	
