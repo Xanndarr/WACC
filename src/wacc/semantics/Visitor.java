@@ -172,7 +172,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String functionType = ((FuncContext)ctx.getParent()).type().getText();
 		if (!returnType.equals(functionType)) {
 			System.err.println("Error: Incompatible type at '" + ctx.getText() +
-					"' (Expected: " + functionType + ", Actual: " + returnType);
+					"' (Expected: " + functionType + ", Actual: " + returnType + ")");
 		}
 		return super.visitReturn(ctx);
 	}
@@ -354,6 +354,45 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitArray_lit(Array_litContext ctx) {
 		// TODO Check all children have same type
 		// TODO nodeType = CHILDTYPE + "[]"
+		System.out.println("Visiting array_lit");
+		
+		nodeType = "[]";
+		
+		if (ctx.exp().size() > 0) {
+			visit(ctx.exp(0));
+			String type = nodeType;
+			System.out.println("Type: " + type);
+			for (int i = 1; i < ctx.exp().size(); i++) {
+				visit(ctx.exp(i));
+				if(!nodeType.equals(type)) {
+					System.err.println("Error: Array element types must be the same, at '" +
+					ctx.exp(i).getText() + "' Expected: " + type + ", Actual: " + nodeType);
+				}
+			}
+			nodeType = type + "[]";
+		}
+		System.out.println(nodeType);
+		
+		
+//		String type = "";
+/*		ExpContext firstExp = ctx.exp(0);
+		if (firstExp != null) {
+			visit(firstExp);
+			type = nodeType;
+			for(int i = 1; i < ctx.children.size() - 2; i++) {
+				visit(ctx.exp(i));
+				if(!nodeType.equals(type)) {
+					System.err.println("Error: Array element types must be the same, at '" +
+					ctx.exp(i).getText() + "' Expected: " + type + ", Actual: " + nodeType);
+				}
+			}
+		}
+		if (!type.isEmpty()) {
+			nodeType = type + "[]";
+		} else {
+			// nodeType should be any array type if array_lit is empty
+			nodeType = "[]";
+		}*/
 		return super.visitArray_lit(ctx);
 	}
 	
