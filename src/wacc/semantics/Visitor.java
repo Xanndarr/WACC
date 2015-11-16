@@ -335,7 +335,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// &&, || take bool return bool
 		ExpContext lhs = ctx.exp(0);
 		ExpContext rhs = ctx.exp(1);
-		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
+//		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
 //		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
 //			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
 //		}
