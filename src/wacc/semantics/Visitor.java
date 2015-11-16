@@ -322,7 +322,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			nodeType = null;
 			break;
 		}
-		return super.visitUnaryOpExp(ctx);
+		return null;
 	}
 
 	@Override
@@ -380,7 +380,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			nodeType = "null";
 			break;
 		}
-		return super.visitBinaryOpExp(ctx);
+		return null;
 	}
 
 	/*
@@ -450,7 +450,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			nodeType = type + "[]";
 		}
 		System.out.println("Final node tpye at array_lit; " + nodeType);
-		return super.visitArray_lit(ctx);
+		return null;
 	}
 
 	@Override
