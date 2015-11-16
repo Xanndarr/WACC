@@ -438,14 +438,15 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		
 		if (ctx.CALL() != null) {
 			String functionName = ctx.ident().getText();
-			Collection<String> params = functionHandler.getParamList(functionName);
-			Iterator<String> it = params.iterator();
-			it.next();
 			if (ctx.arg_list() != null) {
+				Collection<String> paramTypes = functionHandler.getParamList(functionName);
+				Iterator<String> it = paramTypes.iterator();
+				// First argument is function return type so skip
+				it.next();
 				for (int i = 0; i < ctx.arg_list().exp().size(); i++) {
 					visit(ctx.arg_list().exp(i));
 					String actualType = nodeType;
-					String expectedType ="";
+					String expectedType = it.next();
 					if (!actualType.equals(expectedType)) {
 						System.err.println("Error: Incompatible type at ' " + ctx.arg_list().exp(i).getText() +
 								" ' (Expected: " + expectedType + ", Actual: " + actualType + ")");
