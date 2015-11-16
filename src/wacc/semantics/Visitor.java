@@ -466,7 +466,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (ctx.CALL() != null) {
 			String functionName = ctx.ident().getText();
 			if (ctx.arg_list() != null) {
-				Collection<String> paramTypes = functionHandler.getParamList(functionName);
+				Collection<String> paramTypes = functionHandler.getParamTypeList(functionName);
 				Iterator<String> it = paramTypes.iterator();
 				// First argument is function return type so skip
 				it.next();
