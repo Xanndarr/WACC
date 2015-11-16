@@ -1,5 +1,8 @@
 package wacc.semantics;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
@@ -179,11 +182,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 //		// TODO Expression must be same type as function return type
 //		System.out.println("Visiting return");
 //		visit(ctx.exp());
-//		System.out.println("Visiting return");
 //		String returnType = nodeType;
-//		System.out.println("Visiting return");
 //		String functionType = functionHandler.getReturnType(ctx.exp().getText());
-//		System.out.println("Visiting return");
 //		if (!returnType.equals(functionType)) {
 //			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
 //					+ ", Actual: " + returnType + ")");
@@ -434,8 +434,25 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitAssign_rhs(Assign_rhsContext ctx) {
-		// TODO When calling functions, check arg types are equal function
-		// signature types
+		// TODO When calling functions, check arg types are equal to function signature types
+		
+		if (ctx.CALL() != null) {
+			String functionName = ctx.ident().getText();
+			Collection<String> params = functionHandler.getParamList(functionName);
+			Iterator<String> it = params.iterator();
+			it.next();
+			if (ctx.arg_list() != null) {
+				for (int i = 0; i < ctx.arg_list().exp().size(); i++) {
+					visit(ctx.arg_list().exp(i));
+					String actualType = nodeType;
+					String expectedType ="";
+					if (!actualType.equals(expectedType)) {
+						System.err.println("Error: Incompatible type at ' " + ctx.arg_list().exp(i).getText() +
+								" ' (Expected: " + expectedType + ", Actual: " + actualType + ")");
+					}
+				}
+			}
+		}
 		return super.visitAssign_rhs(ctx);
 	}
 
