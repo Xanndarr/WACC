@@ -174,19 +174,22 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		return super.visitWhile(ctx);
 	}
 
-	@Override
-	public Void visitReturn(ReturnContext ctx) {
-		// TODO Expression must be same type as function return type
-		System.out.println("Visiting return");
-		visit(ctx.exp());
-		String returnType = nodeType;
-		String functionType = ((FuncContext) ctx.getParent()).type().getText();
-		if (!returnType.equals(functionType)) {
-			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
-					+ ", Actual: " + returnType + ")");
-		}
-		return super.visitReturn(ctx);
-	}
+//	@Override
+//	public Void visitReturn(ReturnContext ctx) {
+//		// TODO Expression must be same type as function return type
+//		System.out.println("Visiting return");
+//		visit(ctx.exp());
+//		System.out.println("Visiting return");
+//		String returnType = nodeType;
+//		System.out.println("Visiting return");
+//		String functionType = functionHandler.getReturnType(ctx.exp().getText());
+//		System.out.println("Visiting return");
+//		if (!returnType.equals(functionType)) {
+//			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
+//					+ ", Actual: " + returnType + ")");
+//		}
+//		return super.visitReturn(ctx);
+//	}
 
 	/*
 	 * Visits expressions
@@ -367,17 +370,19 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 		scopeHandler.descend();
 
-		for (ParamContext param : ctx.param_list().param()) {
-			String paramIdent = param.ident().getText();
-			String paramType = param.type().getText();
+		if (ctx.param_list() != null) {
+			for (ParamContext param : ctx.param_list().param()) {
+				String paramIdent = param.ident().getText();
+				String paramType = param.type().getText();
 
-			if (!functionHandler.existsParam(functionIdent, paramIdent)) {
-				functionHandler.addParam(functionIdent, paramIdent, paramType);
-			} else {
-				System.err.println("Error: Parameter with name '" + paramIdent
-						+ "' alerady exists within this function definition. ");
+				if (!functionHandler.existsParam(functionIdent, paramIdent)) {
+					functionHandler.addParam(functionIdent, paramIdent, paramType);
+				} else {
+					System.err.println("Error: Parameter with name '" + paramIdent
+							+ "' alerady exists within this function definition. ");
+				}
+				scopeHandler.add(paramIdent, paramType);
 			}
-			scopeHandler.add(paramIdent, paramType);
 		}
 
 		visit(ctx.stat());
