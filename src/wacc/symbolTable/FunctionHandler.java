@@ -30,6 +30,10 @@ public class FunctionHandler {
 		return functions.get(functionIdent).get(paramIdent);
 	}
 	
+	public SymbolTable getParamList(String funcIdent) {
+		return functions.get(funcIdent);
+	}
+	
 	public boolean exists(String ident) {
 		return functions.containsKey(ident);
 	}
