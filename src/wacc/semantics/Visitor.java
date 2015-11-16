@@ -176,7 +176,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			visit(stat);
 			scopeHandler.ascend();
 		}
-		return super.visitIf(ctx);
+		return null;
 	}
 
 	@Override
@@ -194,7 +194,18 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		scopeHandler.descend();
 		visit(ctx.stat());
 		scopeHandler.ascend();
-		return super.visitWhile(ctx);
+		return null;
+	}
+	
+	@Override
+	public Void visitBegin(BeginContext ctx) {
+		System.out.println("WE BEGINNIN");
+		scopeHandler.descend();
+		System.out.println(ctx.stat().getText());
+		visit(ctx.stat());
+		scopeHandler.ascend();
+		System.out.println("WE BEGINNIN DONE");
+		return null;
 	}
 
 //	@Override
@@ -417,7 +428,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		scopeHandler.ascend();
 		System.out.println("VISITING FUNCTION DONE");
 
-		return super.visitFunc(ctx);
+		return null;
 	}
 
 	@Override
