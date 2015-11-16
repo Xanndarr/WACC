@@ -31,8 +31,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 		visit(ctx.assign_rhs());
 		// if (!nodeType.equals(type)) { // hacked below
+		//String rhsType = ctx.assign_rhs().exp(); <-- viting these and they will give you types...then do "pair(" + type1 +","+ type2 + ")"
 		if (!type.contains(nodeType)) {
-			// Set exit status to 200 ? Not sure how to do this.
+			// TODO Set exit status to 200 ? Not sure how to do this.
 			System.err.println("Error: Incompatible type at ' " + ctx.assign_rhs().getText() + " ' (Expected: " + type
 					+ ", Actual: " + nodeType + ")");
 		}
@@ -110,9 +111,21 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitFree(FreeContext ctx) {
-		// TODO Type must be either array or pair
-		// TODO Type must not be an array of an array or an array of a pair or a
+		// DONE Type must be either array or pair
+		// DONE Type must not be an array of an array or an array of a pair or a
 		// pair of arrays etc.
+		System.out.println("FREEING : " + ctx.exp().getText());
+		if (nodeType.contains("pair")) {
+			if (nodeType.replace("pair", "").length() != nodeType.length() - "pair".length()) {
+				System.out.println("Error: Free can't free nested pairs.");
+			}
+		}else if (nodeType.contains("[]")) {
+			if (nodeType.replace("[]", "").length() != nodeType.length() - "[]".length()) {
+				System.out.println("Error: Free can't free nested arrays.");
+			}
+		} else {
+			System.out.println("Error: Free can only free arrays and pairs.");
+		}
 		return super.visitFree(ctx);
 	}
 
@@ -377,7 +390,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitArray_lit(Array_litContext ctx) {
 		// TODO Check all children have same type
 		// TODO nodeType = CHILDTYPE + "[]"
-		System.out.println("Visiting array_lit");
 
 		nodeType = "[]";
 
@@ -400,10 +412,18 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitPair_elem(Pair_elemContext ctx) {
-		// TODO Visit child and obtain type
+		// DONE Visit child and obtain type
 		// nodeType = CHILDTYPE
-		visit(ctx.exp());
-		// nodeType should automatically be updated from this
+		String pairType = scopeHandler.get(ctx.exp().getText());
+		pairType = pairType.replace("pair(", "").replace(")", "");
+		int commaPos = pairType.indexOf(",");
+		
+		if (ctx.getChild(0).getText().equals("fst")) {
+			nodeType = pairType.substring(0, commaPos);
+		} else {
+			nodeType = pairType.substring(commaPos + 1, pairType.length());
+		}
+		
 		return super.visitPair_elem(ctx);
 	}
 
