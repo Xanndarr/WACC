@@ -335,6 +335,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// &&, || take bool return bool
 		ExpContext lhs = ctx.exp(0);
 		ExpContext rhs = ctx.exp(1);
+		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
 		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
 			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
 		}
@@ -353,7 +354,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		case "%":
 		case "+":
 		case "-":
-			if (!lhs.equals("int"))
+			if (!lhsType.equals("int"))
 				System.err.println("Error: *, /, %, +, - require ints.");
 			nodeType = "int";
 			break;
@@ -361,7 +362,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		case ">=":
 		case "<":
 		case "<=":
-			if (!lhs.equals("int") && !lhs.equals("char"))
+			if (!lhsType.equals("int") && !lhs.equals("char"))
 				System.err.println("Error: >, >=, <, <= require ints or chars.");
 			nodeType = "bool";
 			break;
@@ -371,7 +372,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			break;
 		case "&&":
 		case "||":
-			if (!lhs.equals("bool"))
+			if (!lhsType.equals("bool"))
 				System.err.println("Error: &&, || require bools.");
 			nodeType = "bool";
 			break;
