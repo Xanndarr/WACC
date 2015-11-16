@@ -473,22 +473,31 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	@Override
 	public Void visitAssign_rhs(Assign_rhsContext ctx) {
 		// DONE When calling functions, check arg types are equal to function signature types
+		System.out.println("Visiting Assign_rhs");
 		
 		if (ctx.CALL() != null) {
 			String functionName = ctx.ident().getText();
 			if (ctx.arg_list() != null) {
 				Collection<String> paramTypes = functionHandler.getParamTypeList(functionName);
-				Iterator<String> it = paramTypes.iterator();
-				// First argument is function return type so skip
-				it.next();
-				for (int i = 0; i < ctx.arg_list().exp().size(); i++) {
-					visit(ctx.arg_list().exp(i));
-					String actualType = nodeType;
-					String expectedType = it.next();
-					if (!actualType.equals(expectedType)) {
-						System.err.println("Error: Incompatible type at ' " + ctx.arg_list().exp(i).getText() +
-								" ' (Expected: " + expectedType + ", Actual: " + actualType + ")");
+				if (paramTypes.size() - 1 == ctx.arg_list().exp().size()) {
+					if (paramTypes.size() - 1 > 0) {
+						Iterator<String> it = paramTypes.iterator();
+						// First argument is function return type so skip
+						it.next();
+						for (int i = 0; i < ctx.arg_list().exp().size(); i++) {
+							visit(ctx.arg_list().exp(i));
+							String actualType = nodeType;
+							String expectedType = it.next();
+							if (!actualType.equals(expectedType)) {
+								System.err.println("Error: Incompatible type at ' " + ctx.arg_list().exp(i).getText() +
+										" ' (Expected: " + expectedType + ", Actual: " + actualType + ")");
+								// Should make error message more detailed
+							}
+						}
 					}
+				} else {
+					System.err.println("Error: Number of arguments does not match function definition at ' " + ctx.getText() +
+							" ' (Expected number of args: " + (paramTypes.size() - 1) + ")");
 				}
 			}
 		}
