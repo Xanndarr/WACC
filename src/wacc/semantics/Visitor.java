@@ -371,28 +371,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			}
 			nodeType = type + "[]";
 		}
-		System.out.println(nodeType);
-		
-		
-//		String type = "";
-/*		ExpContext firstExp = ctx.exp(0);
-		if (firstExp != null) {
-			visit(firstExp);
-			type = nodeType;
-			for(int i = 1; i < ctx.children.size() - 2; i++) {
-				visit(ctx.exp(i));
-				if(!nodeType.equals(type)) {
-					System.err.println("Error: Array element types must be the same, at '" +
-					ctx.exp(i).getText() + "' Expected: " + type + ", Actual: " + nodeType);
-				}
-			}
-		}
-		if (!type.isEmpty()) {
-			nodeType = type + "[]";
-		} else {
-			// nodeType should be any array type if array_lit is empty
-			nodeType = "[]";
-		}*/
 		return super.visitArray_lit(ctx);
 	}
 	
@@ -400,6 +378,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitPair_elem(Pair_elemContext ctx) {
 		// TODO Visit child and obtain type
 		// nodeType = CHILDTYPE
+		visit(ctx.exp());
+		// nodeType should automatically be updated from this
 		return super.visitPair_elem(ctx);
 	}
 
