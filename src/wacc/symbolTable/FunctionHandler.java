@@ -1,5 +1,6 @@
 package wacc.symbolTable;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +31,8 @@ public class FunctionHandler {
 		return functions.get(functionIdent).get(paramIdent);
 	}
 	
-	public SymbolTable getParamList(String funcIdent) {
-		return functions.get(funcIdent);
+	public Collection<String> getParamList(String funcIdent) {
+		return functions.get(funcIdent).getValues();
 	}
 	
 	public boolean exists(String ident) {
