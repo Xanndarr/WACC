@@ -17,28 +17,22 @@ public class ScopeHandler {
 	}
 	
 	//Unsure whether we should throw exception here.
-	public void add(String ident, String type) throws Exception{
-		if (tables.get(currentScope).exists(ident)) {
-			throw new Exception("Error: variable already exists");
-		}
+	public void add(String ident, String type) {
 		tables.get(currentScope).put(ident, type);
 	}
 	
 	//Unsure whether we should throw exception here.
-	public void addGlobal(String ident, String type) throws Exception {
-		if (tables.get(currentScope).exists(ident)) {
-			throw new Exception("Error: global variable already exists");
-		}
+	public void addGlobal(String ident, String type) {
 		tables.get(GLOBAL_SCOPE).put(ident, type);
 	}
 	
-	public Object get(String ident) throws Exception {
+	public String get(String ident) {
 		for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
 			if (tables.get(i).exists(ident)) {
 				return tables.get(i).get(ident);
 			}
 		}
-		throw new Exception("Error: symbol not found");
+		return null;
 	}
 	
 	public boolean exists(String ident) {

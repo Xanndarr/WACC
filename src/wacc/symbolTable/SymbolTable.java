@@ -15,7 +15,7 @@ class SymbolTable {
 		symbolTable.put(key, value);
 	}
 	
-	public Object get(String key) {
+	public String get(String key) {
 		return symbolTable.get(key);
 	}
 	
