@@ -362,7 +362,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		case ">=":
 		case "<":
 		case "<=":
-			if (!lhsType.equals("int") && !lhs.equals("char"))
+			if (!lhsType.equals("int") && !lhsType.equals("char"))
 				System.err.println("Error: >, >=, <, <= require ints or chars.");
 			nodeType = "bool";
 			break;
