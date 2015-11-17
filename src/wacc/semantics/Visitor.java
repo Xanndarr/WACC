@@ -14,6 +14,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	private ScopeHandler scopeHandler = new ScopeHandler();
 	private FunctionHandler functionHandler = new FunctionHandler();
 	private String nodeType = "null";
+	private String function = "null";
 	
 	@Override
 	public Void visitProgram(ProgramContext ctx) {
@@ -45,9 +46,12 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				}
 			}
 		}
-		scopeHandler.ascendFun();
-		visitChildren(ctx);
-		scopeHandler.descendFun();
+		visit(ctx.stat());
+		for (FuncContext func : ctx.func()) {
+			scopeHandler.ascendFun();
+			visit(func);
+			scopeHandler.descendFun();
+		}
 		return null;
 	}
 
@@ -168,7 +172,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			if (!scopeHandler.exists(ident.getText())) {
 				System.err.println("Error: Variable " + ident.getText() + " does not exist in the current scope");
 			} else {
-				System.out.println("Context: " + lhs.getText());
+				System.out.println("Context: " + ident.getText());
 				lhsType = scopeHandler.get(ident.getText());
 				System.out.println("Type: " + lhsType);
 			}
@@ -291,19 +295,19 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		return null;
 	}
 
-//	@Override
-//	public Void visitReturn(ReturnContext ctx) {
-//		// DONE Expression must be same type as function return type
-//		System.out.println("Visiting return");
-//		visit(ctx.exp());
-//		String returnType = nodeType;
-//		String functionType = functionHandler.getReturnType(ctx.exp().getText());
-//		if (!returnType.equals(functionType)) {
-//			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
-//					+ ", Actual: " + returnType + ")");
-//		}
-//		return super.visitReturn(ctx);
-//	}
+	@Override
+	public Void visitReturn(ReturnContext ctx) {
+		// DONE Expression must be same type as function return type
+		System.out.println("Visiting return");
+		visit(ctx.exp());
+		String returnType = nodeType;
+		String functionType = functionHandler.getReturnType(function);
+		if (!returnType.equals(functionType)) {
+			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
+					+ ", Actual: " + returnType + ")");
+		}
+		return null;
+	}
 
 	/*
 	 * Visits expressions
@@ -357,7 +361,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Set identExists to correct value if ident exists
 		String ident = ctx.getText();
 		if (scopeHandler.exists(ident)) {
+			System.out.println("IDENTIFINNGI" + nodeType);
 			nodeType = scopeHandler.get(ident);
+			System.out.println("IDENTIFINNGI" + nodeType);
 		} else if (functionHandler.exists(ident)) {
 			nodeType = functionHandler.getReturnType(ident);
 		} else {
@@ -482,8 +488,15 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	private String checkBinaryOpTypes(ExpContext lhs, ExpContext rhs) {
 		visit(lhs);
 		String lhsType = nodeType;
+		System.out.println("UGH 1");
+		System.out.println(nodeType);
+		System.out.println(lhsType.length());
 		visit(rhs);
 		String rhsType = nodeType;
+		System.out.println("UGH 2");
+		System.out.println(rhsType.length());
+
+		System.out.println("UGH 3");
 		
 		if (!(lhsType.contains("pair") && rhsType.equals("null") || rhsType.contains("pair") && lhsType.equals("null"))) {
 			if (!lhsType.equals(rhsType)) {
@@ -566,6 +579,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Possibly add parameters to a global function signature tracker
 		// TODO Check every path of execution contains a return statement
 		System.out.println("VISITING FUNCTION");
+		
+		function = ctx.ident().getText();
 
 		scopeHandler.descend();
 
