@@ -396,6 +396,42 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 //		return null;
 //	}
 
+	@Override
+	public Void visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitDmArithmeticOpExp(ctx);
+	}
+	
+	@Override
+	public Void visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitAsArithmeticOpExp(ctx);
+	}
+
+	@Override
+	public Void visitOrderingOpExp(OrderingOpExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitOrderingOpExp(ctx);
+	}
+
+	@Override
+	public Void visitEqualityOpExp(EqualityOpExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitEqualityOpExp(ctx);
+	}
+	
+	@Override
+	public Void visitAndOpExp(AndOpExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitAndOpExp(ctx);
+	}
+
+	@Override
+	public Void visitOrOpExp(OrOpExpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitOrOpExp(ctx);
+	}
+
 	/*
 	 * Visit other rules
 	 */
