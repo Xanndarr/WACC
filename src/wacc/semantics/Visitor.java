@@ -16,9 +16,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	private String nodeType = "null";
 	private String function = "null";
 	private boolean hasReturn = false;
+	private int returnCode = 0;
 	
 	@Override
 	public Void visitProgram(ProgramContext ctx) {
+		returnCode = 1;
 		for (FuncContext func : ctx.func()) {
 			String functionIdent = func.ident().getText();
 			String functionType = func.type().getText();
@@ -714,6 +716,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		}
 		visitChildren(ctx);
 		return null;
+	}
+	
+	public int getReturnCode() {
+		return returnCode;
 	}
 
 }

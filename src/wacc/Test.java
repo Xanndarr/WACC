@@ -25,7 +25,10 @@ public class Test {
 		
 		Visitor visitor = new Visitor();
 		//System.out.println(tree.toStringTree(parser)); //print LISP-style
-		
 		visitor.visit(tree);
+		
+		if (visitor.getReturnCode() != 0) {
+			System.exit(visitor.getReturnCode());
+		}
 	}
 }
