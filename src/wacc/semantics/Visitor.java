@@ -3,8 +3,6 @@ package wacc.semantics;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
@@ -150,6 +148,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				System.out.println("Error: Free can't free nested arrays.");
 			}
 		} else {
+			
 			System.out.println("Error: Free can only free arrays and pairs.");
 		}
 		return super.visitFree(ctx);
@@ -328,63 +327,74 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		return null;
 	}
 
-	@Override
-	public Void visitBinaryOpExp(BinaryOpExpContext ctx) {
-		// DONE Check LHS and RHS have same types
-		// DONE set nodeType = return type
-		// *, /, %, +, - take int return int
-		// >, >=, <, <= take int/char return bool
-		// ==, != take anything return bool
-		// &&, || take bool return bool
-		ExpContext lhs = ctx.exp(0);
-		ExpContext rhs = ctx.exp(1);
-//		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
-//		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
-//			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
+//	@Override
+//	public Void visitBinaryOpExp(BinaryOpExpContext ctx) {
+//		// DONE Check LHS and RHS have same types
+//		// DONE set nodeType = return type
+//		// *, /, %, +, - take int return int
+//		// >, >=, <, <= take int/char return bool
+//		// ==, != take anything return bool
+//		// &&, || take bool return bool
+//		System.out.println("VISITING BINARY OP");
+//		ExpContext lhs = ctx.exp(0);
+//		ExpContext rhs = ctx.exp(1);
+//		System.out.println("WE PRINTING SOEM EXPS");
+//		for (ParseTree exp : ctx.exp()) {
+//			System.out.println(exp.getText());
 //		}
-		visit(lhs);
-		String lhsType = nodeType;
-		visit(rhs);
-		String rhsType = nodeType;
-
-		if (!lhsType.equals(rhsType)) {
-			System.err.println("Error: Both sides of a binary operator must have the same type.");
-		}
-
-		switch (ctx.binary_op().getText()) {
-		case "*":
-		case "/":
-		case "%":
-		case "+":
-		case "-":
-			if (!lhsType.equals("int"))
-				System.err.println("Error: *, /, %, +, - require ints.");
-			nodeType = "int";
-			break;
-		case ">":
-		case ">=":
-		case "<":
-		case "<=":
-			if (!lhsType.equals("int") && !lhsType.equals("char"))
-				System.err.println("Error: >, >=, <, <= require ints or chars.");
-			nodeType = "bool";
-			break;
-		case "==":
-		case "!=":
-			nodeType = "bool";
-			break;
-		case "&&":
-		case "||":
-			if (!lhsType.equals("bool"))
-				System.err.println("Error: &&, || require bools.");
-			nodeType = "bool";
-			break;
-		default:
-			nodeType = "null";
-			break;
-		}
-		return null;
-	}
+//		System.out.println("BINARY OP: " + ctx.binary_op().getText());
+//		System.out.println("WE DONE PRINTING SOME EXPS");
+//		System.out.println(ctx.exp(0).getText());
+//		System.out.println(ctx.exp(1).getText());
+////		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
+////		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
+////			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
+////		}
+//		visit(lhs);
+//		String lhsType = nodeType;
+//		System.out.println(lhs.getText() + " ::: " + lhsType);
+//		visit(rhs);
+//		String rhsType = nodeType;
+//		System.out.println(rhs.getText() + " ::: " + rhsType);
+//
+//		if (!lhsType.equals(rhsType)) {
+//			System.err.println("Error: Both sides of a binary operator must have the same type.");
+//		}
+//
+//		switch (ctx.binary_op().getText()) {
+//		case "*":
+//		case "/":
+//		case "%":
+//		case "+":
+//		case "-":
+//			if (!lhsType.equals("int"))
+//				System.err.println("Error: *, /, %, +, - require ints.");
+//			nodeType = "int";
+//			break;
+//		case ">":
+//		case ">=":
+//		case "<":
+//		case "<=":
+//			if (!lhsType.equals("int") && !lhsType.equals("char"))
+//				System.err.println("Error: >, >=, <, <= require ints or chars.");
+//			nodeType = "bool";
+//			break;
+//		case "==":
+//		case "!=":
+//			nodeType = "bool";
+//			break;
+//		case "&&":
+//		case "||":
+//			if (!lhsType.equals("bool"))
+//				System.err.println("Error: &&, || require bools.");
+//			nodeType = "bool";
+//			break;
+//		default:
+//			nodeType = "null";
+//			break;
+//		}
+//		return null;
+//	}
 
 	/*
 	 * Visit other rules

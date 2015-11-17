@@ -51,16 +51,21 @@ pair_elem: FST exp
 
 pair_type: PAIR OPEN_PAR pair_elem_type COMMA pair_elem_type CLOSE_PAR;
 
-exp: int_lit                #int
-   | BOOL_LIT               #bool
-   | CHAR_LIT               #char
-   | STRING_LIT             #string
-   | PAIR_LIT               #pair
-   | array_elem             #arrayElem
-   | ident                  #identExp
-   | unary_op exp           #unaryOpExp
-   | exp binary_op exp      #binaryOpExp
-   | OPEN_PAR exp CLOSE_PAR #bracketedExp
+exp: int_lit                	#int
+   | BOOL_LIT               	#bool
+   | CHAR_LIT               	#char
+   | STRING_LIT             	#string
+   | PAIR_LIT               	#pair
+   | array_elem             	#arrayElem
+   | ident                  	#identExp
+   | unary_op exp           	#unaryOpExp
+   | exp dm_arithmetic_op exp	#dmArithmeticOpExp
+   | exp as_arithmetic_op exp	#asArithmeticOpExp
+   | exp ordering_op exp		#orderingOpExp
+   | exp equality_op exp		#equalityOpExp
+   | exp and_op exp				#andOpExp
+   | exp or_op exp				#orOpExp
+   | OPEN_PAR exp CLOSE_PAR 	#bracketedExp
    ;
 
 int_lit: number 
@@ -72,10 +77,12 @@ number: INT_LIT ;
 
 unary_op: NOT | SUB | LEN | ORD | CHR ;
 
-binary_op: MULT | DIV | MOD | ADD | SUB
-         | GT | GTE | LT | LTE 
-         | EQ | NEQ | AND | OR
-         ;
+dm_arithmetic_op: MULT | DIV | MOD ;
+as_arithmetic_op: ADD | SUB ;
+ordering_op: GT | GTE | LT | LTE;
+equality_op: EQ | NEQ ;
+and_op: AND ;
+or_op: OR ;
 
 arg_list: exp (COMMA exp )* ;
 
