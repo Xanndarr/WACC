@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ScopeHandler {
 
-	//-1 represents the index for global scope
+	//0 represents the index for global scope
 	private int GLOBAL_SCOPE = 0;
 	private int currentScope = GLOBAL_SCOPE;
 	
@@ -20,6 +20,7 @@ public class ScopeHandler {
 		tables.get(currentScope).put(ident, type);
 	}
 	
+	// Allows adding of pair_elem types to current scope
 	public void add(String ident, String type, String fstRef, String sndRef) {
 		tables.get(currentScope).put(ident, type, fstRef, sndRef);
 	}

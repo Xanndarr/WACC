@@ -11,6 +11,8 @@ import wacc.antlr.WACCParserBaseVisitor;
 
 public class Visitor extends WACCParserBaseVisitor<Void> {
 
+	private static final int SYNTACTIC_ERROR_CODE = 100;
+	private static final int SEMANTIC_ERROR_CODE = 200;
 	private ScopeHandler scopeHandler = new ScopeHandler();
 	private FunctionHandler functionHandler = new FunctionHandler();
 	private String nodeType = "null";
@@ -28,7 +30,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				functionHandler.add(functionIdent, functionType);
 			} else {
 				System.err.println("Error: Function '" + functionIdent + "' already exists.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 
 			if (func.param_list() != null) {
@@ -45,7 +47,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 					} else {
 						System.err.println("Error: Parameter with name '" + paramIdent
 								+ "' alerady exists within this function definition. ");
-						returnCode = 200;
+						returnCode = SEMANTIC_ERROR_CODE;
 					}
 				}
 			}
@@ -57,7 +59,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			visit(func);
 			if (!hasReturn) {
 				System.err.println("Error: A function must always be able to return.");
-				returnCode = 100;
+				returnCode = SYNTACTIC_ERROR_CODE;
 			}
 			scopeHandler.descendFun();
 		}
@@ -116,17 +118,15 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			}
 		} else {
 			System.err.println("Error: The variable '" + ident + "' already exists.");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 
 		visit(ctx.assign_rhs());
-		// if (!nodeType.equals(type)) { // hacked below
-		// String rhsType = ctx.assign_rhs().exp(); <-- viting these and they
 		// will give you types...then do "pair(" + type1 +","+ type2 + ")"
 		if (!nodeType.equals("null") && !type.contains(nodeType)) {
 			System.err.println("Error: Incompatible type while initialising '" + ctx.ident().getText() + "' (Expected: "
 					+ type + ", Actual: " + nodeType + ")");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 
 		return null;
@@ -141,34 +141,37 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		Assign_lhsContext lhs = ctx.assign_lhs();
 		String lhsType = "";
 
+		// Array elem case
 		Array_elemContext array_elem = lhs.array_elem();
 		if (array_elem != null) {
 			if (!scopeHandler.exists(array_elem.ident().getText())) {
 				System.err.println(
 						"Error: Variable " + array_elem.ident().getText() + " does not exist in the current scope");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			} else {
 				lhsType = scopeHandler.get(array_elem.ident().getText()).replace("[]", "");
 			}
 		}
 
+		// Pair elem case
 		Pair_elemContext pair_elem = lhs.pair_elem();
 		if (pair_elem != null) {
 			if (!scopeHandler.exists(pair_elem.exp().getText())) {
 				System.err.println(
 						"Error: Variable " + pair_elem.exp().getText() + " does not exist in the current scope");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			} else {
 				visit(pair_elem);
 				lhsType = nodeType;
 			}
 		}
 
+		// Ident case
 		IdentContext ident = lhs.ident();
 		if (ident != null) {
 			if (!scopeHandler.exists(ident.getText())) {
 				System.err.println("Error: Variable " + ident.getText() + " does not exist in the current scope");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			} else {
 				lhsType = scopeHandler.get(ident.getText());
 			}
@@ -183,7 +186,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (!(lhsType.equals("string") && rhsType.equals("char")) && !rhsType.equals(lhsType)) {
 			System.err.println("Error: Incompatible type at '" + ctx.assign_rhs().getText() + "' (Expected: " + lhsType
 					+ ", Actual: " + rhsType + ")");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		return null;
 	}
@@ -197,19 +200,19 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (scopeHandler.exists(lhsAssign)) {
 			String lhsType = scopeHandler.get(lhsAssign);
 			if (lhsType.contains("pair") && ctx.assign_lhs().pair_elem() == null) {
-				System.err.println("Error: Pair element did not make use of the necessary 'fst' or 'snd' keywords");
-				returnCode = 200;
+				System.err.println("Error: Pair element did not make use of the necessary 'fst' or 'snd' keywords.");
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
-			boolean validReadType = lhsType.equals("int") || lhsType.equals("string") || lhsType.equals("char")
-					|| lhsType.contains("pair");
+			boolean validReadType = lhsType.equals("int") || lhsType.equals("string") 
+								|| lhsType.equals("char") || lhsType.contains("pair");
 
 			if (!(lhsType.contains("[]") || validReadType)) {
-				System.err.println("Error: Type given to read ' " + lhsType + " ' is not a compatible type with read");
-				returnCode = 200;
+				System.err.println("Error: Type given '" + lhsType + "' is not compatible with read.");
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 		} else {
-			System.err.println("Error: Variable input for read, ' " + lhsAssign + " ' does not exist in scope");
-			returnCode = 200;
+			System.err.println("Error: Variable input for read, '" + lhsAssign + "' does not exist in scope.");
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 
 		return super.visitRead(ctx);
@@ -224,17 +227,17 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (nodeType.contains("pair")) {
 			if (!scopeHandler.get(ctx.exp().getText(), "fst").equals("null")
 					&& !scopeHandler.get(ctx.exp().getText(), "snd").equals("null")) {
-				System.err.println("Error: Free can't free nested pairs.");
-				returnCode = 200;
+				System.err.println("Error: Free cannot free nested pair types.");
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 		} else if (nodeType.contains("[]")) {
 			if (nodeType.replace("[]", "").length() != nodeType.length() - "[]".length()) {
-				System.err.println("Error: Free can't free nested arrays.");
-				returnCode = 200;
+				System.err.println("Error: Free cannot free nested array types.");
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 		} else {
-			System.err.println("Error: Free can only free arrays and pairs.");
-			returnCode = 200;
+			System.err.println("Error: Free can only free array and pair types.");
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		return super.visitFree(ctx);
 	}
@@ -244,8 +247,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Expression must evaluate to an int
 		visit(ctx.exp());
 		if (!nodeType.equals("int")) {
-			System.err.println("Error: Exit statements expressions must evaluate to an int.");
-			returnCode = 200;
+			System.err.println("Error: The expression of exit statments must evaluate to an int type.");
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		return super.visitExit(ctx);
 	}
@@ -258,7 +261,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
 			System.err.println("Error: If statement expressions must evaluate to bool type.");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		boolean ifHasReturn = true;
 		for (StatContext stat : ctx.stat()) {
@@ -280,7 +283,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
 			System.err.println("Error: While condition expressions must evaluate to bool type.");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		scopeHandler.descend();
 		boolean tempHasReturn = hasReturn;
@@ -303,8 +306,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Expression must be same type as function return type
 		hasReturn = true;
 		if (function.equals("null")) {
-			System.err.println("Error: Can't 'return' from the main program body.");
-			returnCode = 200;
+			System.err.println("Error: Cannot 'return' from the main program body.");
+			returnCode = SEMANTIC_ERROR_CODE;
 			return null;
 		}
 		visit(ctx.exp());
@@ -313,7 +316,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (!returnType.equals(functionType)) {
 			System.err.println("Error: Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
 					+ ", Actual: " + returnType + ")");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		return null;
 	}
@@ -359,7 +362,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.exp(0));
 		if (!nodeType.equals("int")) {
 			System.err.println("Error: Arrays must be accessed using an int index.");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		visit(ctx.ident());
 		nodeType = nodeType.replace("[]", "");
@@ -376,7 +379,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			nodeType = functionHandler.getReturnType(ident);
 		} else {
 			System.err.println("Error: Identifier '" + ctx.getText() + "' does not exist.");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		return super.visitIdent(ctx);
 	}
@@ -396,35 +399,35 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		case "!":
 			if (!nodeType.equals("bool")) {
 				System.err.println("Error: The '!' operator only works for boolean types.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 			nodeType = "bool";
 			break;
 		case "-":
 			if (!nodeType.equals("int")) {
 				System.err.println("Error: The '-' operator only works for integer types.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 			nodeType = "int";
 			break;
 		case "len":
 			if (!nodeType.contains("[]")) {
 				System.err.println("Error: The 'len' operator only works for array types.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 			nodeType = "int";
 			break;
 		case "ord":
 			if (!nodeType.equals("char")) {
 				System.err.println("Error: The 'ord' operator only works for char types.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 			nodeType = "int";
 			break;
 		case "chr":
 			if (!nodeType.equals("int")) {
 				System.err.println("Error: The 'chr' operator only works for int types.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 			nodeType = "char";
 			break;
@@ -445,19 +448,20 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				|| rhsType.contains("pair") && lhsType.equals("null"))) {
 			if (!lhsType.equals(rhsType)) {
 				System.err.println("Error: Both sides of a binary operator must have the same type.");
-				returnCode = 200;
+				returnCode = SEMANTIC_ERROR_CODE;
 			}
 		}
 
 		return lhsType;
 	}
-
+	
+	// Binary ops are in order of precedence
 	@Override
 	public Void visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("int")) {
 			System.err.println("Error: Operator '" + ctx.dm_arithmetic_op().getText() + "' expecting type int");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		nodeType = "int";
 		return null;
@@ -468,7 +472,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("int")) {
 			System.err.println("Error: Operator '" + ctx.as_arithmetic_op().getText() + "' expecting type int");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		nodeType = "int";
 		return null;
@@ -479,7 +483,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("int") && !type.equals("char")) {
 			System.err.println("Error: Operator '" + ctx.ordering_op().getText() + "' expecting type char or int");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		nodeType = "bool";
 		return null;
@@ -497,7 +501,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("bool")) {
 			System.err.println("Error: Operator '" + ctx.and_op().getText() + "' expecting type bool");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		nodeType = "bool";
 		return null;
@@ -508,7 +512,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("bool")) {
 			System.err.println("Error: Operator '" + ctx.or_op().getText() + "' expecting type bool");
-			returnCode = 200;
+			returnCode = SEMANTIC_ERROR_CODE;
 		}
 		nodeType = "bool";
 		return null;
@@ -559,7 +563,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				if (!nodeType.equals(type)) {
 					System.err.println("Error: Array element types must be the same, at '" + ctx.exp(i).getText()
 							+ "' Expected: " + type + ", Actual: " + nodeType);
-					returnCode = 200;
+					returnCode = SEMANTIC_ERROR_CODE;
 				}
 			}
 			nodeType = type + "[]";
@@ -616,15 +620,14 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 								System.err.println(
 										"Error: Incompatible type in function call '" + ctx.arg_list().exp(i).getText()
 												+ "' (Expected: " + expectedType + ", Actual: " + actualType + ")");
-								returnCode = 200;
-								// Should make error message more detailed
+								returnCode = SEMANTIC_ERROR_CODE;
 							}
 						}
 					}
 				} else {
 					System.err.println("Error: Number of arguments does not match function definition at ' "
 							+ ctx.getText() + " ' (Expected number of args: " + (paramTypes.size() - 1) + ")");
-					returnCode = 200;
+					returnCode = SEMANTIC_ERROR_CODE;
 				}
 			}
 			nodeType = functionHandler.getReturnType(functionName);
@@ -636,7 +639,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visitChildren(ctx);
 		return null;
 	}
-
+	
+	// Exit code used in Test file
 	public int getReturnCode() {
 		return returnCode;
 	}

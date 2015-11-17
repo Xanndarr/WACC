@@ -20,9 +20,10 @@ public class Test {
 		//create a parser that feeds off a tokens buffer
 		WACCParser parser = new WACCParser(tokens);
 		
-		ParseTree tree = parser.program(); //begin parsing at prog rule
-		//System.out.println(tree.toStringTree(parser)); //print LISP-style
+		//begin parsing at program rule
+		ParseTree tree = parser.program();
 		
+		//Exit if syntactical errors are present
 		if (parser.getNumberOfSyntaxErrors() > 0) {
 			System.exit(100);
 		}
@@ -30,6 +31,7 @@ public class Test {
 		Visitor visitor = new Visitor();
 		visitor.visit(tree);
 		
+		//Exit if semantical errors are present
 		if (visitor.getReturnCode() != 0) {
 			System.exit(visitor.getReturnCode());
 		}

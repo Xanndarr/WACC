@@ -13,6 +13,7 @@ public class FunctionHandler {
 		functions = new HashMap<String, SymbolTable>();
 	}
 	
+	//FUNCTION_TYPE represents the return type of function in hashmap
 	public void add(String ident, String returnType) {
 		SymbolTable params = new SymbolTable();
 		params.put(FUNCTION_TYPE, returnType);
@@ -23,6 +24,7 @@ public class FunctionHandler {
 		functions.get(ident).put(paramName, paramType);
 	}
 
+	//Overloads addParam to allow for pairs_elem references
 	public void addParam(String ident, String paramName, String paramType, String fstRef, String sndRef) {
 		functions.get(ident).put(paramName, paramType, fstRef, sndRef);;
 	}
