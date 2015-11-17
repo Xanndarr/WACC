@@ -36,9 +36,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// if (!nodeType.equals(type)) { // hacked below
 		// String rhsType = ctx.assign_rhs().exp(); <-- viting these and they
 		// will give you types...then do "pair(" + type1 +","+ type2 + ")"
-		if (!type.contains(nodeType)) {
+		if (!nodeType.equals("null") && !type.contains(nodeType)) {
 			// TODO Set exit status to 200 ? Not sure how to do this.
-			System.err.println("Error: Incompatible type at ' " + ctx.assign_rhs().getText() + " ' (Expected: " + type
+			System.err.println("Error: Incompatible type while initialising '" + ctx.ident().getText() + "' (Expected: " + type
 					+ ", Actual: " + nodeType + ")");
 		}
 
@@ -54,38 +54,20 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// LHS
 		Assign_lhsContext lhs = ctx.assign_lhs();
 		String lhsType = "";
-
-		IdentContext ident = lhs.ident();
-		if (ident != null) {
-			visit(ident);
-			// boolean exists = scopeHandler.exists(ident.getText());
-			if (!scopeHandler.exists(ident.getText())) {
-				System.err.println("Error: Variable " + ident.getText() + " does not exist in the current scope");
-			} else {
-				// visit(ident);
-				System.out.println("Context: " + lhs.getText());
-				lhsType = nodeType;
-				System.out.println("Type: " + lhsType);
-			}
-		}
-
+		
 		Array_elemContext array_elem = lhs.array_elem();
 		if (array_elem != null) {
-			// System.out.println("Context: " + lhs.getText());
-			boolean exists = scopeHandler.exists(array_elem.ident().getText());
-			if (!exists) {
+			if (!scopeHandler.exists(array_elem.ident().getText())) {
 				System.err.println(
 						"Error: Variable " + array_elem.ident().getText() + " does not exist in the current scope");
 			} else {
-				visit(array_elem);
-				lhsType = nodeType;
+				lhsType = scopeHandler.get(array_elem.ident().getText()).replace("[]", "");
 			}
 		}
 
 		Pair_elemContext pair_elem = lhs.pair_elem();
 		if (pair_elem != null) {
-			boolean exists = scopeHandler.exists(pair_elem.exp().getText());
-			if (!exists) {
+			if (!scopeHandler.exists(pair_elem.exp().getText())) {
 				System.err.println(
 						"Error: Variable " + pair_elem.exp().getText() + " does not exist in the current scope");
 			} else {
@@ -94,16 +76,28 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			}
 		}
 
+		IdentContext ident = lhs.ident();
+		if (ident != null) {
+			if (!scopeHandler.exists(ident.getText())) {
+				System.err.println("Error: Variable " + ident.getText() + " does not exist in the current scope");
+			} else {
+				System.out.println("Context: " + lhs.getText());
+				lhsType = scopeHandler.get(ident.getText());
+				System.out.println("Type: " + lhsType);
+			}
+		}
+
 		// RHS
 		visit(ctx.assign_rhs());
 		String rhsType = nodeType;
-		if (!lhs.isEmpty()) {
-			if (!rhsType.equals(lhsType)) {
-				System.err.println("Error: Incompatible type at ' " + ctx.assign_rhs().getText() + " ' (Expected: "
-						+ lhsType + ", Actual: " + rhsType + ")");
-			}
+		if (rhsType.equals("null")) {
+			rhsType = lhsType;
 		}
-		return super.visitAssignment(ctx);
+		if (!(lhsType.equals("string") && rhsType.equals("char")) && !rhsType.equals(lhsType)) {
+			System.err.println("Error: Incompatible type at '" + ctx.assign_rhs().getText() + "' (Expected: "
+					+ lhsType + ", Actual: " + rhsType + ")");
+		}
+		return null;
 	}
 
 	@Override
@@ -266,7 +260,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (!nodeType.equals("int")) {
 			System.err.println("Error: Arrays must be accessed using an int index.");
 		}
-		return super.visitArray_elem(ctx);
+		visit(ctx.ident());
+		nodeType = nodeType.replace("[]", "");
+		return null;
 	}
 
 	@Override
@@ -562,7 +558,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE When calling functions, check arg types are equal to function signature types
 		System.out.println("Visiting Assign_rhs");
 		
-		if (ctx.CALL() != null) {
+		if (ctx.getChild(0).equals(ctx.CALL())) {
+			System.out.println("HELLO ITS ME");
 			String functionName = ctx.ident().getText();
 			if (ctx.arg_list() != null) {
 				Collection<String> paramTypes = functionHandler.getParamTypeList(functionName);
@@ -576,8 +573,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 							String actualType = nodeType;
 							String expectedType = it.next();
 							if (!actualType.equals(expectedType)) {
-								System.err.println("Error: Incompatible type at ' " + ctx.arg_list().exp(i).getText() +
-										" ' (Expected: " + expectedType + ", Actual: " + actualType + ")");
+								System.err.println("Error: Incompatible type in function call '" + ctx.arg_list().exp(i).getText() +
+										"' (Expected: " + expectedType + ", Actual: " + actualType + ")");
 								// Should make error message more detailed
 							}
 						}
@@ -587,6 +584,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 							" ' (Expected number of args: " + (paramTypes.size() - 1) + ")");
 				}
 			}
+			nodeType = functionHandler.getReturnType(functionName);
+			return null;
 		}
 		return super.visitAssign_rhs(ctx);
 	}
