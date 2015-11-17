@@ -395,41 +395,75 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 //		}
 //		return null;
 //	}
+	
+	private String checkBinaryOpTypes(ExpContext lhs, ExpContext rhs) {
+		visit(lhs);
+		String lhsType = nodeType;
+		visit(rhs);
+		String rhsType = nodeType;
+		
+		if (!lhsType.equals(rhsType)) {
+			System.err.println("Error: Both sides of a binary operator must have the same type.");
+		}
+		
+		return lhsType;
+	}
 
 	@Override
 	public Void visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitDmArithmeticOpExp(ctx);
+		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
+		if (!type.equals("int")) {
+			System.err.println("Error: Operator '" + ctx.dm_arithmetic_op().getText() + "' expecting type int");
+		}
+		nodeType = "int";
+		return null;
 	}
 	
 	@Override
 	public Void visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAsArithmeticOpExp(ctx);
+		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
+		if (!type.equals("int")) {
+			System.err.println("Error: Operator '" + ctx.as_arithmetic_op().getText() + "' expecting type int");
+		}
+		nodeType = "int";
+		return null;
 	}
 
 	@Override
 	public Void visitOrderingOpExp(OrderingOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOrderingOpExp(ctx);
+		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
+		if (!type.equals("int") || !type.equals("char")) {
+			System.err.println("Error: Operator '" + ctx.ordering_op().getText() + "' expecting type char or int");
+		}
+		nodeType = "bool";
+		return null;
 	}
 
 	@Override
 	public Void visitEqualityOpExp(EqualityOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitEqualityOpExp(ctx);
+		checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
+		nodeType = "bool";
+		return null;
 	}
 	
 	@Override
 	public Void visitAndOpExp(AndOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAndOpExp(ctx);
+		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
+		if (!type.equals("bool")) {
+			System.err.println("Error: Operator '" + ctx.and_op().getText() + "' expecting type bool");
+		}
+		nodeType = "bool";
+		return null;
 	}
 
 	@Override
 	public Void visitOrOpExp(OrOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOrOpExp(ctx);
+		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
+		if (!type.equals("bool")) {
+			System.err.println("Error: Operator '" + ctx.or_op().getText() + "' expecting type bool");
+		}
+		nodeType = "bool";
+		return null;
 	}
 
 	/*
