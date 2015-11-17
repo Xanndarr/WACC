@@ -6,7 +6,6 @@ import org.antlr.v4.runtime.tree.*;
 import wacc.antlr.*;
 import wacc.semantics.Visitor;
 
-
 public class Test {
 	public static void main(String[] args) throws Exception {
 		//create a charStream that reads from stdin
@@ -22,9 +21,13 @@ public class Test {
 		WACCParser parser = new WACCParser(tokens);
 		
 		ParseTree tree = parser.program(); //begin parsing at prog rule
+		//System.out.println(tree.toStringTree(parser)); //print LISP-style
+		
+		if (parser.getNumberOfSyntaxErrors() > 0) {
+			System.exit(100);
+		}
 		
 		Visitor visitor = new Visitor();
-		//System.out.println(tree.toStringTree(parser)); //print LISP-style
 		visitor.visit(tree);
 		
 		if (visitor.getReturnCode() != 0) {
