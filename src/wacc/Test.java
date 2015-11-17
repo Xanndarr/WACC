@@ -24,7 +24,7 @@ public class Test {
 		ParseTree tree = parser.program(); //begin parsing at prog rule
 		
 		Visitor visitor = new Visitor();
-		System.out.println(tree.toStringTree(parser)); //print LISP-style
+		//System.out.println(tree.toStringTree(parser)); //print LISP-style
 		
 		visitor.visit(tree);
 	}
