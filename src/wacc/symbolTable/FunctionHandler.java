@@ -22,6 +22,10 @@ public class FunctionHandler {
 	public void addParam(String ident, String paramName, String paramType) {
 		functions.get(ident).put(paramName, paramType);
 	}
+
+	public void addParam(String ident, String paramName, String paramType, String fstRef, String sndRef) {
+		functions.get(ident).put(paramName, paramType, fstRef, sndRef);;
+	}
 	
 	public String getReturnType(String ident) {
 		return functions.get(ident).get(FUNCTION_TYPE);
