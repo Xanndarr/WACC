@@ -43,8 +43,8 @@ public class ScopeHandler {
 	}
 	
 	public boolean exists(String ident) {
-		for(SymbolTable symtab : tables.values()) {
-			if (symtab.exists(ident)) {
+		for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
+			if (tables.get(i).exists(ident)) {
 				return true;
 			}
 		}
