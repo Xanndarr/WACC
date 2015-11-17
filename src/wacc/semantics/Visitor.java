@@ -26,7 +26,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		System.out.println("Visiting initialisation: " + ctx.getText());
 		String type = ctx.type().getText();
 		String ident = ctx.ident().getText();
-		if (!scopeHandler.exists(ident)) {
+		if (!scopeHandler.existsCurrentScope(ident)) {
 			scopeHandler.add(ident, type);
 		} else {
 			System.err.println("Error: The variable '" + ident + "' already exists.");
@@ -431,8 +431,12 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitOrderingOpExp(OrderingOpExpContext ctx) {
+		System.out.println("Visiting " + ctx.ordering_op().getText());
+		System.out.println(ctx.exp(0).getText());
+		System.out.println(ctx.exp(1).getText());
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
-		if (!type.equals("int") || !type.equals("char")) {
+		System.out.println(type);
+		if (!type.equals("int") && !type.equals("char")) {
 			System.err.println("Error: Operator '" + ctx.ordering_op().getText() + "' expecting type char or int");
 		}
 		nodeType = "bool";

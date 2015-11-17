@@ -44,6 +44,10 @@ public class ScopeHandler {
 		return false;
 	}
 	
+	public boolean existsCurrentScope(String ident) {
+		return tables.get(currentScope).exists(ident);
+	}
+	
 	public void descend() {
 		currentScope++;
 		tables.put(currentScope, new SymbolTable());
