@@ -15,6 +15,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	private FunctionHandler functionHandler = new FunctionHandler();
 	private String nodeType = "null";
 	private String function = "null";
+	private boolean hasReturn = false;
 	
 	@Override
 	public Void visitProgram(ProgramContext ctx) {
@@ -49,7 +50,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.stat());
 		for (FuncContext func : ctx.func()) {
 			scopeHandler.ascendFun();
+			hasReturn = false;
 			visit(func);
+			if (!hasReturn) {
+				System.err.println("Error: A function must always be able to return.");
+			}
 			scopeHandler.descendFun();
 		}
 		return null;
@@ -258,11 +263,15 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (!nodeType.equals("bool")) {
 			System.err.println("Error: If statement expressions must evaluate to bool type.");
 		}
+		boolean ifHasReturn = true;
 		for (StatContext stat : ctx.stat()) {
 			scopeHandler.descend();
+			hasReturn = false;
 			visit(stat);
+			ifHasReturn = ifHasReturn && hasReturn;
 			scopeHandler.ascend();
 		}
+		hasReturn = ifHasReturn;
 		return null;
 	}
 
@@ -279,7 +288,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			System.err.println("Error: While condition expressions must evaluate to bool type.");
 		}
 		scopeHandler.descend();
+		boolean tempHasReturn = hasReturn;
 		visit(ctx.stat());
+		hasReturn = tempHasReturn;
 		scopeHandler.ascend();
 		return null;
 	}
@@ -299,6 +310,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitReturn(ReturnContext ctx) {
 		// DONE Expression must be same type as function return type
 		System.out.println("Visiting return");
+		hasReturn = true;
+		if (function.equals("null")) {
+			System.err.println("Error: Can't 'return' from the main program body.");
+			return null;
+		}
 		visit(ctx.exp());
 		String returnType = nodeType;
 		String functionType = functionHandler.getReturnType(function);
