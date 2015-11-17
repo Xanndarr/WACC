@@ -593,7 +593,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Increase symtab scope, visit children, then decrease symtab
 		// scope
 		// DONE Possibly add parameters to a global function signature tracker
-		// TODO Check every path of execution contains a return statement
+		// DONE Check every path of execution contains a return statement
 		System.out.println("VISITING FUNCTION");
 		
 		function = ctx.ident().getText();
