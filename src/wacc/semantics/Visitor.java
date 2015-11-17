@@ -17,7 +17,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	private String function = "null";
 	private boolean hasReturn = false;
 	private int returnCode = 0;
-	
+
 	@Override
 	public Void visitProgram(ProgramContext ctx) {
 		for (FuncContext func : ctx.func()) {
@@ -30,7 +30,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				System.err.println("Error: Function '" + functionIdent + "' already exists.");
 				returnCode = 200;
 			}
-			
+
 			if (func.param_list() != null) {
 				for (ParamContext param : func.param_list().param()) {
 					String paramIdent = param.ident().getText();
@@ -72,7 +72,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitInitialisation(InitialisationContext ctx) {
 		// DONE Add variable to current scope
 		// DONE Check RHS type is equal to variable type
-		System.out.println("Visiting initialisation: " + ctx.getText());
 		String type = ctx.type().getText();
 		String ident = ctx.ident().getText();
 		if (!scopeHandler.existsCurrentScope(ident)) {
@@ -80,16 +79,16 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				String pairType = type.replace("pair(", "").replace(")", "");
 				String fstType = pairType.substring(0, pairType.indexOf(","));
 				String sndType = pairType.substring(pairType.indexOf(",") + 1, pairType.length());
-				
+
 				String fstRef = "null";
 				String sndRef = "null";
-				
+
 				String rhs = ctx.assign_rhs().getText();
 				if (rhs.equals("null")) {
 					scopeHandler.add(ident, type, "null", "null");
 					return null;
 				}
-				
+
 				Pair_elemContext rhsPair = ctx.assign_rhs().pair_elem();
 				if (rhsPair != null) {
 					String pairIdent = rhsPair.exp().getText();
@@ -97,12 +96,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 					if (rhsPair.getChild(0).getText().equals("fst")) {
 						pairPointer = scopeHandler.get(pairIdent, "fst");
 					} else {
-						System.out.println(pairIdent);
 						pairPointer = scopeHandler.get(pairIdent, "snd");
 					}
 					rhs = pairPointer;
 				}
-				
+
 				if (rhs.contains("newpair")) {
 					if (fstType.equals("pair")) {
 						fstRef = ctx.assign_rhs().exp(0).getText();
@@ -110,20 +108,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 					if (sndType.equals("pair")) {
 						sndRef = ctx.assign_rhs().exp(1).getText();
 					}
-				} 
-//				else {
-//					if (fstType.equals("pair")) {
-//						System.out.println("TESTING HERE NOW: " + fstType);
-//						System.out.println("TESTING HERE NOW: " + ctx.assign_rhs().getText());
-//						System.out.println("TESTING HERE NOW: " + ctx.assign_rhs().pair_elem().exp().getText());
-//						fstType = scopeHandler.get(ctx.assign_rhs().pair_elem().exp().getText(), "fst");
-//					}
-//					if (sndType.equals("pair")) {
-//						sndType = scopeHandler.get(ctx.assign_rhs().pair_elem().exp().getText(), "snd");
-//					}
-//					//visit(ctx.assign_rhs());
-//				}
-				
+				}
+
 				scopeHandler.add(ident, type, fstRef, sndRef);
 			} else {
 				scopeHandler.add(ident, type);
@@ -138,9 +124,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// String rhsType = ctx.assign_rhs().exp(); <-- viting these and they
 		// will give you types...then do "pair(" + type1 +","+ type2 + ")"
 		if (!nodeType.equals("null") && !type.contains(nodeType)) {
-			// TODO Set exit status to 200 ? Not sure how to do this.
-			System.err.println("Error: Incompatible type while initialising '" + ctx.ident().getText() + "' (Expected: " + type
-					+ ", Actual: " + nodeType + ")");
+			System.err.println("Error: Incompatible type while initialising '" + ctx.ident().getText() + "' (Expected: "
+					+ type + ", Actual: " + nodeType + ")");
 			returnCode = 200;
 		}
 
@@ -151,12 +136,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitAssignment(AssignmentContext ctx) {
 		// DONE Check LHS type = RHS type
 		// DONE Check that idents exist
-		System.out.println("Visiting assignment: " + ctx.getText());
 
 		// LHS
 		Assign_lhsContext lhs = ctx.assign_lhs();
 		String lhsType = "";
-		
+
 		Array_elemContext array_elem = lhs.array_elem();
 		if (array_elem != null) {
 			if (!scopeHandler.exists(array_elem.ident().getText())) {
@@ -186,9 +170,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				System.err.println("Error: Variable " + ident.getText() + " does not exist in the current scope");
 				returnCode = 200;
 			} else {
-				System.out.println("Context: " + ident.getText());
 				lhsType = scopeHandler.get(ident.getText());
-				System.out.println("Type: " + lhsType);
 			}
 		}
 
@@ -199,8 +181,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			rhsType = lhsType;
 		}
 		if (!(lhsType.equals("string") && rhsType.equals("char")) && !rhsType.equals(lhsType)) {
-			System.err.println("Error: Incompatible type at '" + ctx.assign_rhs().getText() + "' (Expected: "
-					+ lhsType + ", Actual: " + rhsType + ")");
+			System.err.println("Error: Incompatible type at '" + ctx.assign_rhs().getText() + "' (Expected: " + lhsType
+					+ ", Actual: " + rhsType + ")");
 			returnCode = 200;
 		}
 		return null;
@@ -210,7 +192,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitRead(ReadContext ctx) {
 		// DONE Check type is = program variable | pair elem | array elem
 		// DONE Type must be either int, string(?) or char().getText());
-		System.out.println("READING : " + ctx.assign_lhs().getText());
 		String lhsAssign = ctx.assign_lhs().getText();
 		lhsAssign = lhsAssign.replace("fst", "").replace("snd", "");
 		if (scopeHandler.exists(lhsAssign)) {
@@ -219,9 +200,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				System.err.println("Error: Pair element did not make use of the necessary 'fst' or 'snd' keywords");
 				returnCode = 200;
 			}
-			boolean validReadType = lhsType.equals("int") 
-					|| lhsType.equals("string") 
-					|| lhsType.equals("char")
+			boolean validReadType = lhsType.equals("int") || lhsType.equals("string") || lhsType.equals("char")
 					|| lhsType.contains("pair");
 
 			if (!(lhsType.contains("[]") || validReadType)) {
@@ -241,10 +220,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Type must be either array or pair
 		// DONE Type must not be an array of an array or an array of a pair or a
 		// pair of arrays etc.
-		System.out.println("FREEING : " + ctx.exp().getText());
 		visit(ctx.exp());
 		if (nodeType.contains("pair")) {
-			if (!scopeHandler.get(ctx.exp().getText(), "fst").equals("null") && !scopeHandler.get(ctx.exp().getText(), "snd").equals("null")) {
+			if (!scopeHandler.get(ctx.exp().getText(), "fst").equals("null")
+					&& !scopeHandler.get(ctx.exp().getText(), "snd").equals("null")) {
 				System.err.println("Error: Free can't free nested pairs.");
 				returnCode = 200;
 			}
@@ -298,11 +277,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Check condition is a valid boolean or evaluates to one
 		// DONE Increase symtab scope before visiting child
 		// DONE Reduce symtab scope afterwards
-		// System.out.println("visiting while");
-		// System.out.println(ctx.exp().getText());
 		visit(ctx.exp());
 		if (!nodeType.equals("bool")) {
-			// System.out.println(nodeType);
 			System.err.println("Error: While condition expressions must evaluate to bool type.");
 			returnCode = 200;
 		}
@@ -313,22 +289,18 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		scopeHandler.ascend();
 		return null;
 	}
-	
+
 	@Override
 	public Void visitBegin(BeginContext ctx) {
-		System.out.println("WE BEGINNIN");
 		scopeHandler.descend();
-		System.out.println(ctx.stat().getText());
 		visit(ctx.stat());
 		scopeHandler.ascend();
-		System.out.println("WE BEGINNIN DONE");
 		return null;
 	}
 
 	@Override
 	public Void visitReturn(ReturnContext ctx) {
 		// DONE Expression must be same type as function return type
-		System.out.println("Visiting return");
 		hasReturn = true;
 		if (function.equals("null")) {
 			System.err.println("Error: Can't 'return' from the main program body.");
@@ -399,9 +371,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Set identExists to correct value if ident exists
 		String ident = ctx.getText();
 		if (scopeHandler.exists(ident)) {
-			System.out.println("IDENTIFINNGI" + nodeType);
 			nodeType = scopeHandler.get(ident);
-			System.out.println("IDENTIFINNGI" + nodeType);
 		} else if (functionHandler.exists(ident)) {
 			nodeType = functionHandler.getReturnType(ident);
 		} else {
@@ -465,95 +435,20 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		return null;
 	}
 
-//	@Override
-//	public Void visitBinaryOpExp(BinaryOpExpContext ctx) {
-//		// DONE Check LHS and RHS have same types
-//		// DONE set nodeType = return type
-//		// *, /, %, +, - take int return int
-//		// >, >=, <, <= take int/char return bool
-//		// ==, != take anything return bool
-//		// &&, || take bool return bool
-//		System.out.println("VISITING BINARY OP");
-//		ExpContext lhs = ctx.exp(0);
-//		ExpContext rhs = ctx.exp(1);
-//		System.out.println("WE PRINTING SOEM EXPS");
-//		for (ParseTree exp : ctx.exp()) {
-//			System.out.println(exp.getText());
-//		}
-//		System.out.println("BINARY OP: " + ctx.binary_op().getText());
-//		System.out.println("WE DONE PRINTING SOME EXPS");
-//		System.out.println(ctx.exp(0).getText());
-//		System.out.println(ctx.exp(1).getText());
-////		System.out.println("lhs: " + lhs.getText() + ", rhs: " + rhs.getText());
-////		if (!scopeHandler.exists(lhs.getText()) || !scopeHandler.exists(rhs.getText())) {
-////			System.err.println("Error: Undeclared variable: '" + lhs.getText() + "'." + rhs.getText());
-////		}
-//		visit(lhs);
-//		String lhsType = nodeType;
-//		System.out.println(lhs.getText() + " ::: " + lhsType);
-//		visit(rhs);
-//		String rhsType = nodeType;
-//		System.out.println(rhs.getText() + " ::: " + rhsType);
-//
-//		if (!lhsType.equals(rhsType)) {
-//			System.err.println("Error: Both sides of a binary operator must have the same type.");
-//		}
-//
-//		switch (ctx.binary_op().getText()) {
-//		case "*":
-//		case "/":
-//		case "%":
-//		case "+":
-//		case "-":
-//			if (!lhsType.equals("int"))
-//				System.err.println("Error: *, /, %, +, - require ints.");
-//			nodeType = "int";
-//			break;
-//		case ">":
-//		case ">=":
-//		case "<":
-//		case "<=":
-//			if (!lhsType.equals("int") && !lhsType.equals("char"))
-//				System.err.println("Error: >, >=, <, <= require ints or chars.");
-//			nodeType = "bool";
-//			break;
-//		case "==":
-//		case "!=":
-//			nodeType = "bool";
-//			break;
-//		case "&&":
-//		case "||":
-//			if (!lhsType.equals("bool"))
-//				System.err.println("Error: &&, || require bools.");
-//			nodeType = "bool";
-//			break;
-//		default:
-//			nodeType = "null";
-//			break;
-//		}
-//		return null;
-//	}
-	
 	private String checkBinaryOpTypes(ExpContext lhs, ExpContext rhs) {
 		visit(lhs);
 		String lhsType = nodeType;
-		System.out.println("UGH 1");
-		System.out.println(nodeType);
-		System.out.println(lhsType.length());
 		visit(rhs);
 		String rhsType = nodeType;
-		System.out.println("UGH 2");
-		System.out.println(rhsType.length());
 
-		System.out.println("UGH 3");
-		
-		if (!(lhsType.contains("pair") && rhsType.equals("null") || rhsType.contains("pair") && lhsType.equals("null"))) {
+		if (!(lhsType.contains("pair") && rhsType.equals("null")
+				|| rhsType.contains("pair") && lhsType.equals("null"))) {
 			if (!lhsType.equals(rhsType)) {
 				System.err.println("Error: Both sides of a binary operator must have the same type.");
 				returnCode = 200;
 			}
 		}
-		
+
 		return lhsType;
 	}
 
@@ -567,7 +462,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		nodeType = "int";
 		return null;
 	}
-	
+
 	@Override
 	public Void visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
@@ -581,11 +476,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitOrderingOpExp(OrderingOpExpContext ctx) {
-		System.out.println("Visiting " + ctx.ordering_op().getText());
-		System.out.println(ctx.exp(0).getText());
-		System.out.println(ctx.exp(1).getText());
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
-		System.out.println(type);
 		if (!type.equals("int") && !type.equals("char")) {
 			System.err.println("Error: Operator '" + ctx.ordering_op().getText() + "' expecting type char or int");
 			returnCode = 200;
@@ -600,7 +491,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		nodeType = "bool";
 		return null;
 	}
-	
+
 	@Override
 	public Void visitAndOpExp(AndOpExpContext ctx) {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
@@ -633,8 +524,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// scope
 		// DONE Possibly add parameters to a global function signature tracker
 		// DONE Check every path of execution contains a return statement
-		System.out.println("VISITING FUNCTION");
-		
 		function = ctx.ident().getText();
 
 		scopeHandler.descend();
@@ -651,16 +540,9 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				}
 			}
 		}
-		
-//		for (ParseTree s : ctx.stat().children) {
-//			System.out.println(s.getText());
-//			System.out.println("==");
-//		}
 
 		visit(ctx.stat());
-		System.out.println("HOLLER: " + ctx.stat().getText());
 		scopeHandler.ascend();
-		System.out.println("VISITING FUNCTION DONE");
 
 		return null;
 	}
@@ -672,7 +554,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (ctx.exp().size() > 0) {
 			visit(ctx.exp(0));
 			String type = nodeType;
-			System.out.println("Type: " + type);
 			for (int i = 1; i < ctx.exp().size(); i++) {
 				visit(ctx.exp(i));
 				if (!nodeType.equals(type)) {
@@ -683,7 +564,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			}
 			nodeType = type + "[]";
 		}
-		System.out.println("Final node tpye at array_lit; " + nodeType);
 		return null;
 	}
 
@@ -694,7 +574,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String pairType = scopeHandler.get(ctx.exp().getText());
 		pairType = pairType.replace("pair(", "").replace(")", "");
 		int commaPos = pairType.indexOf(",");
-		
+
 		String fstType = pairType.substring(0, commaPos);
 		String sndType = pairType.substring(commaPos + 1, pairType.length());
 
@@ -717,12 +597,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitAssign_rhs(Assign_rhsContext ctx) {
-		// DONE When calling functions, check arg types are equal to function signature types
-		System.out.println("Visiting Assign_rhs");
-		
+		// DONE When calling functions, check arg types are equal to function
+		// signature types
 		if (ctx.getChild(0).equals(ctx.CALL())) {
 			String functionName = ctx.ident().getText();
-			System.out.println("HELLO ITS ME: " + functionName);
 			if (ctx.arg_list() != null) {
 				Collection<String> paramTypes = functionHandler.getParamTypeList(functionName);
 				if (paramTypes.size() - 1 == ctx.arg_list().exp().size()) {
@@ -735,16 +613,17 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 							String actualType = nodeType;
 							String expectedType = it.next();
 							if (!actualType.equals(expectedType)) {
-								System.err.println("Error: Incompatible type in function call '" + ctx.arg_list().exp(i).getText() +
-										"' (Expected: " + expectedType + ", Actual: " + actualType + ")");
+								System.err.println(
+										"Error: Incompatible type in function call '" + ctx.arg_list().exp(i).getText()
+												+ "' (Expected: " + expectedType + ", Actual: " + actualType + ")");
 								returnCode = 200;
 								// Should make error message more detailed
 							}
 						}
 					}
 				} else {
-					System.err.println("Error: Number of arguments does not match function definition at ' " + ctx.getText() +
-							" ' (Expected number of args: " + (paramTypes.size() - 1) + ")");
+					System.err.println("Error: Number of arguments does not match function definition at ' "
+							+ ctx.getText() + " ' (Expected number of args: " + (paramTypes.size() - 1) + ")");
 					returnCode = 200;
 				}
 			}
@@ -757,7 +636,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visitChildren(ctx);
 		return null;
 	}
-	
+
 	public int getReturnCode() {
 		return returnCode;
 	}
