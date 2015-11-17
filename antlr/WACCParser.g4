@@ -59,13 +59,13 @@ exp: int_lit                	#int
    | array_elem             	#arrayElem
    | ident                  	#identExp
    | unary_op exp           	#unaryOpExp
+   | OPEN_PAR exp CLOSE_PAR 	#bracketedExp
    | exp dm_arithmetic_op exp	#dmArithmeticOpExp
    | exp as_arithmetic_op exp	#asArithmeticOpExp
    | exp ordering_op exp		#orderingOpExp
    | exp equality_op exp		#equalityOpExp
    | exp and_op exp				#andOpExp
    | exp or_op exp				#orOpExp
-   | OPEN_PAR exp CLOSE_PAR 	#bracketedExp
    ;
 
 int_lit: number 
