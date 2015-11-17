@@ -14,6 +14,42 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	private ScopeHandler scopeHandler = new ScopeHandler();
 	private FunctionHandler functionHandler = new FunctionHandler();
 	private String nodeType = "null";
+	
+	@Override
+	public Void visitProgram(ProgramContext ctx) {
+		for (FuncContext func : ctx.func()) {
+			String functionIdent = func.ident().getText();
+			String functionType = func.type().getText();
+
+			if (!functionHandler.exists(functionIdent)) {
+				functionHandler.add(functionIdent, functionType);
+			} else {
+				System.err.println("Error: Function '" + functionIdent + "' already exists.");
+			}
+			
+			if (func.param_list() != null) {
+				for (ParamContext param : func.param_list().param()) {
+					String paramIdent = param.ident().getText();
+					String paramType = param.type().getText();
+
+					if (!functionHandler.existsParam(functionIdent, paramIdent)) {
+						if (paramType.contains("pair")) {
+							functionHandler.addParam(functionIdent, paramIdent, paramType, "", "");
+						} else {
+							functionHandler.addParam(functionIdent, paramIdent, paramType);
+						}
+					} else {
+						System.err.println("Error: Parameter with name '" + paramIdent
+								+ "' alerady exists within this function definition. ");
+					}
+				}
+			}
+		}
+		scopeHandler.ascendFun();
+		visitChildren(ctx);
+		scopeHandler.descendFun();
+		return null;
+	}
 
 	/*
 	 * Visits stats
@@ -27,7 +63,58 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String type = ctx.type().getText();
 		String ident = ctx.ident().getText();
 		if (!scopeHandler.existsCurrentScope(ident)) {
-			scopeHandler.add(ident, type);
+			if (type.contains("pair")) {
+				String pairType = type.replace("pair(", "").replace(")", "");
+				String fstType = pairType.substring(0, pairType.indexOf(","));
+				String sndType = pairType.substring(pairType.indexOf(",") + 1, pairType.length());
+				
+				String fstRef = "null";
+				String sndRef = "null";
+				
+				String rhs = ctx.assign_rhs().getText();
+				if (rhs.equals("null")) {
+					scopeHandler.add(ident, type, "null", "null");
+					return null;
+				}
+				
+				Pair_elemContext rhsPair = ctx.assign_rhs().pair_elem();
+				if (rhsPair != null) {
+					String pairIdent = rhsPair.exp().getText();
+					String pairPointer;
+					if (rhsPair.getChild(0).getText().equals("fst")) {
+						pairPointer = scopeHandler.get(pairIdent, "fst");
+					} else {
+						System.out.println(pairIdent);
+						pairPointer = scopeHandler.get(pairIdent, "snd");
+					}
+					rhs = pairPointer;
+				}
+				
+				if (rhs.contains("newpair")) {
+					if (fstType.equals("pair")) {
+						fstRef = ctx.assign_rhs().exp(0).getText();
+					}
+					if (sndType.equals("pair")) {
+						sndRef = ctx.assign_rhs().exp(1).getText();
+					}
+				} 
+//				else {
+//					if (fstType.equals("pair")) {
+//						System.out.println("TESTING HERE NOW: " + fstType);
+//						System.out.println("TESTING HERE NOW: " + ctx.assign_rhs().getText());
+//						System.out.println("TESTING HERE NOW: " + ctx.assign_rhs().pair_elem().exp().getText());
+//						fstType = scopeHandler.get(ctx.assign_rhs().pair_elem().exp().getText(), "fst");
+//					}
+//					if (sndType.equals("pair")) {
+//						sndType = scopeHandler.get(ctx.assign_rhs().pair_elem().exp().getText(), "snd");
+//					}
+//					//visit(ctx.assign_rhs());
+//				}
+				
+				scopeHandler.add(ident, type, fstRef, sndRef);
+			} else {
+				scopeHandler.add(ident, type);
+			}
 		} else {
 			System.err.println("Error: The variable '" + ident + "' already exists.");
 		}
@@ -42,7 +129,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 					+ ", Actual: " + nodeType + ")");
 		}
 
-		return super.visitInitialisation(ctx);
+		return null;
 	}
 
 	@Override
@@ -133,17 +220,17 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Type must not be an array of an array or an array of a pair or a
 		// pair of arrays etc.
 		System.out.println("FREEING : " + ctx.exp().getText());
+		visit(ctx.exp());
 		if (nodeType.contains("pair")) {
-			if (nodeType.replace("pair", "").length() != nodeType.length() - "pair".length()) {
-				System.out.println("Error: Free can't free nested pairs.");
+			if (!scopeHandler.get(ctx.exp().getText(), "fst").equals("null") && !scopeHandler.get(ctx.exp().getText(), "snd").equals("null")) {
+				System.err.println("Error: Free can't free nested pairs.");
 			}
 		} else if (nodeType.contains("[]")) {
 			if (nodeType.replace("[]", "").length() != nodeType.length() - "[]".length()) {
-				System.out.println("Error: Free can't free nested arrays.");
+				System.err.println("Error: Free can't free nested arrays.");
 			}
 		} else {
-			
-			System.out.println("Error: Free can only free arrays and pairs.");
+			System.err.println("Error: Free can only free arrays and pairs.");
 		}
 		return super.visitFree(ctx);
 	}
@@ -206,7 +293,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 //	@Override
 //	public Void visitReturn(ReturnContext ctx) {
-//		//  Expression must be same type as function return type
+//		// DONE Expression must be same type as function return type
 //		System.out.println("Visiting return");
 //		visit(ctx.exp());
 //		String returnType = nodeType;
@@ -248,7 +335,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitPair(PairContext ctx) {
-		nodeType = "pair";
+		nodeType = "null";
 		return super.visitPair(ctx);
 	}
 
@@ -398,8 +485,10 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(rhs);
 		String rhsType = nodeType;
 		
-		if (!lhsType.equals(rhsType)) {
-			System.err.println("Error: Both sides of a binary operator must have the same type.");
+		if (!(lhsType.contains("pair") && rhsType.equals("null") || rhsType.contains("pair") && lhsType.equals("null"))) {
+			if (!lhsType.equals(rhsType)) {
+				System.err.println("Error: Both sides of a binary operator must have the same type.");
+			}
 		}
 		
 		return lhsType;
@@ -477,14 +566,6 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		// DONE Possibly add parameters to a global function signature tracker
 		// TODO Check every path of execution contains a return statement
 		System.out.println("VISITING FUNCTION");
-		String functionIdent = ctx.ident().getText();
-		String functionType = ctx.type().getText();
-
-		if (!functionHandler.exists(functionIdent)) {
-			functionHandler.add(functionIdent, functionType);
-		} else {
-			System.err.println("Error: Function '" + functionIdent + "' already exists.");
-		}
 
 		scopeHandler.descend();
 
@@ -493,13 +574,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 				String paramIdent = param.ident().getText();
 				String paramType = param.type().getText();
 
-				if (!functionHandler.existsParam(functionIdent, paramIdent)) {
-					functionHandler.addParam(functionIdent, paramIdent, paramType);
+				if (paramType.contains("pair")) {
+					scopeHandler.add(paramIdent, paramType, "", "");
 				} else {
-					System.err.println("Error: Parameter with name '" + paramIdent
-							+ "' alerady exists within this function definition. ");
+					scopeHandler.add(paramIdent, paramType);
 				}
-				scopeHandler.add(paramIdent, paramType);
 			}
 		}
 		
@@ -509,6 +588,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 //		}
 
 		visit(ctx.stat());
+		System.out.println("HOLLER: " + ctx.stat().getText());
 		scopeHandler.ascend();
 		System.out.println("VISITING FUNCTION DONE");
 
@@ -543,11 +623,22 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String pairType = scopeHandler.get(ctx.exp().getText());
 		pairType = pairType.replace("pair(", "").replace(")", "");
 		int commaPos = pairType.indexOf(",");
+		
+		String fstType = pairType.substring(0, commaPos);
+		String sndType = pairType.substring(commaPos + 1, pairType.length());
 
 		if (ctx.getChild(0).getText().equals("fst")) {
-			nodeType = pairType.substring(0, commaPos);
+			if (fstType.equals("pair")) {
+				nodeType = scopeHandler.get(ctx.exp().getText(), "fst");
+			} else {
+				nodeType = fstType;
+			}
 		} else {
-			nodeType = pairType.substring(commaPos + 1, pairType.length());
+			if (sndType.equals("pair")) {
+				nodeType = scopeHandler.get(ctx.exp().getText(), "snd");
+			} else {
+				nodeType = sndType;
+			}
 		}
 
 		return null;
@@ -559,8 +650,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		System.out.println("Visiting Assign_rhs");
 		
 		if (ctx.getChild(0).equals(ctx.CALL())) {
-			System.out.println("HELLO ITS ME");
 			String functionName = ctx.ident().getText();
+			System.out.println("HELLO ITS ME: " + functionName);
 			if (ctx.arg_list() != null) {
 				Collection<String> paramTypes = functionHandler.getParamTypeList(functionName);
 				if (paramTypes.size() - 1 == ctx.arg_list().exp().size()) {
@@ -586,8 +677,12 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			}
 			nodeType = functionHandler.getReturnType(functionName);
 			return null;
+		} else if (ctx.getChild(0).equals(ctx.NEWPAIR())) {
+			nodeType = "pair";
+			return null;
 		}
-		return super.visitAssign_rhs(ctx);
+		visitChildren(ctx);
+		return null;
 	}
 
 }
