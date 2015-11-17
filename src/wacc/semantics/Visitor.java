@@ -57,7 +57,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			visit(func);
 			if (!hasReturn) {
 				System.err.println("Error: A function must always be able to return.");
-				if (returnCode == 0) returnCode = 100;
+				returnCode = 100;
 			}
 			scopeHandler.descendFun();
 		}
