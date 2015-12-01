@@ -6,7 +6,7 @@ import java.util.Iterator;
 import wacc.ErrorReporter;
 import wacc.antlr.WACCParser.*;
 
-class MiscVisitor extends Visitor {
+class MiscVisitor extends WACCVisitor {
 
 	public MiscVisitor(ErrorReporter err) {
 		super(err);

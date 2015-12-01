@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.*;
 
 //import antlr package
 import wacc.antlr.*;
-import wacc.semantics.Visitor;
+import wacc.semantics.WACCVisitor;
 
 public class WACC {
 	public static void main(String[] args) throws Exception {
@@ -29,7 +29,7 @@ public class WACC {
 		}
 		
 		ErrorReporter err = new ErrorReporter(System.err);
-		Visitor visitor = new Visitor(err);
+		WACCVisitor visitor = new WACCVisitor(err);
 		visitor.visit(tree);
 		
 		//Exit if semantic errors are present

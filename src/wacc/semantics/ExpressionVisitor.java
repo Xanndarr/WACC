@@ -3,7 +3,7 @@ package wacc.semantics;
 import wacc.ErrorReporter;
 import wacc.antlr.WACCParser.*;
 
-class ExpressionVisitor extends Visitor {
+class ExpressionVisitor extends WACCVisitor {
 
 	public ExpressionVisitor(ErrorReporter err) {
 		super(err);

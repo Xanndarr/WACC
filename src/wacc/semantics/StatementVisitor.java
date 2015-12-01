@@ -3,7 +3,7 @@ package wacc.semantics;
 import wacc.ErrorReporter;
 import wacc.antlr.WACCParser.*;
 
-class StatementVisitor extends Visitor {
+class StatementVisitor extends WACCVisitor {
 
 	public StatementVisitor(ErrorReporter err) {
 		super(err);

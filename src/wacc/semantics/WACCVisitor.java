@@ -6,7 +6,7 @@ import wacc.symbolTable.ScopeHandler;
 import wacc.ErrorReporter;
 import wacc.antlr.WACCParserBaseVisitor;
 
-public class Visitor extends WACCParserBaseVisitor<Void> {
+public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 
 	protected ErrorReporter err = null;
 	protected ScopeHandler scopeHandler = new ScopeHandler();
@@ -16,7 +16,7 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	protected String function = "null";
 	protected boolean hasReturn = false;
 
-	public Visitor(ErrorReporter err) {
+	public WACCVisitor(ErrorReporter err) {
 		this.err = err;
 	}
 
