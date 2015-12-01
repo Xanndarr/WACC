@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.Token;
 
 public class ErrorReporter {
 	
-	PrintStream out = null;
+	private PrintStream out = null;
 	
 	public ErrorReporter(PrintStream out) {
 		this.out = out;
