@@ -10,15 +10,15 @@ import wacc.ErrorReporter;
 import wacc.antlr.WACCParserBaseVisitor;
 
 public class Visitor extends WACCParserBaseVisitor<Void> {
-	
-	private ErrorReporter err = null;	
+
+	private ErrorReporter err = null;
 	private ScopeHandler scopeHandler = new ScopeHandler();
 	private FunctionHandler functionHandler = new FunctionHandler();
-	
+
 	private String nodeType = "null";
 	private String function = "null";
 	private boolean hasReturn = false;
-	
+
 	public Visitor(ErrorReporter err) {
 		this.err = err;
 	}
@@ -123,8 +123,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		visit(ctx.assign_rhs());
 		// will give you types...then do "pair(" + type1 +","+ type2 + ")"
 		if (!nodeType.equals("null") && !type.contains(nodeType)) {
-			err.println("Incompatible type while initialising '" + ident + "' (Expected: "
-					+ type + ", Actual: " + nodeType + ")", ctx.ident());
+			err.println("Incompatible type while initialising '" + ident + "' (Expected: " + type + ", Actual: "
+					+ nodeType + ")", ctx.ident());
 		}
 
 		return null;
@@ -143,8 +143,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		Array_elemContext array_elem = lhs.array_elem();
 		if (array_elem != null) {
 			if (!scopeHandler.exists(array_elem.ident().getText())) {
-				err.println(
-						"Variable " + array_elem.ident().getText() + " does not exist in the current scope", array_elem.ident());
+				err.println("Variable " + array_elem.ident().getText() + " does not exist in the current scope",
+						array_elem.ident());
 			} else {
 				lhsType = scopeHandler.get(array_elem.ident().getText()).replace("[]", "");
 			}
@@ -154,8 +154,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		Pair_elemContext pair_elem = lhs.pair_elem();
 		if (pair_elem != null) {
 			if (!scopeHandler.exists(pair_elem.exp().getText())) {
-				err.println(
-						"Variable " + pair_elem.exp().getText() + " does not exist in the current scope", pair_elem.exp());
+				err.println("Variable " + pair_elem.exp().getText() + " does not exist in the current scope",
+						pair_elem.exp());
 			} else {
 				visit(pair_elem);
 				lhsType = nodeType;
@@ -179,8 +179,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			rhsType = lhsType;
 		}
 		if (!(lhsType.equals("string") && rhsType.equals("char")) && !rhsType.equals(lhsType)) {
-			err.println("Incompatible type at '" + ctx.assign_rhs().getText() + "' (Expected: " + lhsType
-					+ ", Actual: " + rhsType + ")", ctx.assign_rhs());
+			err.println("Incompatible type at '" + ctx.assign_rhs().getText() + "' (Expected: " + lhsType + ", Actual: "
+					+ rhsType + ")", ctx.assign_rhs());
 		}
 		return null;
 	}
@@ -194,10 +194,11 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		if (scopeHandler.exists(lhsAssign)) {
 			String lhsType = scopeHandler.get(lhsAssign);
 			if (lhsType.contains("pair") && ctx.assign_lhs().pair_elem() == null) {
-				err.println("Pair element did not make use of the necessary 'fst' or 'snd' keywords.", ctx.assign_lhs());
+				err.println("Pair element did not make use of the necessary 'fst' or 'snd' keywords.",
+						ctx.assign_lhs());
 			}
-			boolean validReadType = lhsType.equals("int") || lhsType.equals("string") 
-								|| lhsType.equals("char") || lhsType.contains("pair");
+			boolean validReadType = lhsType.equals("int") || lhsType.equals("string") || lhsType.equals("char")
+					|| lhsType.contains("pair");
 
 			if (!(lhsType.contains("[]") || validReadType)) {
 				err.println("Type given '" + lhsType + "' is not compatible with read.", ctx.assign_lhs());
@@ -298,8 +299,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 		String returnType = nodeType;
 		String functionType = functionHandler.getReturnType(function);
 		if (!returnType.equals(functionType)) {
-			err.println("Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType
-					+ ", Actual: " + returnType + ")", ctx);
+			err.println("Incompatible type at '" + ctx.getText() + "' (Expected: " + functionType + ", Actual: "
+					+ returnType + ")", ctx);
 		}
 		return null;
 	}
@@ -429,13 +430,14 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 
 		return lhsType;
 	}
-	
+
 	// Binary ops are in order of precedence
 	@Override
 	public Void visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("int")) {
-			err.println("Operator '" + ctx.dm_arithmetic_op().getText() + "' expecting type int", ctx.dm_arithmetic_op());
+			err.println("Operator '" + ctx.dm_arithmetic_op().getText() + "' expecting type int",
+					ctx.dm_arithmetic_op());
 		}
 		nodeType = "int";
 		return null;
@@ -445,7 +447,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 	public Void visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
 		String type = checkBinaryOpTypes(ctx.exp(0), ctx.exp(1));
 		if (!type.equals("int")) {
-			err.println("Operator '" + ctx.as_arithmetic_op().getText() + "' expecting type int", ctx.as_arithmetic_op());
+			err.println("Operator '" + ctx.as_arithmetic_op().getText() + "' expecting type int",
+					ctx.as_arithmetic_op());
 		}
 		nodeType = "int";
 		return null;
@@ -531,8 +534,8 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 			for (int i = 1; i < ctx.exp().size(); i++) {
 				visit(ctx.exp(i));
 				if (!nodeType.equals(type)) {
-					err.println("Array element types must be the same, at '" + ctx.exp(i).getText()
-							+ "' Expected: " + type + ", Actual: " + nodeType, ctx.exp(i));
+					err.println("Array element types must be the same, at '" + ctx.exp(i).getText() + "' Expected: "
+							+ type + ", Actual: " + nodeType, ctx.exp(i));
 				}
 			}
 			nodeType = type + "[]";
@@ -588,13 +591,14 @@ public class Visitor extends WACCParserBaseVisitor<Void> {
 							if (!actualType.equals(expectedType)) {
 								err.println(
 										"Incompatible type in function call '" + ctx.arg_list().exp(i).getText()
-												+ "' (Expected: " + expectedType + ", Actual: " + actualType + ")", ctx.arg_list().exp(i));
+												+ "' (Expected: " + expectedType + ", Actual: " + actualType + ")",
+										ctx.arg_list().exp(i));
 							}
 						}
 					}
 				} else {
-					err.println("Number of arguments does not match function definition at '"
-							+ ctx.getText() + "' (Expected number of args: " + (paramTypes.size() - 1) + ")", ctx);
+					err.println("Number of arguments does not match function definition at '" + ctx.getText()
+							+ "' (Expected number of args: " + (paramTypes.size() - 1) + ")", ctx);
 				}
 			}
 			nodeType = functionHandler.getReturnType(functionName);
