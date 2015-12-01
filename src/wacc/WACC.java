@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.*;
 import wacc.antlr.*;
 import wacc.semantics.Visitor;
 
-public class Test {
+public class WACC {
 	public static void main(String[] args) throws Exception {
 		//create a charStream that reads from stdin
 		ANTLRInputStream input = new ANTLRInputStream(System.in);

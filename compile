@@ -3,7 +3,7 @@
 # You are free to change the language used for this script,
 # but do *not* change its name.
 
-MAIN_FILE="wacc/Test"
+MAIN_FILE="wacc/WACC"
 TEST_FILE=$1
 
 java -cp bin:lib/antlr-4.4-complete.jar ${MAIN_FILE} < ${TEST_FILE}
