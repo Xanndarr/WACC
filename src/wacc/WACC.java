@@ -23,17 +23,19 @@ public class WACC {
 		//begin parsing at program rule
 		ParseTree tree = parser.program();
 		
-		//Exit if syntactical errors are present
+		//Exit if syntactic errors are present
 		if (parser.getNumberOfSyntaxErrors() > 0) {
 			System.exit(100);
 		}
 		
-		Visitor visitor = new Visitor();
+		ErrorReporter err = new ErrorReporter(System.err);
+		Visitor visitor = new Visitor(err);
 		visitor.visit(tree);
 		
-		//Exit if semantical errors are present
-		if (visitor.getReturnCode() != 0) {
-			System.exit(visitor.getReturnCode());
+		//Exit if semantic errors are present
+		int returnCode = err.getReturnCode();
+		if (returnCode != 0) {
+			System.exit(returnCode);
 		}
 	}
 }
