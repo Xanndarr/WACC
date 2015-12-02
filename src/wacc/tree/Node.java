@@ -20,4 +20,6 @@ public abstract class Node {
 		return children;
 	}
 	
+	public abstract void generate();
+	
 }
