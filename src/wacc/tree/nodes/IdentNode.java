@@ -10,4 +10,10 @@ public class IdentNode extends Node {
 		this.ident = ident;
 	}
 
+	@Override
+	public void generate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

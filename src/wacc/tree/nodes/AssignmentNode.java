@@ -13,4 +13,10 @@ public class AssignmentNode extends Node {
 		this.type = type;
 	}
 
+	@Override
+	public void generate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
