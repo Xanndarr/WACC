@@ -55,6 +55,7 @@ import wacc.antlr.WACCParser.Unary_opContext;
 import wacc.antlr.WACCParser.WhileContext;
 import wacc.codeGen.nodes.IdentNode;
 import wacc.antlr.WACCParserBaseVisitor;
+import wacc.codeGen.nodes.StringNode;
 import wacc.tree.Node;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
@@ -217,7 +218,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public Node visitString(StringContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitString(ctx);
+		return new StringNode(ctx.toString());
 	}
 
 	@Override
