@@ -1,68 +1,15 @@
 package wacc.codeGen;
 
-import wacc.antlr.WACCParser.AndOpExpContext;
-import wacc.antlr.WACCParser.And_opContext;
-import wacc.antlr.WACCParser.Arg_listContext;
-import wacc.antlr.WACCParser.ArrayElemContext;
-import wacc.antlr.WACCParser.Array_elemContext;
-import wacc.antlr.WACCParser.Array_litContext;
-import wacc.antlr.WACCParser.Array_typeContext;
-import wacc.antlr.WACCParser.AsArithmeticOpExpContext;
-import wacc.antlr.WACCParser.As_arithmetic_opContext;
-import wacc.antlr.WACCParser.Assign_lhsContext;
-import wacc.antlr.WACCParser.Assign_rhsContext;
-import wacc.antlr.WACCParser.AssignmentContext;
-import wacc.antlr.WACCParser.Base_typeContext;
-import wacc.antlr.WACCParser.BeginContext;
-import wacc.antlr.WACCParser.BoolContext;
-import wacc.antlr.WACCParser.BracketedExpContext;
-import wacc.antlr.WACCParser.CharContext;
-import wacc.antlr.WACCParser.DmArithmeticOpExpContext;
-import wacc.antlr.WACCParser.Dm_arithmetic_opContext;
-import wacc.antlr.WACCParser.EqualityOpExpContext;
-import wacc.antlr.WACCParser.Equality_opContext;
-import wacc.antlr.WACCParser.ExitContext;
-import wacc.antlr.WACCParser.FreeContext;
-import wacc.antlr.WACCParser.FuncContext;
-import wacc.antlr.WACCParser.IdentContext;
-import wacc.antlr.WACCParser.IdentExpContext;
-import wacc.antlr.WACCParser.IfContext;
-import wacc.antlr.WACCParser.InitialisationContext;
-import wacc.antlr.WACCParser.IntContext;
-import wacc.antlr.WACCParser.Int_litContext;
-import wacc.antlr.WACCParser.NumberContext;
-import wacc.antlr.WACCParser.OrOpExpContext;
-import wacc.antlr.WACCParser.Or_opContext;
-import wacc.antlr.WACCParser.OrderingOpExpContext;
-import wacc.antlr.WACCParser.Ordering_opContext;
-import wacc.antlr.WACCParser.PairContext;
-import wacc.antlr.WACCParser.Pair_elemContext;
-import wacc.antlr.WACCParser.Pair_elem_typeContext;
-import wacc.antlr.WACCParser.Pair_typeContext;
-import wacc.antlr.WACCParser.ParamContext;
-import wacc.antlr.WACCParser.Param_listContext;
-import wacc.antlr.WACCParser.PrintContext;
-import wacc.antlr.WACCParser.PrintlnContext;
-import wacc.antlr.WACCParser.ProgramContext;
-import wacc.antlr.WACCParser.ReadContext;
-import wacc.antlr.WACCParser.ReturnContext;
-import wacc.antlr.WACCParser.SequenceContext;
-import wacc.antlr.WACCParser.SkipContext;
-import wacc.antlr.WACCParser.StringContext;
-import wacc.antlr.WACCParser.TypeContext;
-import wacc.antlr.WACCParser.UnaryOpExpContext;
-import wacc.antlr.WACCParser.Unary_opContext;
-import wacc.antlr.WACCParser.WhileContext;
-import wacc.codeGen.nodes.IdentNode;
+import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
 import wacc.codeGen.nodes.StringNode;
 import wacc.tree.Node;
+import wacc.tree.nodes.IdentNode;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public Node visitArray_elem(Array_elemContext ctx) {
-		// TODO Auto-generated method stub
 		return super.visitArray_elem(ctx);
 	}
 
