@@ -2,7 +2,7 @@ package wacc.codeGen;
 
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
-import wacc.codeGen.nodes.StringNode;
+import wacc.tree.nodes.StringNode;
 import wacc.tree.Node;
 import wacc.tree.nodes.IdentNode;
 

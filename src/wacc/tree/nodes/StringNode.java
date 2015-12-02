@@ -10,4 +10,8 @@ public class StringNode extends Node {
         this.string = string;
     }
 
+    @Override
+    public void generate() {
+
+    }
 }
