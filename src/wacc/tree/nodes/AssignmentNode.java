@@ -8,9 +8,10 @@ public class AssignmentNode extends Node {
 	private final String ident;
 	private final Type type;
 	
-	public AssignmentNode(String ident, Type type) {
+	public AssignmentNode(String ident, Type type, Node value) {
 		this.ident = ident;
 		this.type = type;
+		addChild(value);
 	}
 
 	@Override

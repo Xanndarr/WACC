@@ -8,9 +8,10 @@ public class InitialisationNode extends Node {
 	private final String ident;
 	private final Type type;
 	
-	public InitialisationNode(String ident, Type type) {
+	public InitialisationNode(String ident, Type type, Node value) {
 		this.ident = ident;
 		this.type = type;
+		addChild(value);
 	}
 
 	@Override
