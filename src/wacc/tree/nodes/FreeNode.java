@@ -1,4 +1,4 @@
-package wacc.codeGen.nodes;
+package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
