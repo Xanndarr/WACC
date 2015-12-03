@@ -1,25 +1,35 @@
 package wacc.codeGen;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
+<<<<<<< HEAD
 import wacc.tree.nodes.BinaryOpNode;
 import wacc.tree.nodes.StringNode;
+=======
+>>>>>>> 08df4e2b6fd87afa80790816199db4af19d6742e
 import wacc.tree.Node;
-import wacc.tree.nodes.IdentNode;
+import wacc.tree.nodes.*;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
+	//TODO
 	@Override
 	public Node visitArray_elem(Array_elemContext ctx) {
 		return super.visitArray_elem(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitArrayElem(ArrayElemContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitArrayElem(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitAssign_lhs(Assign_lhsContext ctx) {
 		// TODO Auto-generated method stub
@@ -27,10 +37,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitIdent(IdentContext ctx) {
+	public IdentNode visitIdent(IdentContext ctx) {
 		return new IdentNode(ctx.toString());
 	}
 
+	//TODO
 	@Override
 	public Node visitAssign_rhs(Assign_rhsContext ctx) {
 		// TODO Auto-generated method stub
@@ -38,17 +49,20 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitAnd_op(And_opContext ctx) {
+	public BinaryOpNode visitAnd_op(And_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitAnd_op(ctx);
 	}
 
 	@Override
-	public Node visitProgram(ProgramContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitProgram(ctx);
+	public ProgramNode visitProgram(ProgramContext ctx) {
+		Collection<FunctionNode> functions = new ArrayList<FunctionNode>();
+		BeginNode stat = visitBegin(ctx);
+		ProgramNode program = new ProgramNode(stat, functions);
+		return program;
 	}
 
+	//TODO
 	@Override
 	public Node visitType(TypeContext ctx) {
 		// TODO Auto-generated method stub
@@ -56,17 +70,19 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitWhile(WhileContext ctx) {
+	public WhileNode visitWhile(WhileContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitWhile(ctx);
 	}
 
+	//TOOD
 	@Override
 	public Node visitBracketedExp(BracketedExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitBracketedExp(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitNumber(NumberContext ctx) {
 		// TODO Auto-generated method stub
@@ -74,29 +90,30 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitAndOpExp(AndOpExpContext ctx) {
+	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitAndOpExp(ctx);
 	}
 
 	@Override
-	public Node visitDm_arithmetic_op(Dm_arithmetic_opContext ctx) {
+	public BinaryOpNode visitDm_arithmetic_op(Dm_arithmetic_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitDm_arithmetic_op(ctx);
 	}
 
 	@Override
-	public Node visitIf(IfContext ctx) {
+	public IfNode visitIf(IfContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitIf(ctx);
 	}
 
 	@Override
-	public Node visitRead(ReadContext ctx) {
+	public ReadNode visitRead(ReadContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitRead(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitArray_lit(Array_litContext ctx) {
 		// TODO Auto-generated method stub
@@ -104,41 +121,42 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitUnary_op(Unary_opContext ctx) {
+	public UnaryOpNode visitUnary_op(Unary_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitUnary_op(ctx);
 	}
 
 	@Override
-	public Node visitEqualityOpExp(EqualityOpExpContext ctx) {
+	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitEqualityOpExp(ctx);
 	}
 
 	@Override
-	public Node visitPair_elem_type(Pair_elem_typeContext ctx) {
+	public PairElemNode visitPair_elem_type(Pair_elem_typeContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitPair_elem_type(ctx);
 	}
 
 	@Override
-	public Node visitAs_arithmetic_op(As_arithmetic_opContext ctx) {
+	public BinaryOpNode visitAs_arithmetic_op(As_arithmetic_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitAs_arithmetic_op(ctx);
 	}
 
 	@Override
-	public Node visitOrOpExp(OrOpExpContext ctx) {
+	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitOrOpExp(ctx);
 	}
 
 	@Override
-	public Node visitExit(ExitContext ctx) {
+	public ExitNode visitExit(ExitContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitExit(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitSequence(SequenceContext ctx) {
 		// TODO Auto-generated method stub
@@ -146,35 +164,36 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitBegin(BeginContext ctx) {
+	public BeginNode visitBegin(BeginContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitBegin(ctx);
 	}
 
 	@Override
-	public Node visitInitialisation(InitialisationContext ctx) {
+	public InitialisationNode visitInitialisation(InitialisationContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitInitialisation(ctx);
 	}
 
 	@Override
-	public Node visitBool(BoolContext ctx) {
+	public BoolNode visitBool(BoolContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitBool(ctx);
 	}
 
 	@Override
-	public Node visitString(StringContext ctx) {
+	public StringNode visitString(StringContext ctx) {
 		// TODO Auto-generated method stub
 		return new StringNode(ctx.toString());
 	}
 
 	@Override
-	public Node visitOrderingOpExp(OrderingOpExpContext ctx) {
+	public BinaryOpNode visitOrderingOpExp(OrderingOpExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitOrderingOpExp(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitSkip(SkipContext ctx) {
 		// TODO Auto-generated method stub
