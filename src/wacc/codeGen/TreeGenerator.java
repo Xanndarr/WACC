@@ -6,6 +6,7 @@ import wacc.tree.nodeInterfaces.ExpNode;
 import wacc.tree.nodeInterfaces.Node;
 import wacc.tree.nodeInterfaces.StatNode;
 import wacc.tree.nodes.*;
+import wacc.tree.nodes.PairElemNode.PairPos;
 import wacc.util.Type;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
@@ -243,19 +244,28 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public FunctionNode visitFunc(FuncContext ctx) {
-		// TODO Auto-generated method stub
+		FunctionNode fun = new FunctionNode(ctx.ident().getText());
 		return new FunctionNode(ctx.ident().getText());
 	}
 
 	@Override
 	public PairElemNode visitPair_elem(Pair_elemContext ctx) {
-		// TODO Auto-generated method stub
-		return new PairElemNode();
+		PairPos pos;
+		if (ctx.FST() == null) {
+			pos = PairPos.SND;
+		} else {
+			pos = PairPos.FST;
+		}
+		
+		PairElemNode pairElemNode = new PairElemNode(pos);
+		ExpNode pairExp = (ExpNode) visit(ctx.exp());
+		
+		pairElemNode.addChild(pairExp);
+		return pairElemNode;
 	}
 
 	@Override
 	public CharNode visitChar(CharContext ctx) {
-		// TODO Auto-generated method stub
 		return new CharNode(ctx.getText().charAt(0));
 	}
 
