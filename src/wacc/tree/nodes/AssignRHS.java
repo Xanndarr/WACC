@@ -1,11 +1,12 @@
 package wacc.tree.nodes;
 
-        import wacc.tree.Node;
+import wacc.tree.Node;
 
-public class WhileNode implements Node {
+public class AssignRHS implements Node {
 
     @Override
     public void generate() {
 
     }
+
 }

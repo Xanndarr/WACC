@@ -6,7 +6,7 @@ import java.util.List;
 public interface Node {
 
 	List<Node> children = new LinkedList<Node>();
-	
+
 	static void addChild(Node child) {
 		children.add(child);
 	}
