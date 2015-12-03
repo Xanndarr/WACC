@@ -100,11 +100,11 @@ assign_lhs: ident
           | pair_elem
           ;
 
-assign_rhs: exp
-          | array_lit
-          | NEWPAIR OPEN_PAR exp COMMA exp CLOSE_PAR
-          | pair_elem
-          | CALL ident OPEN_PAR arg_list? CLOSE_PAR
+assign_rhs: exp											#expRHS
+          | array_lit									#arrayLitRHS
+          | NEWPAIR OPEN_PAR exp COMMA exp CLOSE_PAR	#newPairRHS
+          | pair_elem									#pairElemRHS
+          | CALL ident OPEN_PAR arg_list? CLOSE_PAR		#funCallRHS
           ;
 
 ident: ID ;
