@@ -2,6 +2,7 @@ package wacc.codeGen;
 
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
+import wacc.tree.nodes.BinaryOpNode;
 import wacc.tree.nodes.StringNode;
 import wacc.tree.Node;
 import wacc.tree.nodes.IdentNode;
@@ -181,47 +182,54 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitOrdering_op(Ordering_opContext ctx) {
+	public BinaryOpNode visitOrdering_op(Ordering_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitOrdering_op(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitPrintln(PrintlnContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitPrintln(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitBase_type(Base_typeContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitBase_type(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitPair_type(Pair_typeContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitPair_type(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitUnaryOpExp(UnaryOpExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitUnaryOpExp(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitParam(ParamContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitParam(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitArray_type(Array_typeContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitArray_type(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
 		// TODO Auto-generated method stub
@@ -229,17 +237,19 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitFree(FreeContext ctx) {
+	public FreeNode visitFree(FreeContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitFree(ctx);
 	}
 
+
 	@Override
-	public Node visitEquality_op(Equality_opContext ctx) {
+	public BinaryNode visitEquality_op(Equality_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitEquality_op(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
 		// TODO Auto-generated method stub
@@ -247,47 +257,50 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitAssignment(AssignmentContext ctx) {
+	public AssignmentNode visitAssignment(AssignmentContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitAssignment(ctx);
 	}
 
 	@Override
-	public Node visitIdentExp(IdentExpContext ctx) {
+	public IdentNode visitIdentExp(IdentExpContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitIdentExp(ctx);
 	}
 
 	@Override
-	public Node visitOr_op(Or_opContext ctx) {
+	public BinaryOpNode visitOr_op(Or_opContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitOr_op(ctx);
 	}
 
 	@Override
-	public Node visitInt(IntContext ctx) {
+	public IntNode visitInt(IntContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitInt(ctx);
 	}
 
 	@Override
-	public Node visitPair(PairContext ctx) {
+	public PairNode visitPair(PairContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitPair(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitArg_list(Arg_listContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitArg_list(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitParam_list(Param_listContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitParam_list(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitPrint(PrintContext ctx) {
 		// TODO Auto-generated method stub
@@ -295,11 +308,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitFunc(FuncContext ctx) {
+	public FunctionNode visitFunc(FuncContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitFunc(ctx);
 	}
 
+	//TODO
 	@Override
 	public Node visitInt_lit(Int_litContext ctx) {
 		// TODO Auto-generated method stub
@@ -307,19 +321,19 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitPair_elem(Pair_elemContext ctx) {
+	public PairElemNode visitPair_elem(Pair_elemContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitPair_elem(ctx);
 	}
 
 	@Override
-	public Node visitChar(CharContext ctx) {
+	public CharNode visitChar(CharContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitChar(ctx);
 	}
 
 	@Override
-	public Node visitReturn(ReturnContext ctx) {
+	public ReturnNode visitReturn(ReturnContext ctx) {
 		// TODO Auto-generated method stub
 		return super.visitReturn(ctx);
 	}
