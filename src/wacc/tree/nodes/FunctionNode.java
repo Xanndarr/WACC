@@ -1,9 +1,6 @@
 package wacc.tree.nodes;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import wacc.tree.Node;
+import wacc.tree.nodeInterfaces.StatNode;
 
 public class FunctionNode implements StatNode {
 	

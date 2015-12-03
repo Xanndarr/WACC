@@ -2,11 +2,10 @@ package wacc.codeGen;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
-import wacc.tree.Node;
+import wacc.tree.nodeInterfaces.Node;
 import wacc.tree.nodes.*;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{

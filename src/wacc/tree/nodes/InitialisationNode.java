@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.Node;
+import wacc.tree.nodeInterfaces.StatNode;
 import wacc.util.Type;
 
 public class InitialisationNode implements StatNode {
