@@ -6,11 +6,6 @@ import java.util.List;
 
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
-<<<<<<< HEAD
-import wacc.tree.nodes.BinaryOpNode;
-import wacc.tree.nodes.StringNode;
-=======
->>>>>>> 08df4e2b6fd87afa80790816199db4af19d6742e
 import wacc.tree.Node;
 import wacc.tree.nodes.*;
 
