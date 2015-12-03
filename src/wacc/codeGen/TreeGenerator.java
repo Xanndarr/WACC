@@ -1,19 +1,12 @@
 package wacc.codeGen;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
 import wacc.tree.nodeInterfaces.ExpNode;
 import wacc.tree.nodeInterfaces.Node;
 import wacc.tree.nodeInterfaces.StatNode;
 import wacc.tree.nodes.*;
-import wacc.util.BinaryOp;
 import wacc.util.Type;
-import wacc.util.UnaryOp;
-
-import javax.sound.midi.Sequence;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
