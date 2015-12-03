@@ -42,28 +42,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return new IdentNode(ctx.toString());
 	}
 
-	//TODO
-	@Override
-	public Node visitAssign_rhs(Assign_rhsContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAssign_rhs(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitAnd_op(And_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAnd_op(ctx);
-	}
-
 	@Override
 	public ProgramNode visitProgram(ProgramContext ctx) {
-		Collection<FunctionNode> functions = new ArrayList<FunctionNode>();
-		BeginNode stat = visitBegin(ctx);
-		ProgramNode program = new ProgramNode(stat, functions);
-		return program;
+        return new ProgramNode();
 	}
 
-	//TODO
 	@Override
 	public TypeNode visitType(TypeContext ctx) {
 		// TODO Auto-generated method stub
@@ -85,7 +68,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 			public void generate() {
 
 			}
-		}
+		};
 	}
 
 	@Override
@@ -279,32 +262,25 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public FunctionNode visitFunc(FuncContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitFunc(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitInt_lit(Int_litContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitInt_lit();
+		return new FunctionNode(ctx.ident().getText());
 	}
 
 	@Override
 	public PairElemNode visitPair_elem(Pair_elemContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitPair_elem(ctx);
+		return new PairElemNode();
 	}
 
 	@Override
 	public CharNode visitChar(CharContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitChar(ctx);
+		return new CharNode(ctx.getText().charAt(0));
 	}
 
 	@Override
 	public ReturnNode visitReturn(ReturnContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitReturn(ctx);
+		return new ReturnNode();
 	}
 
 }
