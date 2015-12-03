@@ -261,8 +261,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ReturnNode visitReturn(ReturnContext ctx) {
-		// TODO Auto-generated method stub
-		return new ReturnNode();
+		ReturnNode ret = new ReturnNode();
+		ExpNode retExp = (ExpNode) visit(ctx.exp());
+		ret.addChild(retExp);
+		return ret;
 	}
 
 }
