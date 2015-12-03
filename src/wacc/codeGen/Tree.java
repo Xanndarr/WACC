@@ -5,6 +5,10 @@ import wacc.tree.nodes.ProgramNode;
 
 public class Tree {
 	
-	private Node head = new ProgramNode();
+	private Node head = null;
+	
+	public Tree(ProgramNode head) {
+		this.head = head;
+	}
 
 }
