@@ -238,8 +238,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	//TODO
 	@Override
 	public PrintNode visitPrint(PrintContext ctx) {
-		// TODO Auto-generated method stub
-		return new PrintNode();
+		PrintNode printNode = new PrintNode();
+		ExpNode printExp = (ExpNode) visit(ctx.exp());
+		printNode.addChild(printExp);
+		return printNode;
 	}
 
 	@Override
