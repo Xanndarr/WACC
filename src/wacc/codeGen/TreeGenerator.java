@@ -218,7 +218,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public AssignmentNode visitAssignment(AssignmentContext ctx) {
 		// TODO Auto-generated method stub
-		return new AssignmentNode(Type.parse(ctx.assign_lhs().getChild(0).getText()));
+		String ident = ctx.assign_lhs().ident().getText();
+		String type = ctx.assign_lhs().getChild(0).getText();
+		return new AssignmentNode(ident, Type.parse(type));
 	}
 
 	@Override
