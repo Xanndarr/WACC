@@ -229,16 +229,16 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	//TODO
 	@Override
-	public Node visitParam_list(Param_listContext ctx) {
+	public ParamListNode visitParam_list(Param_listContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitParam_list(ctx);
+		return new ParamListNode();
 	}
 
 	//TODO
 	@Override
-	public Node visitPrint(PrintContext ctx) {
+	public PrintNode visitPrint(PrintContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitPrint(ctx);
+		return new PrintNode();
 	}
 
 	@Override
