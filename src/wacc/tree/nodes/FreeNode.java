@@ -2,11 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class FreeNode extends Node {
-	
-	public FreeNode(Node exp) {
-		addChild(exp);
-	}
+public class FreeNode implements Node {
 
 	@Override
 	public void generate() {

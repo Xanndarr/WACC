@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class BoolNode extends Node {
+public class BoolNode implements Node {
 
     private final boolean b;
 

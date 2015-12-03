@@ -2,12 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class IfNode extends Node {
-	
-	public IfNode(Node condtion, Node body) {
-		addChild(condtion);
-		addChild(body);
-	}
+public class IfNode implements Node {
 
 	@Override
 	public void generate() {

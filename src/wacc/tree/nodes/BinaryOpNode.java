@@ -2,14 +2,12 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class BinaryOpNode extends Node {
+public class BinaryOpNode implements Node {
 	
 	private final String op;
 	
-	public BinaryOpNode(Node lhs, String op, Node rhs) {
+	public BinaryOpNode(String op) {
 		this.op = op;
-		addChild(lhs);
-		addChild(rhs);
 	}
 
 	@Override

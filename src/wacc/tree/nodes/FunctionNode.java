@@ -5,15 +5,12 @@ import java.util.List;
 
 import wacc.tree.Node;
 
-public class FunctionNode extends Node {
+public class FunctionNode implements Node {
 	
 	private final String name;
 
-	public FunctionNode(String name, Node ... args) {
+	public FunctionNode(String name) {
 		this.name = name;
-		for (Node arg : args) {
-			addChild(arg);
-		}
 	}
 
 	@Override

@@ -3,15 +3,14 @@ package wacc.tree.nodes;
 import wacc.tree.Node;
 import wacc.util.Type;
 
-public class InitialisationNode extends Node {
+public class InitialisationNode implements Node {
 	
 	private final String ident;
 	private final Type type;
 	
-	public InitialisationNode(String ident, Type type, Node value) {
+	public InitialisationNode(String ident, Type type) {
 		this.ident = ident;
 		this.type = type;
-		addChild(value);
 	}
 
 	@Override

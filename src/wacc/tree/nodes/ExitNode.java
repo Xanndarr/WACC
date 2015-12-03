@@ -2,11 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class ExitNode extends Node {
-	
-	public ExitNode(Node exp) {
-		addChild(exp);
-	}
+public class ExitNode implements Node {
 
 	@Override
 	public void generate() {

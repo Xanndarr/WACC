@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class StringNode extends Node {
+public class StringNode implements Node {
 
     private final String string;
 

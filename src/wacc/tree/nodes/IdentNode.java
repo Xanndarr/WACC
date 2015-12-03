@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class IdentNode extends Node {
+public class IdentNode implements Node {
 	
 	private final String ident;
 	

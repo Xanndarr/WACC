@@ -2,14 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class ProgramNode extends Node {
-
-    public ProgramNode(Node stat, Node...functions) {
-        for (Node function : functions) {
-            addChild(function);
-        }
-        addChild(stat);
-    }
+public class ProgramNode implements Node {
 
     @Override
     public void generate() {
