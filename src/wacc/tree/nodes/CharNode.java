@@ -1,8 +1,9 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeInterfaces.TypeNode;
 
-public class CharNode implements Node {
+public class CharNode implements TypeNode {
 
     private final char c;
 

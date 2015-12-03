@@ -1,8 +1,9 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeInterfaces.TypeNode;
 
-public class BoolNode implements Node {
+public class BoolNode implements TypeNode {
 
     private final boolean b;
 
