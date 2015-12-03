@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.Node;
 import wacc.util.Type;
 
-public class PairNode implements Node {
+public class PairNode implements ExpNode {
 
     private final Type fst;
     private final Type snd;

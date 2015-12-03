@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class FreeNode implements Node {
+public class FreeNode implements StatNode {
 
 	@Override
 	public void generate() {

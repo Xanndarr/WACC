@@ -5,7 +5,7 @@ import java.util.List;
 
 import wacc.tree.Node;
 
-public class FunctionNode implements Node {
+public class FunctionNode implements StatNode {
 	
 	private final String name;
 

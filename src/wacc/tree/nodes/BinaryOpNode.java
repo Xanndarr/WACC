@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.Node;
 
-public class BinaryOpNode implements Node {
+public class BinaryOpNode implements ExpNode {
 	
 	private final String op;
 	
