@@ -5,9 +5,9 @@ import wacc.util.Type;
 
 public class TypeNode implements Node {
 	
-	private final Type type;
+	private Type type = Type.NULL;
 	
-	public TypeNode(Type type) {
+	public TypeNode() {
 		this.type = type;
 	}
 

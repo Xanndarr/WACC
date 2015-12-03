@@ -5,8 +5,15 @@ import java.util.Collection;
 
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
+import wacc.tree.nodeInterfaces.ExpNode;
 import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeInterfaces.StatNode;
 import wacc.tree.nodes.*;
+import wacc.util.BinaryOp;
+import wacc.util.Type;
+import wacc.util.UnaryOp;
+
+import javax.sound.midi.Sequence;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
@@ -58,252 +65,201 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	//TODO
 	@Override
-	public Node visitType(TypeContext ctx) {
+	public TypeNode visitType(TypeContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitType(ctx);
+		return new TypeNode();
 	}
 
 	@Override
 	public WhileNode visitWhile(WhileContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitWhile(ctx);
+		return new WhileNode();
 	}
 
 	//TOOD
 	@Override
-	public Node visitBracketedExp(BracketedExpContext ctx) {
+	public ExpNode visitBracketedExp(BracketedExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitBracketedExp(ctx);
-	}
+		return new ExpNode() {
+			@Override
+			public void generate() {
 
-	//TODO
-	@Override
-	public Node visitNumber(NumberContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitNumber(ctx);
+			}
+		}
 	}
 
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitAndOpExp(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitDm_arithmetic_op(Dm_arithmetic_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitDm_arithmetic_op(ctx);
+		return new BinaryOpNode();
 	}
 
 	@Override
 	public IfNode visitIf(IfContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitIf(ctx);
+		return new IfNode();
 	}
 
 	@Override
 	public ReadNode visitRead(ReadContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitRead(ctx);
+		return new ReadNode();
 	}
 
 	//TODO
 	@Override
-	public Node visitArray_lit(Array_litContext ctx) {
+	public ArrayNode visitArray_lit(Array_litContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitArray_lit(ctx);
-	}
-
-	@Override
-	public UnaryOpNode visitUnary_op(Unary_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitUnary_op(ctx);
+		return new ArrayNode();
 	}
 
 	@Override
 	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitEqualityOpExp(ctx);
+		return new BinaryOpNode();
 	}
 
 	@Override
 	public PairElemNode visitPair_elem_type(Pair_elem_typeContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitPair_elem_type(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitAs_arithmetic_op(As_arithmetic_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAs_arithmetic_op(ctx);
+		return new PairElemNode();
 	}
 
 	@Override
 	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitOrOpExp(ctx);
+		return new BinaryOpNode();
 	}
 
 	@Override
 	public ExitNode visitExit(ExitContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitExit(ctx);
+		return new ExitNode();
 	}
 
 	//TODO
 	@Override
-	public Node visitSequence(SequenceContext ctx) {
+	public SequenceNode visitSequence(SequenceContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitSequence(ctx);
+		return new SequenceNode();
 	}
 
 	@Override
 	public BeginNode visitBegin(BeginContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitBegin(ctx);
+		return new BeginNode();
 	}
 
 	@Override
 	public InitialisationNode visitInitialisation(InitialisationContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitInitialisation(ctx);
+		return new InitialisationNode(ctx.ident().getText(), Type.parse(ctx.type().getText()));
 	}
 
 	@Override
 	public BoolNode visitBool(BoolContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitBool(ctx);
+		return new BoolNode(Boolean.parseBoolean(ctx.getText()));
 	}
 
 	@Override
 	public StringNode visitString(StringContext ctx) {
 		// TODO Auto-generated method stub
-		return new StringNode(ctx.toString());
+		return new StringNode(ctx.getText());
 	}
 
 	@Override
 	public BinaryOpNode visitOrderingOpExp(OrderingOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitOrderingOpExp(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitSkip(SkipContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitSkip(ctx);
+		return new BinaryOpNode();
 	}
 
 	@Override
-	public BinaryOpNode visitOrdering_op(Ordering_opContext ctx) {
+	public StatNode visitSkip(SkipContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitOrdering_op(ctx);
+		return new StatNode() {
+			@Override
+			public void generate() {
+
+			}
+		};
 	}
 
-	//TODO
 	@Override
-	public Node visitPrintln(PrintlnContext ctx) {
+	public PrintlnNode visitPrintln(PrintlnContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitPrintln(ctx);
+		return new PrintlnNode();
 	}
 
-	//TODO
 	@Override
-	public Node visitBase_type(Base_typeContext ctx) {
+	public TypeNode visitPair_type(Pair_typeContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitBase_type(ctx);
+		return new TypeNode();
 	}
 
-	//TODO
 	@Override
-	public Node visitPair_type(Pair_typeContext ctx) {
+	public UnaryOpNode visitUnaryOpExp(UnaryOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitPair_type(ctx);
+		return new UnaryOpNode();
 	}
 
-	//TODO
-	@Override
-	public Node visitUnaryOpExp(UnaryOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitUnaryOpExp(ctx);
-	}
-
-	//TODO
 	@Override
 	public Node visitParam(ParamContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitParam(ctx);
+		return new Node() {
+			@Override
+			public void generate() {
+
+			}
+		};
 	}
 
-	//TODO
 	@Override
-	public Node visitArray_type(Array_typeContext ctx) {
+	public BinaryOpNode visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitArray_type(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAsArithmeticOpExp(ctx);
+		return new BinaryOpNode();
 	}
 
 	@Override
 	public FreeNode visitFree(FreeContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitFree(ctx);
+		return new FreeNode();
 	}
 
-
 	@Override
-	public BinaryNode visitEquality_op(Equality_opContext ctx) {
+	public BinaryOpNode visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitEquality_op(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitDmArithmeticOpExp(ctx);
+		return new BinaryOpNode();
 	}
 
 	@Override
 	public AssignmentNode visitAssignment(AssignmentContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitAssignment(ctx);
+		return new AssignmentNode(Type.parse(ctx.assign_lhs().getChild(0).getText()));
 	}
 
 	@Override
 	public IdentNode visitIdentExp(IdentExpContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitIdentExp(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitOr_op(Or_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOr_op(ctx);
+		return new IdentNode(ctx.getText());
 	}
 
 	@Override
 	public IntNode visitInt(IntContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitInt(ctx);
+		return new IntNode(Integer.parseInt(ctx.getText()));
 	}
 
 	@Override
 	public PairNode visitPair(PairContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitPair(ctx);
+		return new PairNode();
 	}
 
-	//TODO
 	@Override
-	public Node visitArg_list(Arg_listContext ctx) {
+	public ArgListNode visitArg_list(Arg_listContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitArg_list(ctx);
+		return new ArgListNode();
 	}
 
 	//TODO
@@ -330,7 +286,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public Node visitInt_lit(Int_litContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitInt_lit(ctx);
+		return super.visitInt_lit();
 	}
 
 	@Override
