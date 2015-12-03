@@ -1,4 +1,4 @@
-package wacc.tree;
+package wacc.tree.NodeInterfaces;
 
 import java.util.LinkedList;
 import java.util.List;
