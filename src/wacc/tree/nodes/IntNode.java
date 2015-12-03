@@ -1,9 +1,8 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.Node;
-import wacc.tree.nodeInterfaces.TypeNode;
+import wacc.tree.nodeInterfaces.ExpNode;
 
-public class IntNode implements TypeNode {
+public class IntNode implements ExpNode {
 
     private final int n;
 

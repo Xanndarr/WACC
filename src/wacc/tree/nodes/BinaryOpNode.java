@@ -1,12 +1,13 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeInterfaces.ExpNode;
+import wacc.util.BinaryOp;
 
 public class BinaryOpNode implements ExpNode {
 	
-	private final String op;
+	private final BinaryOp op;
 	
-	public BinaryOpNode(String op) {
+	public BinaryOpNode(BinaryOp op) {
 		this.op = op;
 	}
 

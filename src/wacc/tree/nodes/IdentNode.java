@@ -1,8 +1,9 @@
 package wacc.tree.nodes;
 
+import wacc.tree.nodeInterfaces.AssignLHSNode;
 import wacc.tree.nodeInterfaces.ExpNode;
 
-public class IdentNode implements ExpNode {
+public class IdentNode implements ExpNode, AssignLHSNode {
 	
 	private final String ident;
 	
