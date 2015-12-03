@@ -19,22 +19,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	//TODO
 	@Override
-	public Node visitArray_elem(Array_elemContext ctx) {
-		return super.visitArray_elem(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitArrayElem(ArrayElemContext ctx) {
+	public ArrayElemNode visitArrayElem(ArrayElemContext ctx) {
 		// TODO Auto-generated method stub
-		return super.visitArrayElem(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitAssign_lhs(Assign_lhsContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAssign_lhs(ctx);
+		return new ArrayElemNode();
 	}
 
 	@Override
