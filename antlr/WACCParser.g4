@@ -7,12 +7,6 @@ options {
 program: BEGIN func* stat END EOF;
 
 type: (base_type | pair_type) (array_type)* ;
-//    | array_type
-//    | pair_type
-//    ;
-//        base_type array_type*
-//      | pair_type array_type*
-//      ;
 
 stat: SKIP 								#skip
     | type ident ASSIGN assign_rhs 		#initialisation
@@ -32,10 +26,6 @@ stat: SKIP 								#skip
 base_type: INT | CHAR | STRING | BOOL ;
 
 array_type : OPEN_SQ_BRACK CLOSE_SQ_BRACK ; 
-//             base_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
-//           | pair_type OPEN_SQ_BRACK CLOSE_SQ_BRACK
-//           | array_type OPEN_SQ_BRACK CLOSE_SQ_BRACK 
-//           ;
 
 array_elem: ident (OPEN_SQ_BRACK exp CLOSE_SQ_BRACK)+ ;
 
