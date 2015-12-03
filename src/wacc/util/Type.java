@@ -2,19 +2,25 @@ package wacc.util;
 
 public enum Type {
 	
-	BOOL("bool"), CHAR("char"), STRING("string"), INT("int"), ARRAY(""), PAIR(""), NULL("");
+	BOOL("bool"), CHAR("char"), STRING("string"), INT("int"), ARRAY("[]"), PAIR("pair"), NULL("NULL");
 
-	private String type;
+	private String sType;
 
-	private Type(String op) {
-		this.type = type;
+	private Type(String sType) {
+		this.sType = sType;
 	}
 
-	public static Type parse(String type2) {
+	public static Type parse(String s) {
 		for (Type t : Type.values()) {
-			if (t.type.equals(type2)) {
+			if (t.sType.equals(s)) {
 				return t;
 			}
+		}
+		if (s.contains(ARRAY.sType)) {
+			return ARRAY;
+		}
+		if (s.contains(PAIR.sType)) {
+			return PAIR;
 		}
 		return NULL;
 	}
