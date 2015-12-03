@@ -7,7 +7,7 @@ public interface Node {
 
 	List<Node> children = new LinkedList<Node>();
 
-	static void addChild(Node child) {
+	default void addChild(Node child) {
 		children.add(child);
 	}
 	
