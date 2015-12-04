@@ -1,8 +1,8 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.AssignLHSNode;
+import wacc.tree.nodeInterfaces.AssignRHSNode;
 
-public class PairElemNode extends AssignLHSNode {
+public class PairElemNode extends AssignRHSNode {
 	
 	public enum PairPos {
 		FST, SND;
