@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.*;
 
 //import antlr package
 import wacc.antlr.*;
+import wacc.codeGen.AssemblyWriter;
 import wacc.codeGen.Tree;
 import wacc.codeGen.TreeGenerator;
 import wacc.semantics.WACCVisitor;
@@ -14,6 +15,11 @@ public class WACC {
     public static void main(String[] args) throws Exception {
         //create a charStream that reads from stdin
         ANTLRInputStream input = new ANTLRInputStream(System.in);
+        System.out.println("============================");
+        for (String s : args) {
+        	System.out.println(s.substring(s.lastIndexOf('/') + 1));
+        }
+        System.out.println("============================");
 
         //create a lexer that feeds off of input charStream
         WACCLexer lexer = new WACCLexer(input);
@@ -45,5 +51,13 @@ public class WACC {
         TreeGenerator generator = new TreeGenerator();
         Tree internalTree = new Tree(generator.visit(parseTree));
         System.out.println(internalTree.print());
+        
+        String filePath = args[0];
+        String file = filePath.trim().substring(filePath.lastIndexOf('/') + 1);
+        String fileName = file.replace(".wacc", "");
+        
+        AssemblyWriter writer = new AssemblyWriter(fileName);
+        internalTree.generate();
+        writer.write();
     }
 }
