@@ -149,13 +149,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BoolNode visitBool(BoolContext ctx) {
-		// TODO Auto-generated method stub
 		return new BoolNode(Boolean.parseBoolean(ctx.getText()));
 	}
 
 	@Override
 	public StringNode visitString(StringContext ctx) {
-		// TODO Auto-generated method stub
 		return new StringNode(ctx.getText());
 	}
 
