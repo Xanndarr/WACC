@@ -14,5 +14,9 @@ public class Tree {
 	public String print() {
 		return head.print(1);
 	}
+	
+	public void generate() {
+		head.generate();
+	}
 
 }
