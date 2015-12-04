@@ -166,17 +166,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public StatNode visitSkip(SkipContext ctx) {
-		// TODO Auto-generated method stub
-		return new StatNode() {
-			@Override
-			public void generate() {
-
-			}
-		};
-	}
-
-	@Override
 	public PrintlnNode visitPrintln(PrintlnContext ctx) {
 		PrintlnNode printlnNode = new PrintlnNode();
 		ExpNode printExp = (ExpNode) visit(ctx.exp());
