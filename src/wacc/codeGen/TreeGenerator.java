@@ -14,10 +14,14 @@ import wacc.util.Type;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
-	//TODO
 	@Override
 	public ArrayElemNode visitArrayElem(ArrayElemContext ctx) {
-		// TODO Auto-generated method stub
+		ArrayElemNode arrayElem = new ArrayElemNode();
+		IdentNode ident = visitIdent(ctx.array_elem().ident());
+		arrayElem.addChild(ident);
+		for (ExpContext exp : ctx.array_elem().exp()) {
+			arrayElem.addChild((ExpNode) visit(exp));
+		}
 		return new ArrayElemNode();
 	}
 
@@ -202,8 +206,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public FreeNode visitFree(FreeContext ctx) {
-		// TODO Auto-generated method stub
-		return new FreeNode();
+        FreeNode free = new FreeNode();
+        ExpNode exp = (ExpNode) visit(ctx.exp());
+        free.addChild(exp);
+        return free;
 	}
 
 	@Override
