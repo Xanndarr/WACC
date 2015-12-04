@@ -176,6 +176,15 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	public TypeNode visitPair_type(Pair_typeContext ctx) {
 		return new TypeNode();
 	}
+	
+	@Override
+	public NewPairNode visitNewPairRHS(NewPairRHSContext ctx) {
+		NewPairNode newpair = new NewPairNode();
+		for (ExpContext exp : ctx.exp()) {
+			newpair.addChild(visit(exp));
+		}
+		return newpair;
+	}
 
 	@Override
 	public UnaryOpNode visitUnaryOpExp(UnaryOpExpContext ctx) {
