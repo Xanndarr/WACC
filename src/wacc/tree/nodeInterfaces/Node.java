@@ -18,9 +18,7 @@ public abstract class Node {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getClass().getName() + "\n");
 		for (Node child : children) {
-			for (int i = 1; i <= indent; i++) {
-				sb.append("\t");
-			}
+			IntStream.range(0, indent).forEach((i) -> sb.append("\t"));
 			if (child != null) {
 				sb.append(child.print(indent + 1));
 			} else {
