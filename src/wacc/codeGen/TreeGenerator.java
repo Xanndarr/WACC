@@ -81,10 +81,13 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
         return read;
 	}
 
-	//TODO
 	@Override
 	public ArrayNode visitArray_lit(Array_litContext ctx) {
-		return new ArrayNode();
+		ArrayNode array = new ArrayNode();
+		for (ExpContext exp : ctx.exp()) {
+			array.addChild(visit(exp));
+		}
+		return array;
 	}
 
 	@Override
