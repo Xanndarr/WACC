@@ -59,18 +59,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return whileNode;
 	}
 
-	//TOOD
-	@Override
-	public ExpNode visitBracketedExp(BracketedExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new ExpNode() {
-			@Override
-			public void generate() {
-
-			}
-		};
-	}
-
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
 		// TODO Auto-generated method stub
@@ -124,7 +112,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ExitNode visitExit(ExitContext ctx) {
-		// TODO Auto-generated method stub
 		return new ExitNode();
 	}
 
