@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.ExpNode;
 import wacc.tree.nodeInterfaces.Node;
 
-public class StringNode implements ExpNode {
+public class StringNode extends ExpNode {
 
     private final String string;
 

@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.StatNode;
 import wacc.util.Type;
 
-public class AssignmentNode implements StatNode {
+public class AssignmentNode extends StatNode {
 
 	@Override
 	public void generate() {

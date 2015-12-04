@@ -1,3 +1,3 @@
 package wacc.tree.nodeInterfaces;
 
-public interface StatNode extends Node {}
+public abstract class StatNode extends Node {}

@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.Node;
 import wacc.util.Type;
 
-public class TypeNode implements Node {
+public class TypeNode extends Node {
 	
 	private Type type = Type.NULL;
 	

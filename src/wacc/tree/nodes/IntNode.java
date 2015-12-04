@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.nodeInterfaces.ExpNode;
 
-public class IntNode implements ExpNode {
+public class IntNode extends ExpNode {
 
     private final int n;
 

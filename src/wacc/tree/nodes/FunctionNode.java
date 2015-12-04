@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.nodeInterfaces.StatNode;
 
-public class FunctionNode implements StatNode {
+public class FunctionNode extends StatNode {
 	
 	private final String name;
 

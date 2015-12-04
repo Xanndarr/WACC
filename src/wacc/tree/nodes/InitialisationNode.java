@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.StatNode;
 import wacc.util.Type;
 
-public class InitialisationNode implements StatNode {
+public class InitialisationNode extends StatNode {
 	
 	private final String ident;
 	private final Type type;

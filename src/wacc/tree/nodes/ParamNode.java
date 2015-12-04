@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.Node;
 import wacc.util.Type;
 
-public class ParamNode implements Node {
+public class ParamNode extends Node {
 	
 	private Type type;
 	private String ident;

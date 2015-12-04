@@ -3,7 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.ExpNode;
 import wacc.tree.nodeInterfaces.Node;
 
-public class BoolNode implements ExpNode {
+public class BoolNode extends ExpNode {
 
     private final boolean b;
 

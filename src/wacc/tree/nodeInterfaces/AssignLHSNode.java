@@ -1,3 +1,3 @@
 package wacc.tree.nodeInterfaces;
 
-public interface AssignLHSNode extends Node {}
+public abstract class AssignLHSNode extends Node {}
