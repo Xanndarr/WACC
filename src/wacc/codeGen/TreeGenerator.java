@@ -79,8 +79,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode ret = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        ret.addChild(exp1);
+        ret.addChild(exp2);
+        return ret;
 	}
 
 	@Override
@@ -91,8 +95,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -134,8 +142,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitOrderingOpExp(OrderingOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -163,8 +175,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public UnaryOpNode visitUnaryOpExp(UnaryOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new UnaryOpNode();
+        UnaryOpNode op = new UnaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp());
+        op.addChild(exp1);
+        return op;
 	}
 
 	@Override
@@ -180,8 +194,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -192,8 +210,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
