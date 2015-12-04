@@ -84,7 +84,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	//TODO
 	@Override
 	public ArrayNode visitArray_lit(Array_litContext ctx) {
-		// TODO Auto-generated method stub
 		return new ArrayNode();
 	}
 
