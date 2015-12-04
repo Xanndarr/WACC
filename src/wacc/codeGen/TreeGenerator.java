@@ -59,22 +59,14 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return whileNode;
 	}
 
-	//TOOD
-	@Override
-	public ExpNode visitBracketedExp(BracketedExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new ExpNode() {
-			@Override
-			public void generate() {
-
-			}
-		};
-	}
-
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -129,27 +121,26 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ExitNode visitExit(ExitContext ctx) {
-		// TODO Auto-generated method stub
 		return new ExitNode();
 	}
 
 	//TODO
 	@Override
 	public SequenceNode visitSequence(SequenceContext ctx) {
-		// TODO Auto-generated method stub
 		return new SequenceNode();
 	}
 
 	@Override
 	public BeginNode visitBegin(BeginContext ctx) {
-		// TODO Auto-generated method stub
 		return new BeginNode();
 	}
 
 	@Override
 	public InitialisationNode visitInitialisation(InitialisationContext ctx) {
-		// TODO Auto-generated method stub
-		return new InitialisationNode(ctx.ident().getText(), Type.parse(ctx.type().getText()));
+		InitialisationNode initNode = new InitialisationNode(ctx.ident().getText(), Type.parse(ctx.type().getText()));
+		AssignRHSNode rhs = (AssignRHSNode) visit(ctx.assign_rhs());
+		initNode.addChild(rhs);
+		return initNode;
 	}
 
 	@Override
