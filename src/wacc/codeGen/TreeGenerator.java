@@ -1,5 +1,8 @@
 package wacc.codeGen;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
 import wacc.tree.nodeInterfaces.ExpNode;
@@ -83,8 +86,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode ret = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        ret.addChild(exp1);
+        ret.addChild(exp2);
+        return ret;
 	}
 
 	@Override
@@ -95,8 +102,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -138,8 +149,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitOrderingOpExp(OrderingOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -167,37 +182,44 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public UnaryOpNode visitUnaryOpExp(UnaryOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new UnaryOpNode();
+        UnaryOpNode op = new UnaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp());
+        op.addChild(exp1);
+        return op;
 	}
 
 	@Override
-	public Node visitParam(ParamContext ctx) {
+	public ParamNode visitParam(ParamContext ctx) {
 		// TODO Auto-generated method stub
-		return new Node() {
-			@Override
-			public void generate() {
-
-			}
-		};
+		return new ParamNode();
 	}
 
 	@Override
 	public BinaryOpNode visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
 	public FreeNode visitFree(FreeContext ctx) {
-		// TODO Auto-generated method stub
-		return new FreeNode();
+        FreeNode free = new FreeNode();
+        ExpNode exp = (ExpNode) visit(ctx.exp());
+        free.addChild(exp);
+        return free;
 	}
 
 	@Override
 	public BinaryOpNode visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
@@ -228,28 +250,41 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ArgListNode visitArg_list(Arg_listContext ctx) {
-		// TODO Auto-generated method stub
+		ArgListNode args = new ArgListNode();
+		for (ExpContext arg : ctx.exp()) {
+			args.addChild((ExpNode) visit(arg));
+		}
 		return new ArgListNode();
 	}
 
 	//TODO
 	@Override
 	public ParamListNode visitParam_list(Param_listContext ctx) {
-		// TODO Auto-generated method stub
-		return new ParamListNode();
+		ParamListNode paramListNode = new ParamListNode();
+		for (ParamContext p : ctx.param()) {
+			paramListNode.addChild(visitParam(p));
+		}
+		return paramListNode;
 	}
 
 	//TODO
 	@Override
 	public PrintNode visitPrint(PrintContext ctx) {
-		// TODO Auto-generated method stub
-		return new PrintNode();
+		PrintNode printNode = new PrintNode();
+		ExpNode printExp = (ExpNode) visit(ctx.exp());
+		printNode.addChild(printExp);
+		return printNode;
 	}
 
 	@Override
 	public FunctionNode visitFunc(FuncContext ctx) {
-		FunctionNode fun = new FunctionNode(ctx.ident().getText());
-		return new FunctionNode(ctx.ident().getText());
+		FunctionNode func = new FunctionNode(ctx.ident().getText());
+		ParamListNode args = (ParamListNode) visit(ctx.param_list());
+		StatNode stats = (StatNode) visit(ctx.stat());
+		
+		func.addChild(args);
+		func.addChild(stats);
+		return func;
 	}
 
 	@Override
