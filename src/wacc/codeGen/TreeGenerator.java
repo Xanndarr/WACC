@@ -43,6 +43,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
         return prog;
 	}
 
+	//TODO
 	@Override
 	public TypeNode visitType(TypeContext ctx) {
 		return new TypeNode();
@@ -127,7 +128,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return exitNode;
 	}
 
-	//TODO
 	@Override
 	public SequenceNode visitSequence(SequenceContext ctx) {
 		SequenceNode seq = new SequenceNode();
@@ -183,9 +183,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return printlnNode;
 	}
 
+	//TODO
 	@Override
 	public TypeNode visitPair_type(Pair_typeContext ctx) {
-		// TODO Auto-generated method stub
 		return new TypeNode();
 	}
 
@@ -254,7 +254,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return new ArgListNode();
 	}
 
-	//TODO
 	@Override
 	public ParamListNode visitParam_list(Param_listContext ctx) {
 		ParamListNode paramListNode = new ParamListNode();
@@ -264,7 +263,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return paramListNode;
 	}
 
-	//TODO
 	@Override
 	public PrintNode visitPrint(PrintContext ctx) {
 		PrintNode printNode = new PrintNode();
