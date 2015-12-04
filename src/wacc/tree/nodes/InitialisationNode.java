@@ -5,11 +5,9 @@ import wacc.util.Type;
 
 public class InitialisationNode extends StatNode {
 	
-	private final String ident;
 	private final Type type;
 	
-	public InitialisationNode(String ident, Type type) {
-		this.ident = ident;
+	public InitialisationNode(Type type) {
 		this.type = type;
 	}
 
