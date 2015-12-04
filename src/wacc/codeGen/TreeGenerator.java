@@ -89,6 +89,17 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		}
 		return array;
 	}
+	
+	@Override
+	public ArrayElemNode visitArray_elem(Array_elemContext ctx) {
+		ArrayElemNode arrayElem = new ArrayElemNode();
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		arrayElem.addChild(ident);
+		for (ExpContext exp : ctx.exp()) {
+			arrayElem.addChild(visit(exp));
+		}
+		return arrayElem;
+	}
 
 	@Override
 	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
