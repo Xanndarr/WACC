@@ -204,8 +204,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public FreeNode visitFree(FreeContext ctx) {
-		// TODO Auto-generated method stub
-		return new FreeNode();
+        FreeNode free = new FreeNode();
+        ExpNode exp = (ExpNode) visit(ctx.exp());
+        free.addChild(exp);
+        return free;
 	}
 
 	@Override
