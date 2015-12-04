@@ -111,7 +111,8 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public ExitNode visitExit(ExitContext ctx) {
 		ExitNode exitNode = new ExitNode();
-		exitNode.addChild(visit(ctx.exp()));
+		ExpNode exitExp = (ExpNode) visit(ctx.exp());
+		exitNode.addChild(exitExp);
 		return exitNode;
 	}
 
@@ -129,7 +130,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public BeginNode visitBegin(BeginContext ctx) {
 		BeginNode begin = new BeginNode();
-        StatNode stat = (StatNode) (ctx.stat());
+        StatNode stat = (StatNode) visit(ctx.stat());
         begin.addChild(stat);
         return begin;
 	}
