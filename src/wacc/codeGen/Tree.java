@@ -7,8 +7,12 @@ public class Tree {
 	
 	private Node head = null;
 	
-	public Tree(ProgramNode head) {
+	public Tree(Node head) {
 		this.head = head;
+	}
+	
+	public String print() {
+		return head.print(1);
 	}
 
 }
