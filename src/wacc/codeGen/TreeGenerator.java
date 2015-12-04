@@ -1,15 +1,8 @@
 package wacc.codeGen;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
-import wacc.tree.nodeInterfaces.AssignLHSNode;
-import wacc.tree.nodeInterfaces.AssignRHSNode;
-import wacc.tree.nodeInterfaces.ExpNode;
-import wacc.tree.nodeInterfaces.Node;
-import wacc.tree.nodeInterfaces.StatNode;
+import wacc.tree.nodeInterfaces.*;
 import wacc.tree.nodes.*;
 import wacc.tree.nodes.PairElemNode.PairPos;
 import wacc.util.Type;
