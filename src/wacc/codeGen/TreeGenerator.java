@@ -122,7 +122,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ExitNode visitExit(ExitContext ctx) {
-		return new ExitNode();
+		ExitNode exitNode = new ExitNode();
+		exitNode.addChild(visit(ctx.exp()));
+		return exitNode;
 	}
 
 	//TODO
