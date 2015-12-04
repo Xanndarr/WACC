@@ -1,33 +1,23 @@
 package wacc.codeGen;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
-import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeInterfaces.*;
 import wacc.tree.nodes.*;
+import wacc.tree.nodes.PairElemNode.PairPos;
+import wacc.util.Type;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
-	//TODO
 	@Override
-	public Node visitArray_elem(Array_elemContext ctx) {
-		return super.visitArray_elem(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitArrayElem(ArrayElemContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitArrayElem(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitAssign_lhs(Assign_lhsContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAssign_lhs(ctx);
+	public ArrayElemNode visitArrayElem(ArrayElemContext ctx) {
+		ArrayElemNode arrayElem = new ArrayElemNode();
+		IdentNode ident = visitIdent(ctx.array_elem().ident());
+		arrayElem.addChild(ident);
+		for (ExpContext exp : ctx.array_elem().exp()) {
+			arrayElem.addChild((ExpNode) visit(exp));
+		}
+		return arrayElem;
 	}
 
 	@Override
@@ -35,320 +25,354 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return new IdentNode(ctx.toString());
 	}
 
-	//TODO
-	@Override
-	public Node visitAssign_rhs(Assign_rhsContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAssign_rhs(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitAnd_op(And_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAnd_op(ctx);
-	}
-
 	@Override
 	public ProgramNode visitProgram(ProgramContext ctx) {
-		Collection<FunctionNode> functions = new ArrayList<FunctionNode>();
-		BeginNode stat = visitBegin(ctx);
-		ProgramNode program = new ProgramNode(stat, functions);
-		return program;
+		ProgramNode prog = new ProgramNode();
+		for (FuncContext func : ctx.func()) {
+			prog.addChild(visit(func));
+		}
+		StatNode stat = (StatNode) visit(ctx.stat());
+		prog.addChild(stat);
+        return prog;
 	}
 
-	//TODO
 	@Override
-	public Node visitType(TypeContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitType(ctx);
+	public TypeNode visitType(TypeContext ctx) {
+		return new TypeNode();
 	}
 
 	@Override
 	public WhileNode visitWhile(WhileContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitWhile(ctx);
-	}
-
-	//TOOD
-	@Override
-	public Node visitBracketedExp(BracketedExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitBracketedExp(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitNumber(NumberContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitNumber(ctx);
+		WhileNode whileNode = new WhileNode();
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		whileNode.addChild(exp);
+		StatNode stat = (StatNode) visit(ctx.stat());
+		whileNode.addChild(stat);
+		return whileNode;
 	}
 
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAndOpExp(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitDm_arithmetic_op(Dm_arithmetic_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitDm_arithmetic_op(ctx);
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
 	public IfNode visitIf(IfContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitIf(ctx);
+		IfNode ifNode = new IfNode();
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		ifNode.addChild(exp);
+		for (StatContext stat : ctx.stat()) {
+			ifNode.addChild(visit(stat));
+		}
+		return ifNode;
 	}
 
 	@Override
 	public ReadNode visitRead(ReadContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitRead(ctx);
+		ReadNode read = new ReadNode();
+		Node lhs; 
+		try {
+            try {
+                try {
+                    lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+                } catch (ClassCastException ex) {
+                    lhs = (ArrayElemNode) visit(ctx.assign_lhs());
+                }
+            } catch (ClassCastException e) {
+                lhs = (PairElemNode) visit(ctx.assign_lhs());
+            }
+		} catch (ClassCastException e) {
+			lhs = (IdentNode) visit(ctx.assign_lhs());
+		}
+        read.addChild(lhs);
+        return read;
 	}
 
-	//TODO
 	@Override
-	public Node visitArray_lit(Array_litContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitArray_lit(ctx);
+	public ArrayNode visitArray_lit(Array_litContext ctx) {
+		ArrayNode array = new ArrayNode();
+		for (ExpContext exp : ctx.exp()) {
+			array.addChild(visit(exp));
+		}
+		return array;
 	}
-
+	
 	@Override
-	public UnaryOpNode visitUnary_op(Unary_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitUnary_op(ctx);
+	public ArrayElemNode visitArray_elem(Array_elemContext ctx) {
+		ArrayElemNode arrayElem = new ArrayElemNode();
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		arrayElem.addChild(ident);
+		for (ExpContext exp : ctx.exp()) {
+			arrayElem.addChild(visit(exp));
+		}
+		return arrayElem;
 	}
 
 	@Override
 	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitEqualityOpExp(ctx);
-	}
-
-	@Override
-	public PairElemNode visitPair_elem_type(Pair_elem_typeContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitPair_elem_type(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitAs_arithmetic_op(As_arithmetic_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAs_arithmetic_op(ctx);
+        BinaryOpNode ret = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        ret.addChild(exp1);
+        ret.addChild(exp2);
+        return ret;
 	}
 
 	@Override
 	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOrOpExp(ctx);
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
 	public ExitNode visitExit(ExitContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitExit(ctx);
+		ExitNode exitNode = new ExitNode();
+		ExpNode exitExp = (ExpNode) visit(ctx.exp());
+		exitNode.addChild(exitExp);
+		return exitNode;
 	}
 
-	//TODO
 	@Override
-	public Node visitSequence(SequenceContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitSequence(ctx);
+	public SequenceNode visitSequence(SequenceContext ctx) {
+		SequenceNode seq = new SequenceNode();
+		StatNode fst = (StatNode) visit(ctx.stat(0));
+		StatNode rest = (StatNode) visit(ctx.stat(1));
+		
+		seq.addChild(fst);
+		seq.addChild(rest);
+		return seq;
 	}
 
 	@Override
 	public BeginNode visitBegin(BeginContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitBegin(ctx);
+		BeginNode begin = new BeginNode();
+        StatNode stat = (StatNode) visit(ctx.stat());
+        begin.addChild(stat);
+        return begin;
 	}
 
 	@Override
 	public InitialisationNode visitInitialisation(InitialisationContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitInitialisation(ctx);
+		InitialisationNode initNode = new InitialisationNode(Type.parse(ctx.type().getText()));
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		AssignRHSNode rhs = (AssignRHSNode) visit(ctx.assign_rhs());
+		initNode.addChild(ident);
+		initNode.addChild(rhs);
+		return initNode;
 	}
 
 	@Override
 	public BoolNode visitBool(BoolContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitBool(ctx);
+		return new BoolNode(Boolean.parseBoolean(ctx.getText()));
 	}
 
 	@Override
 	public StringNode visitString(StringContext ctx) {
-		// TODO Auto-generated method stub
-		return new StringNode(ctx.toString());
+		return new StringNode(ctx.getText());
 	}
 
 	@Override
 	public BinaryOpNode visitOrderingOpExp(OrderingOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOrderingOpExp(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitSkip(SkipContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitSkip(ctx);
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
-	public BinaryOpNode visitOrdering_op(Ordering_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOrdering_op(ctx);
+	public PrintlnNode visitPrintln(PrintlnContext ctx) {
+		PrintlnNode printlnNode = new PrintlnNode();
+		ExpNode printExp = (ExpNode) visit(ctx.exp());
+		printlnNode.addChild(printExp);
+		return printlnNode;
 	}
 
-	//TODO
 	@Override
-	public Node visitPrintln(PrintlnContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitPrintln(ctx);
+	public TypeNode visitPair_type(Pair_typeContext ctx) {
+		return new TypeNode();
+	}
+	
+	@Override
+	public PairNode visitPair(PairContext ctx) {
+		return new PairNode();
 	}
 
-	//TODO
 	@Override
-	public Node visitBase_type(Base_typeContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitBase_type(ctx);
+	public NewPairNode visitNewPairRHS(NewPairRHSContext ctx) {
+		NewPairNode newpair = new NewPairNode();
+		for (ExpContext exp : ctx.exp()) {
+			newpair.addChild(visit(exp));
+		}
+		return newpair;
 	}
 
-	//TODO
 	@Override
-	public Node visitPair_type(Pair_typeContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitPair_type(ctx);
+	public UnaryOpNode visitUnaryOpExp(UnaryOpExpContext ctx) {
+        UnaryOpNode op = new UnaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp());
+        op.addChild(exp1);
+        return op;
 	}
 
-	//TODO
 	@Override
-	public Node visitUnaryOpExp(UnaryOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitUnaryOpExp(ctx);
+	public ExpNode visitBracketedExp(BracketedExpContext ctx) {
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		return exp;
 	}
 
-	//TODO
 	@Override
-	public Node visitParam(ParamContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitParam(ctx);
+	public ParamNode visitParam(ParamContext ctx) {
+		return new ParamNode(Type.parse(ctx.type().getText()), ctx.ident().getText());
 	}
 
-	//TODO
 	@Override
-	public Node visitArray_type(Array_typeContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitArray_type(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAsArithmeticOpExp(ctx);
+	public BinaryOpNode visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
 	public FreeNode visitFree(FreeContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitFree(ctx);
+        FreeNode free = new FreeNode();
+        ExpNode exp = (ExpNode) visit(ctx.exp());
+        free.addChild(exp);
+        return free;
 	}
 
-
 	@Override
-	public BinaryNode visitEquality_op(Equality_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitEquality_op(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitDmArithmeticOpExp(ctx);
+	public BinaryOpNode visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
+        BinaryOpNode op = new BinaryOpNode();
+        ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
+        ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
+        op.addChild(exp1);
+        op.addChild(exp2);
+        return op;
 	}
 
 	@Override
 	public AssignmentNode visitAssignment(AssignmentContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitAssignment(ctx);
-	}
-
-	@Override
-	public IdentNode visitIdentExp(IdentExpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitIdentExp(ctx);
-	}
-
-	@Override
-	public BinaryOpNode visitOr_op(Or_opContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitOr_op(ctx);
+		Node lhs;
+		try {
+			try {
+                try {
+                    lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+                } catch (ClassCastException ex) {
+                    lhs = (ArrayElemNode) visit(ctx.assign_lhs());
+                }
+			} catch (ClassCastException e) {
+                lhs = (PairElemNode) visit(ctx.assign_lhs());
+			}
+		} catch (ClassCastException e) {
+			lhs = (IdentNode) visit(ctx.assign_lhs());
+		}
+		AssignRHSNode rhs = (AssignRHSNode) visit(ctx.assign_rhs());
+		AssignmentNode assign = new AssignmentNode();
+		assign.addChild(lhs);
+		assign.addChild(rhs);
+		return assign;
 	}
 
 	@Override
 	public IntNode visitInt(IntContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitInt(ctx);
+		return new IntNode(Integer.parseInt(ctx.getText()));
 	}
 
 	@Override
-	public PairNode visitPair(PairContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitPair(ctx);
+	public ArgListNode visitArg_list(Arg_listContext ctx) {
+		ArgListNode args = new ArgListNode();
+		for (ExpContext arg : ctx.exp()) {
+			args.addChild((ExpNode) visit(arg));
+		}
+		return new ArgListNode();
 	}
 
-	//TODO
 	@Override
-	public Node visitArg_list(Arg_listContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitArg_list(ctx);
+	public ParamListNode visitParam_list(Param_listContext ctx) {
+		ParamListNode paramListNode = new ParamListNode();
+		for (ParamContext p : ctx.param()) {
+			paramListNode.addChild(visitParam(p));
+		}
+		return paramListNode;
 	}
 
-	//TODO
 	@Override
-	public Node visitParam_list(Param_listContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitParam_list(ctx);
-	}
-
-	//TODO
-	@Override
-	public Node visitPrint(PrintContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitPrint(ctx);
+	public PrintNode visitPrint(PrintContext ctx) {
+		PrintNode printNode = new PrintNode();
+		ExpNode printExp = (ExpNode) visit(ctx.exp());
+		printNode.addChild(printExp);
+		return printNode;
 	}
 
 	@Override
 	public FunctionNode visitFunc(FuncContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitFunc(ctx);
+		FunctionNode func = new FunctionNode(ctx.ident().getText());
+		if (ctx.param_list() != null) {
+			ParamListNode args = (ParamListNode) visit(ctx.param_list());
+			func.addChild(args);
+		}
+		StatNode stats = (StatNode) visit(ctx.stat());
+		func.addChild(stats);
+		return func;
 	}
-
-	//TODO
+	
 	@Override
-	public Node visitInt_lit(Int_litContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitInt_lit(ctx);
+	public FunctionCallNode visitFunCallRHS(FunCallRHSContext ctx) {
+		FunctionCallNode func = new FunctionCallNode();
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		func.addChild(ident);
+		if (ctx.arg_list() != null) {
+			func.addChild(visit(ctx.arg_list()));
+		}
+		return func;
 	}
 
 	@Override
 	public PairElemNode visitPair_elem(Pair_elemContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitPair_elem(ctx);
+		PairPos pos;
+		if (ctx.FST() == null) {
+			pos = PairPos.SND;
+		} else {
+			pos = PairPos.FST;
+		}
+		
+		PairElemNode pairElemNode = new PairElemNode(pos);
+		ExpNode pairExp = (ExpNode) visit(ctx.exp());
+		
+		pairElemNode.addChild(pairExp);
+		return pairElemNode;
 	}
 
 	@Override
 	public CharNode visitChar(CharContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitChar(ctx);
+		return new CharNode(ctx.getText().charAt(0));
 	}
 
 	@Override
 	public ReturnNode visitReturn(ReturnContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitReturn(ctx);
+		ReturnNode ret = new ReturnNode();
+		ExpNode retExp = (ExpNode) visit(ctx.exp());
+		ret.addChild(retExp);
+		return ret;
+	}
+
+	@Override
+	public SkipNode visitSkip(SkipContext ctx) {
+		return new SkipNode();
 	}
 
 }

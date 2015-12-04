@@ -2,7 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.nodeInterfaces.StatNode;
 
-public class ExitNode implements StatNode {
+public class ExitNode extends StatNode {
 
 	@Override
 	public void generate() {

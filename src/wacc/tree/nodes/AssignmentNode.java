@@ -3,15 +3,7 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.StatNode;
 import wacc.util.Type;
 
-public class AssignmentNode implements StatNode {
-
-	private final String ident;
-	private final Type type;
-	
-	public AssignmentNode(String ident, Type type) {
-		this.ident = ident;
-		this.type = type;
-	}
+public class AssignmentNode extends StatNode {
 
 	@Override
 	public void generate() {

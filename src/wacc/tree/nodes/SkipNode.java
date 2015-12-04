@@ -1,8 +1,8 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.ExpNode;
+import wacc.tree.nodeInterfaces.StatNode;
 
-public class ArrayElemNode extends ExpNode {
+public class SkipNode extends StatNode {
 
 	@Override
 	public void generate() {

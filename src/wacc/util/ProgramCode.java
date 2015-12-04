@@ -20,6 +20,9 @@ public class ProgramCode {
 	}
 	
 	public static String getCode() {
+		if (instructions == null) {
+			return "null";
+		}
 		StringBuilder out = new StringBuilder();
 		for (String instr : instructions) {
 			out.append(instr + "/n");

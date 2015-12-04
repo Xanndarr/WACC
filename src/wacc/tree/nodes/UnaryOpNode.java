@@ -3,11 +3,11 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.ExpNode;
 import wacc.util.UnaryOp;
 
-public class UnaryOpNode implements ExpNode {
+public class UnaryOpNode extends ExpNode {
 
-    private final UnaryOp op;
+    private UnaryOp op = UnaryOp.INVALID_OP;
 
-    public UnaryOpNode(UnaryOp op) {
+    public UnaryOpNode() {
         this.op = op;
     }
 

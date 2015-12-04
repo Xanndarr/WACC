@@ -3,12 +3,14 @@ package wacc.tree.nodes;
 import wacc.tree.nodeInterfaces.Node;
 import wacc.util.Type;
 
-public class TypeNode extends Node {
+public class ParamNode extends Node {
 	
-	private Type type = Type.NULL;
+	private Type type;
+	private String ident;
 	
-	public TypeNode() {
+	public ParamNode(Type type, String ident) {
 		this.type = type;
+		this.ident = ident;
 	}
 
 	@Override
@@ -16,5 +18,5 @@ public class TypeNode extends Node {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

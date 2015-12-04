@@ -21,7 +21,7 @@ def run_tests(dir, show_out)
 			puts out unless show_out
 
 			$num_tests += 1
-			if out.include? "line" or out.include? "Error"
+			if out.include? "line" or out.include? "Error" or out.include? "Exception"
 				$num_tests_failed += 1
 				puts "\e[31mTEST FAILED\e[0m"
 			else
