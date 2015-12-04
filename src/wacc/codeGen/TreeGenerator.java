@@ -24,7 +24,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		for (ExpContext exp : ctx.array_elem().exp()) {
 			arrayElem.addChild((ExpNode) visit(exp));
 		}
-		return new ArrayElemNode();
+		return arrayElem;
 	}
 
 	@Override
