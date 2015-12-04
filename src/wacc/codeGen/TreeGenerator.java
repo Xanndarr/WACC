@@ -84,6 +84,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		ReadNode read = new ReadNode();
         AssignLHSNode lhs = (AssignLHSNode) visit(ctx.assign_lhs());
         read.addChild(lhs);
+        return read;
 	}
 
 	//TODO
@@ -127,13 +128,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	//TODO
 	@Override
 	public SequenceNode visitSequence(SequenceContext ctx) {
-		SequenceNode seq = new SequenceNode();
-		StatNode fst = (StatNode) visit(ctx.stat(0));
-		StatNode rest = (StatNode) visit(ctx.stat(1));
-		
-		seq.addChild(fst);
-		seq.addChild(rest);
-		return seq;
+		return new SequenceNode();
 	}
 
 	@Override
