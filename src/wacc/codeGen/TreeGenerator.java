@@ -192,8 +192,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ParamNode visitParam(ParamContext ctx) {
-		// TODO Auto-generated method stub
-		return new ParamNode();
+		return new ParamNode(Type.parse(ctx.type().getText()), ctx.ident().getText());
 	}
 
 	@Override
