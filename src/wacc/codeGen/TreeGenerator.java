@@ -231,21 +231,8 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public IdentNode visitIdentExp(IdentExpContext ctx) {
-		// TODO Auto-generated method stub
-		return new IdentNode(ctx.getText());
-	}
-
-	@Override
 	public IntNode visitInt(IntContext ctx) {
-		// TODO Auto-generated method stub
 		return new IntNode(Integer.parseInt(ctx.getText()));
-	}
-
-	@Override
-	public PairNode visitPair(PairContext ctx) {
-		// TODO Auto-generated method stub
-		return new PairNode();
 	}
 
 	@Override
