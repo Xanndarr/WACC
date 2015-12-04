@@ -71,14 +71,20 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public IfNode visitIf(IfContext ctx) {
-		// TODO Auto-generated method stub
-		return new IfNode();
+		IfNode ifNode = new IfNode();
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		ifNode.addChild(exp);
+		for (StatContext stat : ctx.stat()) {
+			ifNode.addChild(visit(stat));
+		}
+		return ifNode;
 	}
 
 	@Override
 	public ReadNode visitRead(ReadContext ctx) {
-		// TODO Auto-generated method stub
-		return new ReadNode();
+		ReadNode read = new ReadNode();
+        AssignLHSNode lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+        read.addChild(lhs);
 	}
 
 	//TODO
