@@ -76,7 +76,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public ReadNode visitRead(ReadContext ctx) {
 		ReadNode read = new ReadNode();
-        AssignLHSNode lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+		Node lhs; 
+		try {
+			lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+		} catch (ClassCastException e) {
+			lhs = (IdentNode) visit(ctx.assign_lhs());
+		}
         read.addChild(lhs);
         return read;
 	}
