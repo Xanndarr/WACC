@@ -244,7 +244,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ArgListNode visitArg_list(Arg_listContext ctx) {
-		// TODO Auto-generated method stub
+		ArgListNode args = new ArgListNode();
+		for (ExpContext arg : ctx.exp()) {
+			args.addChild((ExpNode) visit(arg));
+		}
 		return new ArgListNode();
 	}
 
