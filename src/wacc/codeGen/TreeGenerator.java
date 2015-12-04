@@ -51,8 +51,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public WhileNode visitWhile(WhileContext ctx) {
-		// TODO Auto-generated method stub
-		return new WhileNode();
+		WhileNode whileNode = new WhileNode();
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		whileNode.addChild(exp);
+		StatNode stat = (StatNode) visit(ctx.stat());
+		whileNode.addChild(stat);
+		return whileNode;
 	}
 
 	//TOOD
