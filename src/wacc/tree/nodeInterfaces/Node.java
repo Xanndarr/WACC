@@ -24,7 +24,7 @@ public abstract class Node {
 			if (child != null) {
 				sb.append(child.print(indent + 1));
 			} else {
-				sb.append("skip\n");
+				sb.append("null\n");
 			}
 		}
 		return sb.toString();
