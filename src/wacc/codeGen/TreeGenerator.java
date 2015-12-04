@@ -271,6 +271,17 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		func.addChild(stats);
 		return func;
 	}
+	
+	@Override
+	public FunctionCallNode visitFunCallRHS(FunCallRHSContext ctx) {
+		FunctionCallNode func = new FunctionCallNode();
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		func.addChild(ident);
+		if (ctx.arg_list() != null) {
+			func.addChild(visit(ctx.arg_list()));
+		}
+		return func;
+	}
 
 	@Override
 	public PairElemNode visitPair_elem(Pair_elemContext ctx) {
