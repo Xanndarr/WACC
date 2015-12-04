@@ -45,7 +45,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public TypeNode visitType(TypeContext ctx) {
-		// TODO Auto-generated method stub
 		return new TypeNode();
 	}
 
@@ -133,7 +132,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BeginNode visitBegin(BeginContext ctx) {
-		return new BeginNode();
+		BeginNode begin = new BeginNode();
+        StatNode stat = (StatNode) (ctx.stat());
+        begin.addChild(stat);
+        return begin;
 	}
 
 	@Override
