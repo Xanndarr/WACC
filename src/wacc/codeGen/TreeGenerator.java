@@ -106,12 +106,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public PairElemNode visitPair_elem_type(Pair_elem_typeContext ctx) {
-		// TODO Auto-generated method stub
-		return new PairElemNode();
-	}
-
-	@Override
 	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
         BinaryOpNode op = new BinaryOpNode();
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
