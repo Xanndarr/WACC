@@ -1,5 +1,8 @@
 package wacc.codeGen;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
 import wacc.tree.nodeInterfaces.ExpNode;
@@ -182,14 +185,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitParam(ParamContext ctx) {
+	public ParamNode visitParam(ParamContext ctx) {
 		// TODO Auto-generated method stub
-		return new Node() {
-			@Override
-			public void generate() {
-
-			}
-		};
+		return new ParamNode();
 	}
 
 	@Override
@@ -248,15 +246,21 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ArgListNode visitArg_list(Arg_listContext ctx) {
-		// TODO Auto-generated method stub
+		ArgListNode args = new ArgListNode();
+		for (ExpContext arg : ctx.exp()) {
+			args.addChild((ExpNode) visit(arg));
+		}
 		return new ArgListNode();
 	}
 
 	//TODO
 	@Override
 	public ParamListNode visitParam_list(Param_listContext ctx) {
-		// TODO Auto-generated method stub
-		return new ParamListNode();
+		ParamListNode paramListNode = new ParamListNode();
+		for (ParamContext p : ctx.param()) {
+			paramListNode.addChild(visitParam(p));
+		}
+		return paramListNode;
 	}
 
 	//TODO
