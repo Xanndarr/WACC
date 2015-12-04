@@ -221,11 +221,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public AssignmentNode visitAssignment(AssignmentContext ctx) {
-		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.assign_lhs());
-		AssignRHSNode rhs = (AssignRHSNode) visit(ctx.assign_rhs());
+		//AssignLHSNode lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+		//AssignRHSNode rhs = (AssignRHSNode) visit(ctx.assign_rhs());
 		AssignmentNode assign = new AssignmentNode();
-		assign.addChild(lhs);
-		assign.addChild(rhs);
+		assign.addChild(visit(ctx.assign_lhs()));
+		assign.addChild(visit(ctx.assign_rhs()));
 		return assign;
 	}
 
