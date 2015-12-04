@@ -122,7 +122,13 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	//TODO
 	@Override
 	public SequenceNode visitSequence(SequenceContext ctx) {
-		return new SequenceNode();
+		SequenceNode seq = new SequenceNode();
+		StatNode fst = (StatNode) visit(ctx.stat(0));
+		StatNode rest = (StatNode) visit(ctx.stat(1));
+		
+		seq.addChild(fst);
+		seq.addChild(rest);
+		return seq;
 	}
 
 	@Override
