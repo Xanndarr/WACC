@@ -138,8 +138,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public InitialisationNode visitInitialisation(InitialisationContext ctx) {
 		InitialisationNode initNode = new InitialisationNode(ctx.ident().getText(), Type.parse(ctx.type().getText()));
-		AssignRHSNode rhs = (AssignRHSNode) visit(ctx.assign_rhs());
-		initNode.addChild(rhs);
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		initNode.addChild(ident);
+		initNode.addChild(visit(ctx.assign_rhs()));
 		return initNode;
 	}
 
