@@ -89,8 +89,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ReadNode visitRead(ReadContext ctx) {
-		// TODO Auto-generated method stub
-		return new ReadNode();
+		ReadNode read = new ReadNode();
+        AssignLHSNode lhs = (AssignLHSNode) visit(ctx.assign_lhs());
+        read.addChild(lhs);
 	}
 
 	//TODO
