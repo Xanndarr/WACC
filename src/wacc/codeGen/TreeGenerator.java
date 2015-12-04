@@ -34,7 +34,13 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ProgramNode visitProgram(ProgramContext ctx) {
-        return new ProgramNode();
+		ProgramNode prog = new ProgramNode();
+		for (FuncContext func : ctx.func()) {
+			prog.addChild(visit(func));
+		}
+		StatNode stat = (StatNode) visit(ctx.stat());
+		prog.addChild(stat);
+        return prog;
 	}
 
 	@Override
@@ -155,17 +161,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
         op.addChild(exp1);
         op.addChild(exp2);
         return op;
-	}
-
-	@Override
-	public StatNode visitSkip(SkipContext ctx) {
-		// TODO Auto-generated method stub
-		return new StatNode() {
-			@Override
-			public void generate() {
-
-			}
-		};
 	}
 
 	@Override
