@@ -36,7 +36,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
         return prog;
 	}
 
-	//TODO
 	@Override
 	public TypeNode visitType(TypeContext ctx) {
 		return new TypeNode();
@@ -81,7 +80,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 			try {
 				lhs = (AssignLHSNode) visit(ctx.assign_lhs());
 			} catch (ClassCastException e) {
-				lhs = (PairElemNode) visit(ctx.assign_lhs());
+                try {
+                    lhs = (PairElemNode) visit(ctx.assign_lhs());
+                } catch (ClassCastException ex) {
+                    lhs = (ArrayElemNode) visit(ctx.assign_lhs());
+                }
 			}
 		} catch (ClassCastException e) {
 			lhs = (IdentNode) visit(ctx.assign_lhs());
@@ -195,7 +198,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		return printlnNode;
 	}
 
-	//TODO
 	@Override
 	public TypeNode visitPair_type(Pair_typeContext ctx) {
 		return new TypeNode();
@@ -258,7 +260,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 			try {
 				lhs = (AssignLHSNode) visit(ctx.assign_lhs());
 			} catch (ClassCastException e) {
-				lhs = (PairElemNode) visit(ctx.assign_lhs());
+                try {
+                    lhs = (PairElemNode) visit(ctx.assign_lhs());
+                } catch (ClassCastException ex) {
+                    lhs = (ArrayElemNode) visit(ctx.assign_lhs());
+                }
 			}
 		} catch (ClassCastException e) {
 			lhs = (IdentNode) visit(ctx.assign_lhs());
