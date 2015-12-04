@@ -32,7 +32,13 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ProgramNode visitProgram(ProgramContext ctx) {
-        return new ProgramNode();
+		ProgramNode prog = new ProgramNode();
+		for (FuncContext func : ctx.func()) {
+			prog.addChild(visit(func));
+		}
+		StatNode stat = (StatNode) visit(ctx.stat());
+		prog.addChild(stat);
+        return prog;
 	}
 
 	@Override
