@@ -77,15 +77,15 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		ReadNode read = new ReadNode();
 		Node lhs; 
 		try {
-			try {
-				lhs = (AssignLHSNode) visit(ctx.assign_lhs());
-			} catch (ClassCastException e) {
+            try {
                 try {
-                    lhs = (PairElemNode) visit(ctx.assign_lhs());
+                    lhs = (AssignLHSNode) visit(ctx.assign_lhs());
                 } catch (ClassCastException ex) {
                     lhs = (ArrayElemNode) visit(ctx.assign_lhs());
                 }
-			}
+            } catch (ClassCastException e) {
+                lhs = (PairElemNode) visit(ctx.assign_lhs());
+            }
 		} catch (ClassCastException e) {
 			lhs = (IdentNode) visit(ctx.assign_lhs());
 		}
@@ -258,13 +258,13 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		Node lhs;
 		try {
 			try {
-				lhs = (AssignLHSNode) visit(ctx.assign_lhs());
-			} catch (ClassCastException e) {
                 try {
-                    lhs = (PairElemNode) visit(ctx.assign_lhs());
+                    lhs = (AssignLHSNode) visit(ctx.assign_lhs());
                 } catch (ClassCastException ex) {
                     lhs = (ArrayElemNode) visit(ctx.assign_lhs());
                 }
+			} catch (ClassCastException e) {
+                lhs = (PairElemNode) visit(ctx.assign_lhs());
 			}
 		} catch (ClassCastException e) {
 			lhs = (IdentNode) visit(ctx.assign_lhs());
