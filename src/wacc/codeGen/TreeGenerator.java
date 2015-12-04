@@ -131,13 +131,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	//TODO
 	@Override
 	public SequenceNode visitSequence(SequenceContext ctx) {
-		// TODO Auto-generated method stub
 		return new SequenceNode();
 	}
 
 	@Override
 	public BeginNode visitBegin(BeginContext ctx) {
-		// TODO Auto-generated method stub
 		return new BeginNode();
 	}
 
