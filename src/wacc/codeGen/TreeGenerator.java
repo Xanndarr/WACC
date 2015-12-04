@@ -204,6 +204,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 	
 	@Override
+	public PairNode visitPair(PairContext ctx) {
+		return new PairNode();
+	}
+
+	@Override
 	public NewPairNode visitNewPairRHS(NewPairRHSContext ctx) {
 		NewPairNode newpair = new NewPairNode();
 		for (ExpContext exp : ctx.exp()) {
@@ -218,6 +223,12 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
         ExpNode exp1 = (ExpNode) visit(ctx.exp());
         op.addChild(exp1);
         return op;
+	}
+
+	@Override
+	public ExpNode visitBracketedExp(BracketedExpContext ctx) {
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		return exp;
 	}
 
 	@Override
@@ -357,6 +368,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		ExpNode retExp = (ExpNode) visit(ctx.exp());
 		ret.addChild(retExp);
 		return ret;
+	}
+
+	@Override
+	public SkipNode visitSkip(SkipContext ctx) {
+		return new SkipNode();
 	}
 
 }
