@@ -47,8 +47,8 @@ public class ProgramCode {
 		StringBuilder out = new StringBuilder();
 		if (hasData) {
 			out.append(".data\n\n");
-			for (String data : data) {
-				out.append(data + "\n");
+			for (String line : data) {
+				out.append(line + "\n");
 			}
 		}
 		for (String instr : instructions) {

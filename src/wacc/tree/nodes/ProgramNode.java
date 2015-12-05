@@ -9,8 +9,7 @@ public class ProgramNode extends Node {
 
     @Override
     public Reg generate() {
-        ProgramCode.add(".text");
-        ProgramCode.add("\n");
+        ProgramCode.add(".text\n");
         ProgramCode.add(".global main");
         ProgramCode.add("main:");
 
