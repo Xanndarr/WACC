@@ -1,6 +1,8 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
+import wacc.util.Arm;
+import wacc.util.ProgramCode;
 import wacc.util.Reg;
 
 public class BoolNode extends ExpNode {
@@ -13,6 +15,7 @@ public class BoolNode extends ExpNode {
 
     @Override
     public Reg generate() {
-
+    	ProgramCode.add("MOV r4, " + Arm.imm(b ? 1 : 0));
+    	return Reg.R4;
     }
 }
