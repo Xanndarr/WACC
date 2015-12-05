@@ -7,8 +7,7 @@ public class ArrayNode extends AssignRHSNode {
 
 	@Override
 	public Reg generate() {
-		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

@@ -7,7 +7,7 @@ public class NewPairNode extends AssignRHSNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 
 }

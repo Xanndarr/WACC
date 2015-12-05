@@ -13,8 +13,7 @@ public class IdentNode extends ExpNode {
 
 	@Override
 	public Reg generate() {
-		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

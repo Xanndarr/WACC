@@ -7,6 +7,6 @@ public class ReturnNode extends StatNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 }

@@ -7,6 +7,6 @@ public class PairNode extends ExpNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 }

@@ -7,7 +7,7 @@ public class FunctionCallNode extends AssignRHSNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 
 }

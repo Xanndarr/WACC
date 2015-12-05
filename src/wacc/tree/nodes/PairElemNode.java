@@ -17,6 +17,6 @@ public class PairElemNode extends AssignRHSNode {
 	
     @Override
     public Reg generate() {
-
+		return null;
     }
 }

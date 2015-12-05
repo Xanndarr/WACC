@@ -7,6 +7,6 @@ public class WhileNode extends StatNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 }

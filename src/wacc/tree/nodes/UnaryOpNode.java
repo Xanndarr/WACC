@@ -14,6 +14,6 @@ public class UnaryOpNode extends ExpNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 }

@@ -7,7 +7,7 @@ public class SequenceNode extends StatNode {
 
     @Override
     public Reg generate() {
-
+        return null;
     }
 
 }

@@ -16,8 +16,7 @@ public class ParamNode extends Node {
 
 	@Override
 	public Reg generate() {
-		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }
