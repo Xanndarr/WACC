@@ -15,7 +15,7 @@ public class IntNode extends ExpNode {
 
     @Override
     public Reg generate() {
-    	ProgramCode.add("LDR r4, " + Arm.imm(n));
+    	ProgramCode.add("LDR r4, " + Arm.mem(n));
     	return Reg.R4;
     }
 }
