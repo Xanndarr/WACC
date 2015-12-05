@@ -14,7 +14,7 @@ public class PrintNode extends StatNode {
 			Reg ret = children.get(0).generate();
 			String dataLabel = ProgramCode.addPrintData(t);
 			ProgramCode.add("MOV r0, " + ret);
-			ProgramCode.add("BL p_print_");
+			ProgramCode.add("BL p_print_" + t);
 			ProgramCode.addPrint(t, dataLabel);
 		}
 		return null;
