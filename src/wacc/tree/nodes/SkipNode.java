@@ -9,7 +9,7 @@ public class SkipNode extends StatNode {
 
 	@Override
 	public Reg generate() {
-		ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.imm(0));
+		return null;
 	}
 
 }
