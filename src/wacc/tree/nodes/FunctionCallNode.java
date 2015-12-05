@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.AssignRHSNode;
+import wacc.tree.nodeSupers.AssignRHSNode;
 
 public class FunctionCallNode extends AssignRHSNode {
 

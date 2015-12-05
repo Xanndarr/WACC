@@ -2,7 +2,7 @@ package wacc.codeGen;
 
 import wacc.antlr.WACCParser.*;
 import wacc.antlr.WACCParserBaseVisitor;
-import wacc.tree.nodeInterfaces.*;
+import wacc.tree.nodeSupers.*;
 import wacc.tree.nodes.*;
 import wacc.tree.nodes.PairElemNode.PairPos;
 import wacc.util.Type;

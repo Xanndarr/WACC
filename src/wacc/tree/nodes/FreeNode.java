@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.StatNode;
+import wacc.tree.nodeSupers.StatNode;
 
 public class FreeNode extends StatNode {
 

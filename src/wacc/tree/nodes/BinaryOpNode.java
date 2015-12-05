@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.ExpNode;
+import wacc.tree.nodeSupers.ExpNode;
 import wacc.util.BinaryOp;
 
 public class BinaryOpNode extends ExpNode {

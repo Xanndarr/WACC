@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeSupers.Node;
 import wacc.util.Type;
 
 public class TypeNode extends Node {

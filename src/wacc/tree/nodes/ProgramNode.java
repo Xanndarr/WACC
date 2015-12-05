@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeSupers.Node;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
 

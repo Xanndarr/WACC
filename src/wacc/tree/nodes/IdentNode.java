@@ -1,6 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.ExpNode;
+import wacc.tree.nodeSupers.ExpNode;
 
 public class IdentNode extends ExpNode {
 	

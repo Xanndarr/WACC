@@ -1,6 +1,6 @@
 package wacc.codeGen;
 
-import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeSupers.Node;
 
 public class Tree {
 	

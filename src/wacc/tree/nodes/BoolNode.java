@@ -1,7 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.ExpNode;
-import wacc.tree.nodeInterfaces.Node;
+import wacc.tree.nodeSupers.ExpNode;
 
 public class BoolNode extends ExpNode {
 

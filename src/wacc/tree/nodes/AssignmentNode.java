@@ -1,7 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.StatNode;
-import wacc.util.Type;
+import wacc.tree.nodeSupers.StatNode;
 
 public class AssignmentNode extends StatNode {
 

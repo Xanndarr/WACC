@@ -1,7 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeInterfaces.ExpNode;
-import wacc.util.Type;
+import wacc.tree.nodeSupers.ExpNode;
 
 public class PairNode extends ExpNode {
 
