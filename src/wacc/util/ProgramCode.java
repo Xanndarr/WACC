@@ -30,13 +30,31 @@ public class ProgramCode {
 		}
 	}
 	
-	public static String addData(String s, int size) {
+	public static String addData(String s) {
 		hasData = true;
 		int datPos = data.size();
 		data.add("msg_" + datPos + ":");
-		data.add("\t.word " + size);
+		data.add("\t.word " + s.length());
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + datPos;
+	}
+	
+	public static String addPrintData(Type t) {
+		switch (t) {
+		case CHAR:
+		case STRING:
+			return addData("%.*s\0");
+		case INT:
+			return addData("%d\0");
+		case BOOL:
+			String tempRet = addData("true\0");
+			addData("false\0");
+			return tempRet;
+		case NULL:
+			return addData("\0");
+		default:
+			return null;
+		}
 	}
 	
 	private static void addPost(String instruction) {
@@ -119,6 +137,7 @@ public class ProgramCode {
 			for (String line : data) {
 				out.append(line + "\n");
 			}
+			out.append("\n\n");
 		}
 		for (String instr : main) {
 			out.append(instr + "\n");
