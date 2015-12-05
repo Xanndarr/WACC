@@ -34,7 +34,7 @@ public class ProgramCode {
 		}
 		StringBuilder out = new StringBuilder();
 		for (String instr : instructions) {
-			out.append(instr + "/n");
+			out.append(instr + "\n");
 		}
 		return out.toString();
 	}
