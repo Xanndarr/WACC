@@ -123,6 +123,9 @@ public class ProgramCode {
 		for (String instr : main) {
 			out.append(instr + "\n");
 		}
+		for (String p : post) {
+			out.append(p + "\n");
+		}
 		return out.toString();
 	}
 
