@@ -12,6 +12,10 @@ public class RegHandler {
 
     private Map<Integer, SymbolTable<Reg, Boolean>> tables;
 
+    public void add(Reg reg, Boolean used) {
+        tables.get(currentScope).put(reg, used);
+    }
+
     public Boolean get(Reg reg) {
         for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
             if (tables.get(i).exists(reg)) {
@@ -21,7 +25,7 @@ public class RegHandler {
         return null;
     }
 
-    public boolean exists(Reg reg) {
+    public boolean isUsedGlobally(Reg reg) {
         for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
             if (tables.get(i).exists(reg)) {
                 return true;
@@ -30,7 +34,7 @@ public class RegHandler {
         return false;
     }
 
-    public boolean existsCurrentScope(Reg reg) {
+    public boolean isUsedLocally(Reg reg) {
         return tables.get(currentScope).exists(reg);
     }
 
