@@ -7,16 +7,15 @@ import wacc.util.Type;
 
 public class PrintNode extends StatNode {
 	
-	private final static String PRINT_CODE = "%.*s\0";
-
 	@Override
 	public Reg generate() {
 		if (children.get(0) != null) {
+			Type t = Type.INT; //TODO
 			Reg ret = children.get(0).generate();
-			String dataLabel = ProgramCode.addData(PRINT_CODE, PRINT_CODE.length());
+			String dataLabel = ProgramCode.addPrintData(t);
 			ProgramCode.add("MOV r0, " + ret);
-			ProgramCode.add("BL p_print_string");
-			ProgramCode.addPrint(Type.STRING, dataLabel);
+			ProgramCode.add("BL p_print_");
+			ProgramCode.addPrint(t, dataLabel);
 		}
 		return null;
 	}

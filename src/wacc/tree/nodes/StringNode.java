@@ -15,7 +15,7 @@ public class StringNode extends ExpNode {
 
     @Override
     public Reg generate() {
-    	String var = ProgramCode.addData(string, string.length());
+    	String var = ProgramCode.addData(string);
     	ProgramCode.add("MOV r4, " + Arm.mem(var));
     	return Reg.R4;
     }
