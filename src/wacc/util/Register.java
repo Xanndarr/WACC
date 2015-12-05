@@ -17,4 +17,8 @@ public enum Register {
         return name;
     }
 
+    public String toStringReg() {
+        return "{" + name + "}";
+    }
+
 }
