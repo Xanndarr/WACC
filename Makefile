@@ -29,6 +29,7 @@ rules:
 	$(RM) rules
 
 clean:
+	rm *.s
 	$(RM) rules $(OUTPUT_DIR)
 
 
