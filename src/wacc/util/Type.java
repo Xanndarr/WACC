@@ -24,5 +24,10 @@ public enum Type {
 		}
 		return NULL;
 	}
+	
+	@Override
+	public String toString() {
+		return sType;
+	}
 
 }
