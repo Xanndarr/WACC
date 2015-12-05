@@ -6,12 +6,12 @@ import java.util.List;
 public class ProgramCode {
 	
 	private static ProgramCode instance;
+	private static int dataItems = 0;
 	private static List<String> data;
 	private static List<String> main;
 	private static List<String> post;
 	private static boolean indent = false;
 	private static boolean postIndent = false;
-	private static boolean hasData = false;
 	
 	private ProgramCode() {
 		data = new LinkedList<String>();
@@ -31,12 +31,10 @@ public class ProgramCode {
 	}
 	
 	public static String addData(String s) {
-		hasData = true;
-		int datPos = data.size();
-		data.add("msg_" + datPos + ":");
+		data.add("msg_" + dataItems + ":");
 		data.add("\t.word " + (s.length() - "\\".length()));
 		data.add("\t.ascii \"" + s + "\"");
-		return "msg_" + datPos;
+		return "msg_" + dataItems++;
 	}
 	
 	public static String addPrintData(Type t) {
@@ -132,7 +130,7 @@ public class ProgramCode {
 			return "null";
 		}
 		StringBuilder out = new StringBuilder();
-		if (hasData) {
+		if (dataItems > 0) {
 			out.append(".data\n\n");
 			for (String line : data) {
 				out.append(line + "\n");
