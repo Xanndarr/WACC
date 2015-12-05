@@ -34,7 +34,7 @@ public class ProgramCode {
 		hasData = true;
 		int datPos = data.size();
 		data.add("msg_" + datPos + ":");
-		data.add("\t.word " + s.length());
+		data.add("\t.word " + (s.length() - "\\".length()));
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + datPos;
 	}
