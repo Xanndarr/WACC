@@ -66,6 +66,7 @@ public class ProgramCode {
 		if (t == Type.NULL) {
 			addPost("p_print_ln:");
 			postIndent = true;
+			addPost("PUSH {lr}");
 			addPrintln(dataLabel);
 			addPost("BL puts");
 		} else {
