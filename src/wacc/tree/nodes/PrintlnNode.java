@@ -21,6 +21,7 @@ public class PrintlnNode extends StatNode {
 				ProgramCode.addPrint(t, dataLabel);
 			}
 			dataLabel = ProgramCode.addPrintData(Type.NULL);
+			ProgramCode.addPrint(Type.NULL, dataLabel);
 			ProgramCode.add("BL p_print_ln");
 		}
 		return null;
