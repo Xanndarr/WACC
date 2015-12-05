@@ -48,7 +48,7 @@ public class ProgramCode {
 	}
 	
 	public static void addPrint(Type t, String dataLabel) {
-		if (t == null) {
+		if (t == Type.NULL) {
 			addPost("p_print_ln:");
 			postIndent = true;
 			addPrintln(dataLabel);
