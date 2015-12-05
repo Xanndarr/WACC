@@ -39,7 +39,6 @@ public class ProgramCode {
 	
 	public static String addPrintData(Type t) {
 		switch (t) {
-		case CHAR:
 		case STRING:
 			return addData("%.*s\\0");
 		case INT:
@@ -74,7 +73,6 @@ public class ProgramCode {
 			postIndent = true;
 			addPost("PUSH {lr}");
 			switch (t) {
-			case CHAR:
 			case STRING:
 				addPrintString(dataLabel);
 				break;
