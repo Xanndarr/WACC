@@ -7,7 +7,7 @@ public class SkipNode extends StatNode {
 	@Override
 	public void generate() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
