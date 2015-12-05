@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 public abstract class Node {
 
-	List<Node> children = new LinkedList<Node>();
+	protected List<Node> children = new LinkedList<Node>();
 	
 	public abstract void generate();
 

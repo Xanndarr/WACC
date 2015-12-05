@@ -12,7 +12,18 @@ public class ProgramNode extends Node {
         ProgramCode.add("\n");
         ProgramCode.add(".global main");
         ProgramCode.add("main:");
-        ProgramCode.add("\tPUSH " + Reg.R14.stack());
+
+        ProgramCode.setIndent(true);
+
+        ProgramCode.add("PUSH " + Reg.R14.stack());
+        for (Node child : children) {
+            child.generate();
+        }
+        ProgramCode.add("POP " + Reg.R15.stack());
+        ProgramCode.add(".ltorg");
+
+        ProgramCode.setIndent(false);
+
     }
 }
 
