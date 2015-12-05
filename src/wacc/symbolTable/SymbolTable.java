@@ -6,26 +6,26 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-class SymbolTable {
+public class SymbolTable<K, V> {
 	
-	private Map<String, String> symbolTable;
-	private Map<String, Pair> pairReferences;
+	private Map<K, V> symbolTable;
+	private Map<K, Pair> pairReferences;
 	
 	public SymbolTable() {
-		symbolTable = new LinkedHashMap<String, String>();
-		pairReferences = new HashMap<String, Pair>();
+		symbolTable = new LinkedHashMap<K, V>();
+		pairReferences = new HashMap<K, Pair>();
 	}
 	
-	public void put(String key, String value) {
+	public void put(K key, V value) {
 		symbolTable.put(key, value);
 	}
 	
-	public void put(String key, String value, String fstRef, String sndRef) {
+	public void put(K key, V value, String fstRef, String sndRef) {
 		symbolTable.put(key, value);
 		pairReferences.put(key, new Pair(fstRef, sndRef));
 	}
 	
-	public String get(String key) {
+	public V get(K key) {
 		return symbolTable.get(key);
 	}
 	
@@ -38,11 +38,11 @@ class SymbolTable {
 		return "null";
 	}
 	
-	public boolean exists(String key) {
+	public boolean exists(K key) {
 		return symbolTable.containsKey(key);
 	}
 	
-	public Collection<String> getValues() {
+	public Collection<V> getValues() {
 		return symbolTable.values();
 	}
 	

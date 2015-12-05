@@ -9,10 +9,10 @@ public class ScopeHandler {
 	private int GLOBAL_SCOPE = 0;
 	private int currentScope = GLOBAL_SCOPE;
 	
-	private Map<Integer, SymbolTable> tables;
+	private Map<Integer, SymbolTable<String, String>> tables;
 	
 	public ScopeHandler() {
-		tables = new HashMap<Integer, SymbolTable>();
+		tables = new HashMap<Integer, SymbolTable<String, String>>();
 		tables.put(GLOBAL_SCOPE, new SymbolTable());
 	}
 	
@@ -66,7 +66,7 @@ public class ScopeHandler {
 	
 	public void descend() {
 		currentScope++;
-		tables.put(currentScope, new SymbolTable());
+		tables.put(currentScope, new SymbolTable<String, String>());
 	}
 	
 	public void ascend() {

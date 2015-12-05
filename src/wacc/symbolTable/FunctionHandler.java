@@ -6,11 +6,11 @@ import java.util.Map;
 
 public class FunctionHandler {
 	
-	private Map<String, SymbolTable> functions;
+	private Map<String, SymbolTable<String, String>> functions;
 	private final String FUNCTION_TYPE = "$TYPE";
 	
 	public FunctionHandler() {
-		functions = new HashMap<String, SymbolTable>();
+		functions = new HashMap<String, SymbolTable<String, String>>();
 	}
 	
 	//FUNCTION_TYPE represents the return type of function in hashmap
