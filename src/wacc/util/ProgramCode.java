@@ -43,15 +43,15 @@ public class ProgramCode {
 		switch (t) {
 		case CHAR:
 		case STRING:
-			return addData("%.*s\0");
+			return addData("%.*s\\0");
 		case INT:
-			return addData("%d\0");
+			return addData("%d\\0");
 		case BOOL:
-			String tempRet = addData("true\0");
-			addData("false\0");
+			String tempRet = addData("true\\0");
+			addData("false\\0");
 			return tempRet;
 		case NULL:
-			return addData("\0");
+			return addData("\\0");
 		default:
 			return null;
 		}
