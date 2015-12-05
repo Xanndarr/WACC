@@ -7,6 +7,7 @@ public class ProgramCode {
 	
 	private static ProgramCode instance;
 	private static List<String> instructions;
+	private static boolean indent = false;
 	
 	private ProgramCode() {
 		instructions = new LinkedList<String>();
@@ -16,7 +17,15 @@ public class ProgramCode {
 		if (instance == null) {
 			instance = new ProgramCode();
 		}
-		instructions.add(instruction);
+		if (indent) {
+			instructions.add("\t" + instruction);
+		} else {
+			instructions.add(instruction);
+		}
+	}
+
+	public static void setIndent(boolean newIndent) {
+		indent = newIndent;
 	}
 	
 	public static String getCode() {
