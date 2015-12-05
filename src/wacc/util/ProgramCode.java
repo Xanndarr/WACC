@@ -16,6 +16,7 @@ public class ProgramCode {
 	private ProgramCode() {
 		data = new LinkedList<String>();
 		main = new LinkedList<String>();
+		post = new LinkedList<String>();
 	}
 	
 	public static void add(String instruction) {
