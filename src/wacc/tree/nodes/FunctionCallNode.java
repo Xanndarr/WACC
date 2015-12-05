@@ -1,11 +1,12 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.AssignRHSNode;
+import wacc.util.Reg;
 
 public class FunctionCallNode extends AssignRHSNode {
 
     @Override
-    public void generate() {
+    public Reg generate() {
 
     }
 

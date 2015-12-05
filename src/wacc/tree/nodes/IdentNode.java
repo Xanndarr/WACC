@@ -1,6 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
+import wacc.util.Reg;
 
 public class IdentNode extends ExpNode {
 	
@@ -11,7 +12,7 @@ public class IdentNode extends ExpNode {
 	}
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		// TODO Auto-generated method stub
 		
 	}

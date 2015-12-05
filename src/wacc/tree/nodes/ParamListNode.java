@@ -1,11 +1,12 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.Node;
+import wacc.util.Reg;
 
 public class ParamListNode extends Node {
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		// TODO Auto-generated method stub	
 	}
 

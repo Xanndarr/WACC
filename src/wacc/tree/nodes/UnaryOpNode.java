@@ -1,6 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
+import wacc.util.Reg;
 import wacc.util.UnaryOp;
 
 public class UnaryOpNode extends ExpNode {
@@ -12,7 +13,7 @@ public class UnaryOpNode extends ExpNode {
     }
 
     @Override
-    public void generate() {
+    public Reg generate() {
 
     }
 }

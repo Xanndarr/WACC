@@ -7,7 +7,7 @@ import wacc.util.Reg;
 public class ProgramNode extends Node {
 
     @Override
-    public void generate() {
+    public Reg generate() {
         ProgramCode.add(".text");
         ProgramCode.add("\n");
         ProgramCode.add(".global main");

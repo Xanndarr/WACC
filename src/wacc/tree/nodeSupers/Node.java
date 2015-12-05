@@ -4,11 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import wacc.util.Reg;
+
 public abstract class Node {
 
 	protected List<Node> children = new LinkedList<Node>();
 	
-	public abstract void generate();
+	public abstract Reg generate();
 
 	public void addChild(Node child) {
 		children.add(child);

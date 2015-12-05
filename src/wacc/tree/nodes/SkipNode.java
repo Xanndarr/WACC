@@ -8,7 +8,7 @@ import wacc.util.Reg;
 public class SkipNode extends StatNode {
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.imm(0));
 	}
 

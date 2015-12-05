@@ -1,6 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.StatNode;
+import wacc.util.Reg;
 import wacc.util.Type;
 
 public class InitialisationNode extends StatNode {
@@ -12,7 +13,7 @@ public class InitialisationNode extends StatNode {
 	}
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		// TODO Auto-generated method stub
 		
 	}

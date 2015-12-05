@@ -1,11 +1,12 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.AssignRHSNode;
+import wacc.util.Reg;
 
 public class ArrayNode extends AssignRHSNode {
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		// TODO Auto-generated method stub
 		
 	}

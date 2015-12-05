@@ -2,6 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
 import wacc.util.BinaryOp;
+import wacc.util.Reg;
 
 public class BinaryOpNode extends ExpNode {
 	
@@ -12,7 +13,7 @@ public class BinaryOpNode extends ExpNode {
 	}
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		// TODO Auto-generated method stub
 		
 	}

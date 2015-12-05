@@ -1,6 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.Node;
+import wacc.util.Reg;
 import wacc.util.Type;
 
 public class ParamNode extends Node {
@@ -14,7 +15,7 @@ public class ParamNode extends Node {
 	}
 
 	@Override
-	public void generate() {
+	public Reg generate() {
 		// TODO Auto-generated method stub
 		
 	}
