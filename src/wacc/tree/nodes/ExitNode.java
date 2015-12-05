@@ -1,8 +1,6 @@
 package wacc.tree.nodes;
 
-import wacc.tree.nodeSupers.Node;
 import wacc.tree.nodeSupers.StatNode;
-import wacc.util.Arm;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
 
@@ -10,10 +8,12 @@ public class ExitNode extends StatNode {
 
 	@Override
 	public Reg generate() {
-		for (Node child : children) {
-			child.generate();
+		if (children.get(0) != null) {
+			Reg ret = children.get(0).generate();
+			ProgramCode.add("MOV r0, " + ret);
+			ProgramCode.add("BL exit");
 		}
-		ProgramCode.add("LDR r4, " + Arm.imm(o));
+		return null;
 	}
 
 }
