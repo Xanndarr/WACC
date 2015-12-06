@@ -138,7 +138,7 @@ public class ProgramCode {
 			for (String line : data) {
 				out.append(line + "\n");
 			}
-			out.append("\n\n");
+			out.append("\n");
 		}
 		for (String instr : main) {
 			out.append(instr + "\n");

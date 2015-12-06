@@ -10,15 +10,14 @@ public class PrintNode extends StatNode {
 	@Override
 	public Reg generate() {
 		if (children.get(0) != null) {
-			Type t = Type.CHAR; //TODO
 			Reg ret = children.get(0).generate();
-			String dataLabel = ProgramCode.addPrintData(t);
+			String dataLabel = ProgramCode.addPrintData(nodeType);
 			ProgramCode.add("MOV r0, " + ret);
-			if (t == Type.CHAR) {
+			if (nodeType == Type.CHAR) {
 				ProgramCode.add("BL putchar");
 			} else {
-				ProgramCode.add("BL p_print_" + t);
-				ProgramCode.addPrint(t, dataLabel);
+				ProgramCode.add("BL p_print_" + nodeType);
+				ProgramCode.addPrint(nodeType, dataLabel);
 			}
 		}
 		return null;
