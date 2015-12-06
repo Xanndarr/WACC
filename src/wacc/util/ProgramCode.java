@@ -12,6 +12,7 @@ public class ProgramCode {
 	private static List<String> post;
 	private static boolean indent = false;
 	private static boolean postIndent = false;
+	private static int label = 0;
 	
 	private ProgramCode() {
 		data = new LinkedList<String>();
@@ -51,6 +52,10 @@ public class ProgramCode {
 
 	public static void setIndent(boolean newIndent) {
 		indent = newIndent;
+	}
+	
+	public static String generateUniqueLabel() {
+		return "L" + label++;
 	}
 	
 	public static String getCode() {
