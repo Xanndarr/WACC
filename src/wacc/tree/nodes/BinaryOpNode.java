@@ -8,7 +8,7 @@ public class BinaryOpNode extends ExpNode {
 	
 	private BinaryOp op = BinaryOp.INVALID_OP;
 	
-	public BinaryOpNode() {
+	public BinaryOpNode(BinaryOp op) {
 		this.op = op;
 	}
 

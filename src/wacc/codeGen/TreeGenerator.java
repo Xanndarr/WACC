@@ -5,7 +5,9 @@ import wacc.antlr.WACCParserBaseVisitor;
 import wacc.tree.nodeSupers.*;
 import wacc.tree.nodes.*;
 import wacc.tree.nodes.PairElemNode.PairPos;
+import wacc.util.BinaryOp;
 import wacc.util.Type;
+import wacc.util.UnaryOp;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
@@ -53,7 +55,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
-        BinaryOpNode op = new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode(BinaryOp.parse(ctx.and_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
         ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
         op.addChild(exp1);
@@ -115,7 +117,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitEqualityOpExp(EqualityOpExpContext ctx) {
-        BinaryOpNode ret = new BinaryOpNode();
+        BinaryOpNode ret = new BinaryOpNode(BinaryOp.parse(ctx.equality_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
         ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
         ret.addChild(exp1);
@@ -125,7 +127,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitOrOpExp(OrOpExpContext ctx) {
-        BinaryOpNode op = new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode(BinaryOp.parse(ctx.or_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
         ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
         op.addChild(exp1);
@@ -182,7 +184,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitOrderingOpExp(OrderingOpExpContext ctx) {
-        BinaryOpNode op = new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode(BinaryOp.parse(ctx.ordering_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
         ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
         op.addChild(exp1);
@@ -219,7 +221,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public UnaryOpNode visitUnaryOpExp(UnaryOpExpContext ctx) {
-        UnaryOpNode op = new UnaryOpNode();
+        UnaryOpNode op = new UnaryOpNode(UnaryOp.parse(ctx.unary_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp());
         op.addChild(exp1);
         return op;
@@ -238,7 +240,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitAsArithmeticOpExp(AsArithmeticOpExpContext ctx) {
-        BinaryOpNode op = new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode(BinaryOp.parse(ctx.as_arithmetic_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
         ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
         op.addChild(exp1);
@@ -256,7 +258,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public BinaryOpNode visitDmArithmeticOpExp(DmArithmeticOpExpContext ctx) {
-        BinaryOpNode op = new BinaryOpNode();
+        BinaryOpNode op = new BinaryOpNode(BinaryOp.parse(ctx.dm_arithmetic_op().getText()));
         ExpNode exp1 = (ExpNode) visit(ctx.exp().get(0));
         ExpNode exp2 = (ExpNode) visit(ctx.exp().get(1));
         op.addChild(exp1);

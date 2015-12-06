@@ -10,7 +10,7 @@ public enum UnaryOp {
 		this.op = op;
 	}
 	
-	public UnaryOp parseOp(String op) {
+	public static UnaryOp parse(String op) {
 		for (UnaryOp oper : UnaryOp.values()) {
 			if (oper.op.equals(op)) {
 				return oper;

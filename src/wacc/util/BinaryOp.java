@@ -15,7 +15,7 @@ public enum BinaryOp {
 		this.op = op;
 	}
 	
-	public BinaryOp parse(String op) {
+	public static BinaryOp parse(String op) {
 		for (BinaryOp bop : BinaryOp.values()) {
 			if (bop.op.equals(op)) {
 				return bop;

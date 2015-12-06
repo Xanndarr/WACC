@@ -8,7 +8,7 @@ public class UnaryOpNode extends ExpNode {
 
     private UnaryOp op = UnaryOp.INVALID_OP;
 
-    public UnaryOpNode() {
+    public UnaryOpNode(UnaryOp op) {
         this.op = op;
     }
 
