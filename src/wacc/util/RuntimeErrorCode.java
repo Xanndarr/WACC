@@ -40,6 +40,7 @@ public class RuntimeErrorCode {
     }
 
     private static void addRuntimeError() {
+        ProgramCode.setPostIndent(false);
         ProgramCode.addPost("p_throw_runtime_error:");
         ProgramCode.setPostIndent(true);
         ProgramCode.addPost("BL p_print_string");
