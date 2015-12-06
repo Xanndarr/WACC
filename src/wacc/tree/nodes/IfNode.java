@@ -10,20 +10,22 @@ public class IfNode extends StatNode {
 	public Reg generate() {
 		Reg condRet = children.get(0).generate();
 		ProgramCode.add("CMP " + condRet + ", #0");
-		String thenLabel = ProgramCode.generateUniqueLabel();
 		String elseLabel = ProgramCode.generateUniqueLabel();
-		ProgramCode.add("BEQ " + thenLabel);
-		ProgramCode.add("B " + elseLabel);
+		String endLabel = ProgramCode.generateUniqueLabel();
 		
-		ProgramCode.setIndent(false);
-		ProgramCode.add(thenLabel + ":");
-		ProgramCode.setIndent(true);
+		ProgramCode.add("BEQ " + elseLabel);
 		children.get(1).generate();
+		ProgramCode.add("B " + endLabel);
 
 		ProgramCode.setIndent(false);
 		ProgramCode.add(elseLabel + ":");
 		ProgramCode.setIndent(true);
+		
 		children.get(2).generate();
+
+		ProgramCode.setIndent(false);
+		ProgramCode.add(endLabel + ":");
+		ProgramCode.setIndent(true);
 		
 		return null;
 	}
