@@ -41,7 +41,7 @@ public class ProgramCode {
 		return "msg_" + dataItems++;
 	}
 	
-	private static void addPost(String instruction) {
+	public static void addPost(String instruction) {
 		if (postIndent) {
 			post.add("\t" + instruction);
 		} else {
@@ -72,6 +72,10 @@ public class ProgramCode {
 			out.append(p + "\n");
 		}
 		return out.toString();
+	}
+
+	public static void setPostIndent(boolean bool) {
+		postIndent = bool;
 	}
 
 }

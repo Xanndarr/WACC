@@ -5,15 +5,15 @@ public class PrintCode {
 	public static String addPrintData(Type t) {
 		switch (t) {
 		case STRING:
-			return addData("%.*s\\0");
+			return ProgramCode.addData("%.*s\\0");
 		case INT:
-			return addData("%d\\0");
+			return ProgramCode.addData("%d\\0");
 		case BOOL:
-			String tempRet = addData("true\\0");
-			addData("false\\0");
+			String tempRet = ProgramCode.addData("true\\0");
+			ProgramCode.addData("false\\0");
 			return tempRet;
 		case NULL:
-			return addData("\\0");
+			return ProgramCode.addData("\\0");
 		default:
 			return null;
 		}
@@ -21,15 +21,15 @@ public class PrintCode {
 	
 	public static void addPrint(Type t, String dataLabel) {
 		if (t == Type.NULL) {
-			addPost("p_print_ln:");
-			postIndent = true;
-			addPost("PUSH {lr}");
+			ProgramCode.addPost("p_print_ln:");
+			ProgramCode.setPostIndent(true);
+			ProgramCode.addPost("PUSH {lr}");
 			addPrintln(dataLabel);
-			addPost("BL puts");
+			ProgramCode.addPost("BL puts");
 		} else {
-			addPost("p_print_" + t + ":");
-			postIndent = true;
-			addPost("PUSH {lr}");
+			ProgramCode.addPost("p_print_" + t + ":");
+			ProgramCode.setPostIndent(true);
+			ProgramCode.addPost("PUSH {lr}");
 			switch (t) {
 			case STRING:
 				addPrintString(dataLabel);
@@ -44,37 +44,37 @@ public class PrintCode {
 			default:
 				break;
 			}
-			addPost("BL printf");
+			ProgramCode.addPost("BL printf");
 		}
-		addPost("MOV r0, #0");
-		addPost("BL fflush");
-		addPost("POP {pc}");
-		postIndent = false;
+		ProgramCode.addPost("MOV r0, #0");
+		ProgramCode.addPost("BL fflush");
+		ProgramCode.addPost("POP {pc}");
+		ProgramCode.setPostIndent(false);
 	}
 	
 	private static void addPrintString(String dataLabel) {
-		addPost("LDR r1, [r0]");
-		addPost("ADD r2, r0, #4");
-		addPost("LDR r0, " + Arm.mem(dataLabel));
-		addPost("ADD r0, r0, #4");
+		ProgramCode.addPost("LDR r1, [r0]");
+		ProgramCode.addPost("ADD r2, r0, #4");
+		ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
+		ProgramCode.addPost("ADD r0, r0, #4");
 	}
 	
 	private static void addPrintBool(String trueLabel, String falseLabel) {
-		addPost("CMP r0, #0");
-		addPost("LDRNE r0, " + Arm.mem(trueLabel));
-		addPost("LDREQ r0, " + Arm.mem(falseLabel));
-		addPost("ADD r0, r0, #4");
+		ProgramCode.addPost("CMP r0, #0");
+		ProgramCode.addPost("LDRNE r0, " + Arm.mem(trueLabel));
+		ProgramCode.addPost("LDREQ r0, " + Arm.mem(falseLabel));
+		ProgramCode.addPost("ADD r0, r0, #4");
 	}
 	
 	private static void addPrintInt(String dataLabel) {
-		addPost("MOV r1, r0");
-		addPost("LDR r0, " + Arm.mem(dataLabel));
-		addPost("ADD r0, r0, #4");		
+		ProgramCode.addPost("MOV r1, r0");
+		ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
+		ProgramCode.addPost("ADD r0, r0, #4");
 	}
 	
 	private static void addPrintln(String dataLabel) {
-		addPost("LDR r0, " + Arm.mem(dataLabel));
-		addPost("ADD r0, r0, #4");
+		ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
+		ProgramCode.addPost("ADD r0, r0, #4");
 	}
 
 }
