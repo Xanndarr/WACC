@@ -21,9 +21,6 @@ public class ProgramCode {
 	}
 	
 	public static void add(String instruction) {
-		if (instance == null) {
-			instance = new ProgramCode();
-		}
 		if (indent) {
 			main.add("\t" + instruction);
 		} else {
@@ -81,6 +78,12 @@ public class ProgramCode {
 
 	public static void setPostIndent(boolean bool) {
 		postIndent = bool;
+	}
+
+	public static void createInstance() {
+		if (instance == null) {
+			instance = new ProgramCode();
+		}
 	}
 
 }

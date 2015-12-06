@@ -53,4 +53,9 @@ public class StackHandler {
     }
 
 
+    public static void createInstance() {
+        if (instance == null) {
+            instance = new StackHandler();
+        }
+    }
 }

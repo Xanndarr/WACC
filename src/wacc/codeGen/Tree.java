@@ -1,6 +1,9 @@
 package wacc.codeGen;
 
 import wacc.tree.nodeSupers.Node;
+import wacc.util.ProgramCode;
+import wacc.util.RegHandler;
+import wacc.util.StackHandler;
 
 public class Tree {
 	
@@ -15,6 +18,9 @@ public class Tree {
 	}
 	
 	public void generate() {
+        ProgramCode.createInstance();
+        StackHandler.createInstance();
+        RegHandler.createInstance();
 		head.generate();
 	}
 

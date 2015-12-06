@@ -2,6 +2,7 @@ package wacc.util;
 
 import wacc.symbolTable.SymbolTable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RegHandler {
@@ -10,6 +11,7 @@ public class RegHandler {
     private static int GLOBAL_SCOPE = 0;
     private static int currentScope = GLOBAL_SCOPE;
 
+    private static RegHandler instance;
     private static Map<Integer, SymbolTable<Reg, Boolean>> tables;
 
     public static void add(Reg reg, Boolean used) {
@@ -57,5 +59,11 @@ public class RegHandler {
         currentScope--;
     }
 
+
+    public static void createInstance() {
+        if (instance == null) {
+            instance = new RegHandler();
+        }
+    }
 
 }
