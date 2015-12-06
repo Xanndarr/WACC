@@ -361,7 +361,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public CharNode visitChar(CharContext ctx) {
-		return new CharNode(ctx.getText().charAt(0));
+		return new CharNode(ctx.getText().charAt(1));
 	}
 
 	@Override
