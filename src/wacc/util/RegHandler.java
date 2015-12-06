@@ -33,6 +33,15 @@ public class RegHandler {
         }
         return false;
     }
+    
+    public Reg getNextReg() {
+    	for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
+    		if (!tables.get(currentScope).exists(Reg.values()[i])) {
+    			return Reg.values()[i];
+    		}
+    	}
+    	return null;
+    }
 
     public boolean isUsedLocally(Reg reg) {
         return tables.get(currentScope).exists(reg);
