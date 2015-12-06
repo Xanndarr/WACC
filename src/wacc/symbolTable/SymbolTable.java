@@ -42,6 +42,10 @@ public class SymbolTable<K, V> {
 		return symbolTable.containsKey(key);
 	}
 	
+	public Collection<K> getKeys() {
+		return symbolTable.keySet();
+	}
+	
 	public Collection<V> getValues() {
 		return symbolTable.values();
 	}
