@@ -17,7 +17,7 @@ public class CharNode extends ExpNode {
     @Override
     public Reg generate() {
     	nodeType = Type.CHAR;
-    	ProgramCode.add("MOV r4, " + Arm.imm("'c'"));
+    	ProgramCode.add("MOV r4, " + Arm.imm(c));
     	return Reg.R4;
     }
 }

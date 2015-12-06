@@ -10,4 +10,5 @@ public class Arm {
     public static String mem(Object o) {
     	return "=" + o.toString();
     }
+    
 }

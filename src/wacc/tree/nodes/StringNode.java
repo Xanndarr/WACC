@@ -18,7 +18,7 @@ public class StringNode extends ExpNode {
     public Reg generate() {
     	nodeType = Type.STRING;
     	String var = ProgramCode.addData(string);
-    	ProgramCode.add("MOV r4, " + Arm.mem(var));
+    	ProgramCode.add("LDR r4, " + Arm.mem(var));
     	return Reg.R4;
     }
 }
