@@ -177,7 +177,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public StringNode visitString(StringContext ctx) {
-		return new StringNode(ctx.getText().replaceAll("\"", ""));
+		return new StringNode(ctx.getText().substring(1, ctx.getText().length() - 1));
 	}
 
 	@Override
