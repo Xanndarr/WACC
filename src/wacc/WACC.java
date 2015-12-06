@@ -9,7 +9,6 @@ import wacc.codeGen.AssemblyWriter;
 import wacc.codeGen.Tree;
 import wacc.codeGen.TreeGenerator;
 import wacc.semantics.WACCVisitor;
-import wacc.tree.nodes.ProgramNode;
 
 public class WACC {
     public static void main(String[] args) throws Exception {

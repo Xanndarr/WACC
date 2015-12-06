@@ -15,7 +15,7 @@ public class FunctionHandler {
 	
 	//FUNCTION_TYPE represents the return type of function in hashmap
 	public void add(String ident, String returnType) {
-		SymbolTable params = new SymbolTable();
+		SymbolTable<String, String> params = new SymbolTable<String, String>();
 		params.put(FUNCTION_TYPE, returnType);
 		functions.put(ident, params);
 	}
