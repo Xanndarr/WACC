@@ -32,7 +32,11 @@ public class ProgramCode {
 	
 	public static String addData(String s) {
 		data.add("msg_" + dataItems + ":");
-		data.add("\t.word " + (s.length() - "\\".length()));
+		if (s.contains("\\")) {
+			data.add("\t.word " + (s.length() - "\\".length()));
+		} else {
+			data.add("\t.word " + s.length());
+		}
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + dataItems++;
 	}
