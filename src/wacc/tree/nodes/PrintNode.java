@@ -12,13 +12,22 @@ public class PrintNode extends StatNode {
 	public Reg generate() {
 		if (children.get(0) != null) {
 			Reg ret = children.get(0).generate();
-			String dataLabel = PrintCode.addPrintData(nodeType);
 			ProgramCode.add("MOV r0, " + ret);
+			String dataLabel;
+			if (printedTypeLabels.containsKey(nodeType)) {
+				dataLabel = printedTypeLabels.get(nodeType);
+			} else {
+				dataLabel = PrintCode.addPrintData(nodeType);
+				printedTypeLabels.put(nodeType, dataLabel);
+			}
+			
 			if (nodeType == Type.CHAR) {
 				ProgramCode.add("BL putchar");
 			} else {
 				ProgramCode.add("BL p_print_" + nodeType);
-				PrintCode.addPrint(nodeType, dataLabel);
+				if (!printedTypeLabels.containsKey(nodeType)) {
+					PrintCode.addPrint(nodeType, dataLabel);
+				}
 			}
 		}
 		return null;
