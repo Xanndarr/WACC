@@ -1,10 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
-import wacc.util.Arm;
-import wacc.util.ProgramCode;
-import wacc.util.Reg;
-import wacc.util.Type;
+import wacc.util.*;
 
 public class StringNode extends ExpNode {
 
@@ -16,9 +13,10 @@ public class StringNode extends ExpNode {
 
     @Override
     public Reg generate() {
+        Reg ret = RegHandler.getNextReg();
     	nodeType = Type.STRING;
     	String var = ProgramCode.addData(string);
-    	ProgramCode.add("LDR r4, " + Arm.mem(var));
-    	return Reg.R4;
+    	ProgramCode.add("LDR " + ret + ", " + Arm.mem(var));
+    	return ret;
     }
 }

@@ -1,10 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
-import wacc.util.Arm;
-import wacc.util.ProgramCode;
-import wacc.util.Reg;
-import wacc.util.Type;
+import wacc.util.*;
 
 public class CharNode extends ExpNode {
 
@@ -16,8 +13,9 @@ public class CharNode extends ExpNode {
 
     @Override
     public Reg generate() {
+        Reg ret = RegHandler.getNextReg();
     	nodeType = Type.CHAR;
-    	ProgramCode.add("MOV r4, " + Arm.imm("'" + c + "'"));
-    	return Reg.R4;
+    	ProgramCode.add("MOV " + ret + ", " + Arm.imm("'" + c + "'"));
+    	return ret;
     }
 }
