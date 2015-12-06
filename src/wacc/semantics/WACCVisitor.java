@@ -398,7 +398,7 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 			nodeType = "int";
 			break;
 		case "len":
-			if (!nodeType.contains("[]")) {
+			if (!nodeType.contains("[]") && !nodeType.equals("string")) {
 				err.println("The 'len' operator only works for array types.", ctx.unary_op());
 			}
 			nodeType = "int";
