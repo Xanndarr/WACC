@@ -2,12 +2,14 @@ package wacc.util;
 
 public enum Type {
 	
-	BOOL("bool"), CHAR("char"), STRING("string"), INT("int"), ARRAY("[]"), PAIR("pair"), NULL("NULL");
+	BOOL("bool", 1), CHAR("char", 1), STRING("string", 4), INT("int", 4), ARRAY("[]", 4), PAIR("pair", 4), NULL("NULL", 4);
 
 	private String sType;
+	private int size;
 
-	private Type(String sType) {
+	private Type(String sType, int size) {
 		this.sType = sType;
+		this.size = size;
 	}
 
 	public static Type parse(String s) {
@@ -23,6 +25,10 @@ public enum Type {
 			return PAIR;
 		}
 		return NULL;
+	}
+	
+	public int getSize() {
+		return size;
 	}
 	
 	@Override

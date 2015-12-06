@@ -18,7 +18,6 @@ public class PrintNode extends StatNode {
 				dataLabel = printedTypeLabels.get(nodeType);
 			} else {
 				dataLabel = PrintCode.addPrintData(nodeType);
-				printedTypeLabels.put(nodeType, dataLabel);
 			}
 			
 			if (nodeType == Type.CHAR) {
@@ -27,6 +26,7 @@ public class PrintNode extends StatNode {
 				ProgramCode.add("BL p_print_" + nodeType);
 				if (!printedTypeLabels.containsKey(nodeType)) {
 					PrintCode.addPrint(nodeType, dataLabel);
+					printedTypeLabels.put(nodeType, dataLabel);
 				}
 			}
 		}

@@ -13,7 +13,7 @@ public class ScopeHandler {
 	
 	public ScopeHandler() {
 		tables = new HashMap<Integer, SymbolTable<String, String>>();
-		tables.put(GLOBAL_SCOPE, new SymbolTable());
+		tables.put(GLOBAL_SCOPE, new SymbolTable<String, String>());
 	}
 	
 	public void add(String ident, String type) {
