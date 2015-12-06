@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import wacc.util.Reg;
+import wacc.util.Type;
 
 public abstract class Node {
 
 	protected List<Node> children = new LinkedList<Node>();
+	protected static Type nodeType = null;
 	
 	public abstract Reg generate();
 

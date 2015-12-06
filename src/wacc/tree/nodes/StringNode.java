@@ -4,6 +4,7 @@ import wacc.tree.nodeSupers.ExpNode;
 import wacc.util.Arm;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
+import wacc.util.Type;
 
 public class StringNode extends ExpNode {
 
@@ -15,6 +16,7 @@ public class StringNode extends ExpNode {
 
     @Override
     public Reg generate() {
+    	nodeType = Type.STRING;
     	String var = ProgramCode.addData(string);
     	ProgramCode.add("MOV r4, " + Arm.mem(var));
     	return Reg.R4;
