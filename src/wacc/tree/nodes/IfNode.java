@@ -12,7 +12,7 @@ public class IfNode extends StatNode {
 		ProgramCode.add("CMP " + condRet + ", #0");
 		String elseLabel = ProgramCode.generateUniqueLabel();
 		String endLabel = ProgramCode.generateUniqueLabel();
-		
+
 		ProgramCode.add("BEQ " + elseLabel);
 		children.get(1).generate();
 		ProgramCode.add("B " + endLabel);
@@ -20,13 +20,13 @@ public class IfNode extends StatNode {
 		ProgramCode.setIndent(false);
 		ProgramCode.add(elseLabel + ":");
 		ProgramCode.setIndent(true);
-		
+
 		children.get(2).generate();
 
 		ProgramCode.setIndent(false);
 		ProgramCode.add(endLabel + ":");
 		ProgramCode.setIndent(true);
-		
+
 		return null;
 	}
 
