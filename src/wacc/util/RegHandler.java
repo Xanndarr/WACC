@@ -7,16 +7,16 @@ import java.util.Map;
 public class RegHandler {
 
     //0 represents the index for global scope
-    private int GLOBAL_SCOPE = 0;
-    private int currentScope = GLOBAL_SCOPE;
+    private static int GLOBAL_SCOPE = 0;
+    private static int currentScope = GLOBAL_SCOPE;
 
-    private Map<Integer, SymbolTable<Reg, Boolean>> tables;
+    private static Map<Integer, SymbolTable<Reg, Boolean>> tables;
 
-    public void add(Reg reg, Boolean used) {
+    public static void add(Reg reg, Boolean used) {
         tables.get(currentScope).put(reg, used);
     }
 
-    public Boolean get(Reg reg) {
+    public static Boolean get(Reg reg) {
         for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
             if (tables.get(i).exists(reg)) {
                 return tables.get(i).get(reg);
@@ -25,7 +25,7 @@ public class RegHandler {
         return null;
     }
 
-    public boolean isUsedGlobally(Reg reg) {
+    public static boolean isUsedGlobally(Reg reg) {
         for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
             if (tables.get(i).exists(reg)) {
                 return true;
@@ -34,7 +34,7 @@ public class RegHandler {
         return false;
     }
     
-    public Reg getNextReg() {
+    public static Reg getNextReg() {
     	for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
     		if (!tables.get(currentScope).exists(Reg.values()[i])) {
     			return Reg.values()[i];
@@ -43,16 +43,16 @@ public class RegHandler {
     	return null;
     }
 
-    public boolean isUsedLocally(Reg reg) {
+    public static boolean isUsedLocally(Reg reg) {
         return tables.get(currentScope).exists(reg);
     }
 
-    public void descend() {
+    public static void descend() {
         currentScope++;
         tables.put(currentScope, new SymbolTable<Reg, Boolean>());
     }
 
-    public void ascend() {
+    public static void ascend() {
         tables.remove(currentScope);
         currentScope--;
     }
