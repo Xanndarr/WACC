@@ -25,11 +25,11 @@ public class InitialisationNode extends StatNode {
 		
 		ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
 		Reg ret = children.get(1).generate();
+		String strInstr = "STR ";
 		if (type.getSize() == 1) {
-			ProgramCode.add("STRB " + ret + ", [sp]");
-		} else {
-			ProgramCode.add("STR " + ret + ", [sp]");
+			strInstr = "STRB ";
 		}
+		ProgramCode.add(strInstr + ret + ", [sp]");
 		ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
 		
 		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
