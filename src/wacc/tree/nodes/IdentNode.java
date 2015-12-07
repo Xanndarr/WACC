@@ -2,6 +2,8 @@ package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
 import wacc.util.Reg;
+import wacc.util.RegHandler;
+import wacc.util.Type;
 
 public class IdentNode extends ExpNode {
 	
@@ -17,7 +19,12 @@ public class IdentNode extends ExpNode {
 
 	@Override
 	public Reg generate() {
-		return null;
+		RegHandler.descend();
+		Reg fst = RegHandler.getNextReg();
+		// TODO add method to get type of ident
+		//nodeType = Type.INT;
+		RegHandler.ascend();
+		return fst;
 	}
 
 }
