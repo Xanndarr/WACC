@@ -13,6 +13,11 @@ public class FunctionNode extends StatNode {
 
 	@Override
 	public Reg generate() {
+		scopeHandler.descendFun();
+		scopeHandler.descend();
+		
+		scopeHandler.ascend();
+		scopeHandler.ascendFun();
 		return null;
 	}
 	

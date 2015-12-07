@@ -13,7 +13,7 @@ public class BoolNode extends ExpNode {
 
     @Override
     public Reg generate() {
-        Reg ret = RegHandler.getNextReg(false);
+        Reg ret = RegHandler.peekNextReg();
     	nodeType = Type.BOOL;
     	ProgramCode.add("MOV " + ret + ", " + Arm.imm(b ? 1 : 0));
     	return ret;
