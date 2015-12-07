@@ -44,7 +44,7 @@ public class RegHandler {
     public static Reg getNextReg() {
         for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
             if (!tables.get(currentScope).exists(Reg.values()[i])) {
-                tables.get(currentScope).put(Reg.values()[i], true);
+                add(Reg.values()[i], true);
                 return Reg.values()[i];
             }
         }
