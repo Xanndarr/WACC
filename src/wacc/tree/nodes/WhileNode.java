@@ -9,6 +9,8 @@ public class WhileNode extends StatNode {
 
     @Override
     public Reg generate() {
+    	scopeHandler.descend();
+    	
         String compLabel = ProgramCode.generateUniqueLabel();
         String repeatLabel = ProgramCode.generateUniqueLabel();
         ProgramCode.add("B " + compLabel);
@@ -27,6 +29,8 @@ public class WhileNode extends StatNode {
         ProgramCode.add("CMP " + condRet + ", " + Arm.imm(1));
         ProgramCode.add("BEQ " + repeatLabel);
 
+        
+        scopeHandler.ascend();
         return null;
     }
 }

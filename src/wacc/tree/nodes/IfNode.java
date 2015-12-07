@@ -8,6 +8,8 @@ public class IfNode extends StatNode {
 
 	@Override
 	public Reg generate() {
+		scopeHandler.descend();
+		
 		Reg condRet = children.get(0).generate();
 		ProgramCode.add("CMP " + condRet + ", #0");
 		String elseLabel = ProgramCode.generateUniqueLabel();
@@ -27,6 +29,7 @@ public class IfNode extends StatNode {
 		ProgramCode.add(endLabel + ":");
 		ProgramCode.setIndent(true);
 
+		scopeHandler.ascend();
 		return null;
 	}
 
