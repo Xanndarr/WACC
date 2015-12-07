@@ -24,7 +24,7 @@ public class RegHandler {
     }
 
     public static Boolean get(Reg reg) {
-        for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
+        for (int i = currentScope; i >= GLOBAL_SCOPE; i--) {
             if (tables.get(i).exists(reg)) {
                 return tables.get(i).get(reg);
             }
@@ -33,22 +33,22 @@ public class RegHandler {
     }
 
     public static boolean isUsedGlobally(Reg reg) {
-        for(int i = currentScope; i >= GLOBAL_SCOPE; i--) {
+        for (int i = currentScope; i >= GLOBAL_SCOPE; i--) {
             if (tables.get(i).exists(reg)) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public static Reg getNextReg() {
-    	for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
-    		if (!tables.get(currentScope).exists(Reg.values()[i])) {
+        for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
+            if (!tables.get(currentScope).exists(Reg.values()[i])) {
                 tables.get(currentScope).put(Reg.values()[i], true);
-    			return Reg.values()[i];
-    		}
-    	}
-    	return null;
+                return Reg.values()[i];
+            }
+        }
+        return null;
     }
 
     public static boolean isUsedLocally(Reg reg) {
