@@ -1,7 +1,8 @@
 package wacc.util;
 
 public enum Error {
-    OVERFLOW("overflow"), DIV_BY_ZERO("check_divide_by_zero"), NULL_PTR("null_pointer");
+    OVERFLOW("throw_overflow_error"), DIV_BY_ZERO("check_divide_by_zero"), NULL_PTR("check_null_pointer"),
+    ARR_OOB("check_array_bounds");
 
     private final String error;
 
