@@ -21,4 +21,12 @@ public enum Reg {
         return "{" + name + "}";
     }
 
+    public String memory() {
+        return "[" + name + "]";
+    }
+
+    public String memory(int offset) {
+        return "[" + name + ", " + Arm.imm(offset) + "]";
+    }
+
 }
