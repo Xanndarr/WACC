@@ -1,13 +1,11 @@
 package wacc.util;
 
-import wacc.tree.nodeSupers.Node;
-
 import java.util.LinkedList;
 import java.util.List;
 
 public class RuntimeErrorCode {
 
-    protected static final List<Error> printedErrorLabels = new LinkedList<Error>();
+    private static final List<Error> printedErrorLabels = new LinkedList<Error>();
 
     private static String addErrorData(Error e) {
         switch (e) {
@@ -73,17 +71,11 @@ public class RuntimeErrorCode {
         ProgramCode.setPostIndent(false);
     }
 
-    public static void addErrors(Error e) {
-        String dataLabel;
-        boolean existsError = printedErrorLabels.contains(e);
-        if (!existsError) {
+    public static void addError(Error e) {
+        if (!printedErrorLabels.contains(e)) {
             RuntimeErrorCode.produceError(e);
             printedErrorLabels.add(e);
-            if (!PrintCode.getPrintedTypeLabels().containsKey(Type.STRING)) {
-                dataLabel = PrintCode.addPrintData(Type.STRING);
-                PrintCode.getPrintedTypeLabels().put(Type.STRING, dataLabel);
-                PrintCode.addPrint(Type.STRING, dataLabel);
-            }
+            PrintCode.addPrint(Type.STRING);
         }
     }
 

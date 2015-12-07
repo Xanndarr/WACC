@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class PrintCode {
 
-	protected static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
+	private static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
 	
-	public static String addPrintData(Type t) {
+	private static String addPrintData(Type t) {
 		switch (t) {
 		case STRING:
 			return ProgramCode.addData("%.*s\\0");
@@ -24,7 +24,7 @@ public class PrintCode {
 		}
 	}
 	
-	public static void addPrint(Type t, String dataLabel) {
+	private static void addPrintFunc(Type t, String dataLabel) {
 		if (t == Type.NULL) {
 			ProgramCode.addPost("p_print_ln:");
 			ProgramCode.setPostIndent(true);
@@ -81,9 +81,13 @@ public class PrintCode {
 		ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
 		ProgramCode.addPost("ADD r0, r0, #4");
 	}
-
-    public static Map<Type, String> getPrintedTypeLabels() {
-        return  printedTypeLabels;
+    
+    public static void addPrint(Type t) {
+    	if (!printedTypeLabels.containsKey(t)) {
+    		String label = addPrintData(t);
+            addPrintFunc(t, label);
+            printedTypeLabels.put(t, label);
+        }
     }
 
 }
