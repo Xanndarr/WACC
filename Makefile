@@ -29,7 +29,7 @@ rules:
 	$(RM) rules
 
 clean:
-	rm *.s
+	rm -f *.s
 	$(RM) rules $(OUTPUT_DIR)
 
 
