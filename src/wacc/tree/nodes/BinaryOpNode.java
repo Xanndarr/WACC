@@ -16,14 +16,12 @@ public class BinaryOpNode extends ExpNode {
     public Reg generate() {
         Reg operand1 = children.get(0).generate();
         Reg operand2 = children.get(1).generate();
-        String dataLabel;
-        boolean existsError;
         switch (op) {
             case MULT:
                 ProgramCode.add("SMULL " + operand1 + ", " + operand2 + ", " + operand2 + ", " + operand1);
                 ProgramCode.add("CMP " + operand2 + ", " + operand1 + ", ASR #31");
                 ProgramCode.add("BLNE p_throw_overflow_error");
-                RuntimeErrorCode.checkExistingErrors(Error.OVERFLOW);
+                RuntimeErrorCode.addError(Error.OVERFLOW);
                 nodeType = Type.INT;
                 break;
             case DIV:
@@ -31,7 +29,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idiv");
-                RuntimeErrorCode.checkExistingErrors(Error.DIV_BY_ZERO);
+                RuntimeErrorCode.addError(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
             case MOD:
@@ -39,19 +37,19 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idivmod");
-                RuntimeErrorCode.checkExistingErrors(Error.DIV_BY_ZERO);
+                RuntimeErrorCode.addError(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
             case ADD:
                 ProgramCode.add("ADDS " + operand1 + ", " + operand1 + ", " + operand2);
                 ProgramCode.add("BLVS p_throw_overflow_error");
-                RuntimeErrorCode.checkExistingErrors(Error.OVERFLOW);
+                RuntimeErrorCode.addError(Error.OVERFLOW);
                 nodeType = Type.INT;
                 break;
             case SUB:
                 ProgramCode.add("SUBS " + operand1 + ", " + operand1 + ", " + operand2);
                 ProgramCode.add("BLVS p_throw_overflow_error");;
-                RuntimeErrorCode.checkExistingErrors(Error.OVERFLOW);
+                RuntimeErrorCode.addError(Error.OVERFLOW);
                 nodeType = Type.INT;
                 break;
             case GT:

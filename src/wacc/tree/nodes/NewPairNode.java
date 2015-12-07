@@ -19,7 +19,6 @@ public class NewPairNode extends AssignRHSNode {
 
         //fst
         Reg fstRet = children.get(0).generate();
-        Type fstType = nodeType;
         ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(nodeType.getSize()));
         ProgramCode.add("BL malloc");
         ProgramCode.add("STR " + fstRet + ", " + Reg.R0.memory());
@@ -27,7 +26,6 @@ public class NewPairNode extends AssignRHSNode {
 
         //snd
         Reg sndRet = children.get(1).generate();
-        Type sndType = nodeType;
         ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(nodeType.getSize()));
         ProgramCode.add("BL malloc");
         ProgramCode.add("STR " + fstRet + ", " + Reg.R0.memory());

@@ -24,7 +24,7 @@ public class PairElemNode extends AssignRHSNode {
         ProgramCode.add("LDR " + ret + ", " + identLoc);
         ProgramCode.add("MOV r0, " + ret);
         ProgramCode.add("BL p_check_null_pointer");
-        RuntimeErrorCode.checkExistingErrors(Error.NULL_PTR);
+        RuntimeErrorCode.addError(Error.NULL_PTR);
 		switch (pos) {
 			case FST:
                 ProgramCode.add("LDR " + ret + ", " + ret.memory());
