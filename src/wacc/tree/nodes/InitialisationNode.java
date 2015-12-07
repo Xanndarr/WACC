@@ -11,9 +11,11 @@ import wacc.util.Type;
 public class InitialisationNode extends StatNode {
 	
 	private final Type type;
+	private final String sType;
 	
-	public InitialisationNode(Type type) {
-		this.type = type;
+	public InitialisationNode(String sType) {
+		this.type = Type.parse(sType);
+		this.sType = sType;
 	}
 
 	@Override
@@ -21,6 +23,8 @@ public class InitialisationNode extends StatNode {
 		//TODO all the other assign_rhs
 		IdentNode identNode = (IdentNode) children.get(0);
 		String ident = identNode.getIdent();
+		scopeHandler.add(ident, sType);
+		
 		int spLoc = StackHandler.getOffset() + type.getSize();
 		
 		ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
