@@ -48,8 +48,8 @@ exp: int_lit                	#int
    | PAIR_LIT               	#pair
    | array_elem             	#arrayElem
    | ident                  	#identExp
-   | unary_op exp           	#unaryOpExp
    | OPEN_PAR exp CLOSE_PAR 	#bracketedExp
+   | unary_op exp           	#unaryOpExp
    | exp dm_arithmetic_op exp	#dmArithmeticOpExp
    | exp as_arithmetic_op exp	#asArithmeticOpExp
    | exp ordering_op exp		#orderingOpExp
