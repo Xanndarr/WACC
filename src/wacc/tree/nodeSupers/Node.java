@@ -44,5 +44,12 @@ public abstract class Node {
 		n.generate();
 		ProgramCode.restore();
 	}
-	
+
+    public static Map<Type, String> getPrintedTypeLabels() {
+        return  printedTypeLabels;
+    }
+
+    public static List<Error> getPrintedErrorLabels() {
+        return printedErrorLabels;
+    }
 }
