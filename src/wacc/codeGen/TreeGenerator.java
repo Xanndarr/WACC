@@ -24,7 +24,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public IdentNode visitIdent(IdentContext ctx) {
-		return new IdentNode(ctx.toString());
+		return new IdentNode(ctx.getText());
 	}
 
 	@Override
