@@ -51,10 +51,7 @@ public class RegHandler {
         return null;
     }
     
-    public static Reg getNextReg(boolean store) {
-    	if (store) {
-    		return getNextReg();
-    	}
+    public static Reg peekNextReg() {
     	for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
             if (!tables.get(currentScope).exists(Reg.values()[i])) {
                 return Reg.values()[i];
