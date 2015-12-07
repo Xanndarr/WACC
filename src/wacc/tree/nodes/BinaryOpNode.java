@@ -19,7 +19,7 @@ public class BinaryOpNode extends ExpNode {
         String dataLabel;
         switch (op) {
             case MULT:
-                ProgramCode.add("SMUL " + operand1 + ", " + operand2 + ", " + operand2 + ", " + operand1);
+                ProgramCode.add("SMULL " + operand1 + ", " + operand2 + ", " + operand2 + ", " + operand1);
                 ProgramCode.add("CMP " + operand2 + ", " + operand1 + ", ASR #31");
                 ProgramCode.add("BLNE p_throw_overflow_error");
                 dataLabel = RuntimeErrorCode.addPrintData(Error.OVERFLOW);
