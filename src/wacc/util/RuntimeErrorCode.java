@@ -1,5 +1,7 @@
 package wacc.util;
 
+import wacc.tree.nodeSupers.Node;
+
 public class RuntimeErrorCode {
 
     public static String addErrorData(Error e) {
@@ -57,6 +59,19 @@ public class RuntimeErrorCode {
         ProgramCode.addPost("BL p_print_string");
         ProgramCode.addPost("MOV r0, #-1");
         ProgramCode.addPost("BL exit");
+    }
+
+    public static void checkExistingErrors(boolean existsError, Error e) {
+        String dataLabel;
+        if (!existsError) {
+            RuntimeErrorCode.addError(e);
+            Node.getPrintedErrorLabels().add(e);
+            if (!Node.getPrintedTypeLabels().containsKey(Type.STRING)) {
+                dataLabel = PrintCode.addPrintData(Type.STRING);
+                Node.getPrintedTypeLabels().put(Type.STRING, dataLabel);
+                PrintCode.addPrint(Type.STRING, dataLabel);
+            }
+        }
     }
 
 }
