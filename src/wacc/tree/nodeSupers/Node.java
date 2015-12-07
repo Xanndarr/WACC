@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import wacc.util.Error;
+import wacc.util.ProgramCode;
 import wacc.util.Reg;
 import wacc.util.Type;
 
@@ -35,6 +36,12 @@ public abstract class Node {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static void visit(Node n) {
+		ProgramCode.obscure();
+		n.generate();
+		ProgramCode.restore();
 	}
 	
 }

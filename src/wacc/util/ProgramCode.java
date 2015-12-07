@@ -7,9 +7,15 @@ public class ProgramCode {
 	
 	private static ProgramCode instance;
 	private static int dataItems = 0;
+	
 	private static List<String> data;
 	private static List<String> main;
 	private static List<String> post;
+	
+	private static List<String> dataBak;
+	private static List<String> mainBak;
+	private static List<String> postBak;
+	
 	private static boolean indent = false;
 	private static boolean postIndent = false;
 	private static int label = 0;
@@ -84,6 +90,21 @@ public class ProgramCode {
 		if (instance == null) {
 			instance = new ProgramCode();
 		}
+	}
+	
+	public static void obscure() {
+		dataBak = data;
+		mainBak = main;
+		postBak = post;
+		data = new LinkedList<String>();
+		main = new LinkedList<String>();
+		post = new LinkedList<String>();
+	}
+	
+	public static void restore() {
+		data = dataBak;
+		main = mainBak;
+		post = postBak;
 	}
 
 }
