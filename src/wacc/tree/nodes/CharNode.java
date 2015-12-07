@@ -13,7 +13,7 @@ public class CharNode extends ExpNode {
 
     @Override
     public Reg generate() {
-        Reg ret = RegHandler.getNextReg();
+        Reg ret = RegHandler.getNextReg(false);
     	nodeType = Type.CHAR;
     	ProgramCode.add("MOV " + ret + ", " + Arm.imm("'" + c + "'"));
     	return ret;

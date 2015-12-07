@@ -13,7 +13,7 @@ public class StringNode extends ExpNode {
 
     @Override
     public Reg generate() {
-        Reg ret = RegHandler.getNextReg();
+        Reg ret = RegHandler.getNextReg(false);
     	nodeType = Type.STRING;
     	String var = ProgramCode.addData(string);
     	ProgramCode.add("LDR " + ret + ", " + Arm.mem(var));
