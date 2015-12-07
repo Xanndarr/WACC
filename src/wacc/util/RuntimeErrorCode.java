@@ -8,6 +8,8 @@ public class RuntimeErrorCode {
                 return ProgramCode.addData("OverflowError: the result is too small/large to store in a 4-byte signed-integer.\\n");
             case DIV_BY_ZERO:
                 return ProgramCode.addData("DivideByZeroError: divide or modulo by zero\\n\\0");
+            case NULL_PTR:
+                return ProgramCode.addData("\"NullReferenceError: dereference a null reference\\n\\0\"");
             default:
                 return null;
         }
@@ -33,6 +35,15 @@ public class RuntimeErrorCode {
                 ProgramCode.addPost("POP {pc}");
                 addRuntimeError();
                 break;
+            case NULL_PTR:
+                ProgramCode.addPost("p_check_divide_by_zero:");
+                ProgramCode.setPostIndent(true);
+                ProgramCode.addPost("PUSH {lr}");
+                ProgramCode.addPost("CMP r0, #0");
+                ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
+                ProgramCode.addPost("BLEQ p_throw_runtime_error");
+                ProgramCode.addPost("POP {pc}");
+                addRuntimeError();
             default:
                 break;
         }
