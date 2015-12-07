@@ -2,7 +2,12 @@ package wacc.util;
 
 import wacc.tree.nodeSupers.Node;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class RuntimeErrorCode {
+
+    protected static final List<Error> printedErrorLabels = new LinkedList<Error>();
 
     private static String addErrorData(Error e) {
         switch (e) {
@@ -21,7 +26,7 @@ public class RuntimeErrorCode {
         }
     }
 
-    public static void addError(Error e) {
+    private static void produceError(Error e) {
         ProgramCode.setPostIndent(false);
         String dataLabel = addErrorData(e);
         ProgramCode.addPost("p_" + e + ":");
@@ -68,14 +73,15 @@ public class RuntimeErrorCode {
         ProgramCode.setPostIndent(false);
     }
 
-    public static void checkExistingErrors(boolean existsError, Error e) {
+    public static void addErrors(Error e) {
         String dataLabel;
+        boolean existsError = printedErrorLabels.contains(e);
         if (!existsError) {
-            RuntimeErrorCode.addError(e);
-            Node.getPrintedErrorLabels().add(e);
-            if (!Node.getPrintedTypeLabels().containsKey(Type.STRING)) {
+            RuntimeErrorCode.produceError(e);
+            printedErrorLabels.add(e);
+            if (!PrintCode.getPrintedTypeLabels().containsKey(Type.STRING)) {
                 dataLabel = PrintCode.addPrintData(Type.STRING);
-                Node.getPrintedTypeLabels().put(Type.STRING, dataLabel);
+                PrintCode.getPrintedTypeLabels().put(Type.STRING, dataLabel);
                 PrintCode.addPrint(Type.STRING, dataLabel);
             }
         }

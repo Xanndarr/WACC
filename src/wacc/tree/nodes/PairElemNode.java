@@ -24,8 +24,7 @@ public class PairElemNode extends AssignRHSNode {
         ProgramCode.add("LDR " + ret + ", " + identLoc);
         ProgramCode.add("MOV r0, " + ret);
         ProgramCode.add("BL p_check_null_pointer");
-        boolean existsError = printedErrorLabels.contains(Error.NULL_PTR);
-        checkExistingFunctions(existsError, Error.NULL_PTR);
+        RuntimeErrorCode.checkExistingErrors(Error.NULL_PTR);
 		switch (pos) {
 			case FST:
                 ProgramCode.add("LDR " + ret + ", " + ret.memory());
@@ -38,20 +37,6 @@ public class PairElemNode extends AssignRHSNode {
 		}
         ProgramCode.add("LDR " + ret + ", " + ret.memory());
 		return ret;
-    }
-
-    private void checkExistingFunctions(boolean existsError, Error e) {
-        String dataLabel;
-        if (!existsError) {
-            dataLabel = RuntimeErrorCode.addErrorData(e);
-            RuntimeErrorCode.addError(e, dataLabel);
-            printedErrorLabels.add(e);
-            if (!printedTypeLabels.containsKey(Type.STRING)) {
-                dataLabel = PrintCode.addPrintData(Type.STRING);
-                printedTypeLabels.put(Type.STRING, dataLabel);
-                PrintCode.addPrint(Type.STRING, dataLabel);
-            }
-        }
     }
 
 

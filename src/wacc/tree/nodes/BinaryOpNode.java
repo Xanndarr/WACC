@@ -23,8 +23,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("SMULL " + operand1 + ", " + operand2 + ", " + operand2 + ", " + operand1);
                 ProgramCode.add("CMP " + operand2 + ", " + operand1 + ", ASR #31");
                 ProgramCode.add("BLNE p_throw_overflow_error");
-                existsError = printedErrorLabels.contains(Error.OVERFLOW);
-                RuntimeErrorCode.checkExistingErrors(existsError, Error.OVERFLOW);
+                RuntimeErrorCode.checkExistingErrors(Error.OVERFLOW);
                 nodeType = Type.INT;
                 break;
             case DIV:
@@ -32,8 +31,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idiv");
-                existsError = printedErrorLabels.contains(Error.DIV_BY_ZERO);
-                RuntimeErrorCode.checkExistingErrors(existsError, Error.DIV_BY_ZERO);
+                RuntimeErrorCode.checkExistingErrors(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
             case MOD:
@@ -41,22 +39,19 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idivmod");
-                existsError = printedErrorLabels.contains(Error.DIV_BY_ZERO);
-                RuntimeErrorCode.checkExistingErrors(existsError, Error.DIV_BY_ZERO);
+                RuntimeErrorCode.checkExistingErrors(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
             case ADD:
                 ProgramCode.add("ADDS " + operand1 + ", " + operand1 + ", " + operand2);
                 ProgramCode.add("BLVS p_throw_overflow_error");
-                existsError = printedErrorLabels.contains(Error.OVERFLOW);
-                RuntimeErrorCode.checkExistingErrors(existsError, Error.OVERFLOW);
+                RuntimeErrorCode.checkExistingErrors(Error.OVERFLOW);
                 nodeType = Type.INT;
                 break;
             case SUB:
                 ProgramCode.add("SUBS " + operand1 + ", " + operand1 + ", " + operand2);
-                ProgramCode.add("BLVS p_throw_overflow_error");
-                existsError = printedErrorLabels.contains(Error.OVERFLOW);
-                RuntimeErrorCode.checkExistingErrors(existsError, Error.OVERFLOW);
+                ProgramCode.add("BLVS p_throw_overflow_error");;
+                RuntimeErrorCode.checkExistingErrors(Error.OVERFLOW);
                 nodeType = Type.INT;
                 break;
             case GT:
