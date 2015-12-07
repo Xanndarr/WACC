@@ -14,7 +14,7 @@ public class RegHandler {
     private static RegHandler instance;
     private static Map<Integer, SymbolTable<Reg, Boolean>> tables;
 
-    public RegHandler() {
+    private RegHandler() {
         tables = new HashMap<Integer, SymbolTable<Reg, Boolean>>();
         tables.put(GLOBAL_SCOPE, new SymbolTable<Reg, Boolean>());
     }
