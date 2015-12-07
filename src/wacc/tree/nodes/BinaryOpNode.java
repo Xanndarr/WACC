@@ -115,9 +115,9 @@ public class BinaryOpNode extends ExpNode {
             dataLabel = RuntimeErrorCode.addErrorData(e);
             RuntimeErrorCode.addError(e, dataLabel);
             printedErrorLabels.add(e);
-            if (printedTypeLabels.containsKey(Type.STRING)) {
+            if (!printedTypeLabels.containsKey(Type.STRING)) {
                 dataLabel = PrintCode.addPrintData(Type.STRING);
-                printedTypeLabels.put(nodeType, dataLabel);
+                printedTypeLabels.put(Type.STRING, dataLabel);
                 PrintCode.addPrint(Type.STRING, dataLabel);
             }
         }
