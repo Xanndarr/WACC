@@ -14,6 +14,11 @@ public class RegHandler {
     private static RegHandler instance;
     private static Map<Integer, SymbolTable<Reg, Boolean>> tables;
 
+    public RegHandler() {
+        tables = new HashMap<Integer, SymbolTable<Reg, Boolean>>();
+        tables.put(GLOBAL_SCOPE, new SymbolTable<Reg, Boolean>());
+    }
+
     public static void add(Reg reg, Boolean used) {
         tables.get(currentScope).put(reg, used);
     }
@@ -39,6 +44,7 @@ public class RegHandler {
     public static Reg getNextReg() {
     	for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
     		if (!tables.get(currentScope).exists(Reg.values()[i])) {
+                tables.get(currentScope).put(Reg.values()[i], true);
     			return Reg.values()[i];
     		}
     	}
