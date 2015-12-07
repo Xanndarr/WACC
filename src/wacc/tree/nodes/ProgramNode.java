@@ -4,6 +4,7 @@ import wacc.tree.nodeSupers.Node;
 import wacc.util.Arm;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
+import wacc.util.StackHandler;
 
 public class ProgramNode extends Node {
 
@@ -19,6 +20,8 @@ public class ProgramNode extends Node {
         for (Node child : children) {
             child.generate();
         }
+		int spLoc = StackHandler.getOffset();
+		ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
 		ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(0));
         ProgramCode.add("POP " + Reg.R15.stack());
         ProgramCode.add(".ltorg");
