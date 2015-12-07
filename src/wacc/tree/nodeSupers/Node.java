@@ -15,9 +15,6 @@ public abstract class Node {
 
 	protected List<Node> children = new LinkedList<Node>();
 	protected static Type nodeType = null;
-	protected static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
-	protected static final Map<Type, String> printedReadLabels = new HashMap<Type, String>();
-	protected static final List<Error> printedErrorLabels = new LinkedList<Error>();
 	
 	public abstract Reg generate();
 
@@ -45,11 +42,4 @@ public abstract class Node {
 		ProgramCode.restore();
 	}
 
-    public static Map<Type, String> getPrintedTypeLabels() {
-        return  printedTypeLabels;
-    }
-
-    public static List<Error> getPrintedErrorLabels() {
-        return printedErrorLabels;
-    }
 }

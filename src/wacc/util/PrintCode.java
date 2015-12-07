@@ -1,6 +1,11 @@
 package wacc.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PrintCode {
+
+	protected static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
 	
 	public static String addPrintData(Type t) {
 		switch (t) {
@@ -76,5 +81,9 @@ public class PrintCode {
 		ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
 		ProgramCode.addPost("ADD r0, r0, #4");
 	}
+
+    public static Map<Type, String> getPrintedTypeLabels() {
+        return  printedTypeLabels;
+    }
 
 }

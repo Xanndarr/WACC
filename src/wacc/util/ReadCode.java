@@ -1,7 +1,11 @@
 package wacc.util;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ReadCode {
+	protected static final Map<Type, String> printedReadLabels = new HashMap<Type, String>();
 	
 	public static String addReadData(Type t) {
 		switch (t) {
