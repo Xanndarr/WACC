@@ -2,7 +2,7 @@ package wacc.util;
 
 public class RuntimeErrorCode {
 
-    public static String addPrintData(Error e) {
+    public static String addErrorData(Error e) {
         switch (e) {
             case OVERFLOW:
                 return ProgramCode.addData("OverflowError: the result is too small/large to store in a 4-byte signed-integer.\\n");
@@ -13,7 +13,7 @@ public class RuntimeErrorCode {
         }
     }
 
-    public static void addPrint(Error e, String dataLabel) {
+    public static void addError(Error e, String dataLabel) {
         switch (e) {
             case OVERFLOW:
                 ProgramCode.addPost("p_throw_overflow_error:");
@@ -28,7 +28,7 @@ public class RuntimeErrorCode {
                 ProgramCode.setPostIndent(true);
                 ProgramCode.addPost("PUSH {lr}");
                 ProgramCode.addPost("CMP r1, #0");
-                ProgramCode.addPost("LDREQ r0, " + Arm.imm(dataLabel));
+                ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
                 ProgramCode.addPost("BLEQ p_throw_runtime_error");
                 ProgramCode.addPost("POP {pc}");
                 addRuntimeError();

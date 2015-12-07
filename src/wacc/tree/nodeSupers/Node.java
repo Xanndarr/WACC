@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import wacc.util.Error;
 import wacc.util.Reg;
 import wacc.util.Type;
 
@@ -14,6 +15,7 @@ public abstract class Node {
 	protected List<Node> children = new LinkedList<Node>();
 	protected static Type nodeType = null;
 	protected static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
+	protected static final List<Error> printedErrorLabels = new LinkedList<Error>();
 	
 	public abstract Reg generate();
 
