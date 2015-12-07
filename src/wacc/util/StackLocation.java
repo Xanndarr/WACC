@@ -17,7 +17,7 @@ public class StackLocation {
 		if (offset == 0) {
 			return "[sp]";
 		}
-		return "[sp, " + offset + "]";
+		return "[sp, " + Arm.imm(offset) + "]";
 	}
 
 }
