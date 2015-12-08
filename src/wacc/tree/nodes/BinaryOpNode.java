@@ -18,7 +18,7 @@ public class BinaryOpNode extends ExpNode {
         Reg operand1 = children.get(0).generate();
         RegHandler.use();
         Reg operand2 = children.get(1).generate();
-        RegHandler.free();
+        operand2 = RegHandler.free(operand2);
         switch (op) {
             case MULT:
                 ProgramCode.add("SMULL " + operand1 + ", " + operand2 + ", " + operand1 + ", " + operand2);
