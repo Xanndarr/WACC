@@ -9,6 +9,7 @@ public class SkipNode extends StatNode {
 
 	@Override
 	public Reg generate() {
+		// no implementation required
 		return null;
 	}
 

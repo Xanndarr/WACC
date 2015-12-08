@@ -327,7 +327,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public FunctionNode visitFunc(FuncContext ctx) {
-		FunctionNode func = new FunctionNode(ctx.ident().getText());
+		String ident = ctx.ident().getText();
+		String type = ctx.type().getText();
+		FunctionNode func = new FunctionNode(ident, type);
 		if (ctx.param_list() != null) {
 			ParamListNode args = (ParamListNode) visit(ctx.param_list());
 			func.addChild(args);
@@ -339,8 +341,8 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	
 	@Override
 	public FunctionCallNode visitFunCallRHS(FunCallRHSContext ctx) {
-		FunctionCallNode func = new FunctionCallNode();
 		IdentNode ident = (IdentNode) visit(ctx.ident());
+		FunctionCallNode func = new FunctionCallNode(ident.getIdent());
 		func.addChild(ident);
 		if (ctx.arg_list() != null) {
 			func.addChild(visit(ctx.arg_list()));
