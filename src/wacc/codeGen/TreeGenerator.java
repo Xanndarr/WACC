@@ -304,7 +304,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitIdentExp(IdentExpContext ctx) {
+	public IdentExpNode visitIdentExp(IdentExpContext ctx) {
 		return new IdentExpNode(ctx.ident().getText());
 	}
 
@@ -346,6 +346,21 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 			func.addChild(visit(ctx.arg_list()));
 		}
 		return func;
+	}
+
+	@Override
+	public ExpNode visitExpRHS(ExpRHSContext ctx) {
+		return (ExpNode) visit(ctx.exp());
+	}
+
+	@Override
+	public ArrayNode visitArrayLitRHS(ArrayLitRHSContext ctx) {
+		return (ArrayNode) visit(ctx.array_lit());
+	}
+
+	@Override
+	public PairElemNode visitPairElemRHS(PairElemRHSContext ctx) {
+		return (PairElemNode) visit(ctx.pair_elem());
 	}
 
 	@Override
