@@ -19,6 +19,9 @@ public class PrintCode {
 			return tempRet;
 		case NULL:
 			return ProgramCode.addData("\\0");
+        case PAIR:
+        case ARRAY:
+            return ProgramCode.addData("%p\\0");
 		default:
 			return null;
 		}
@@ -31,7 +34,15 @@ public class PrintCode {
 			ProgramCode.addPost("PUSH {lr}");
 			addPrintln(dataLabel);
 			ProgramCode.addPost("BL puts");
-		} else {
+		} else if (t == Type.ARRAY || t == Type.PAIR) {
+            ProgramCode.addPost("p_print_reference:");
+            ProgramCode.setPostIndent(true);
+            ProgramCode.addPost("PUSH {lr}");
+            ProgramCode.add("MOV r1, r0");
+            ProgramCode.add("LDR r0, " + Arm.mem(dataLabel));
+            ProgramCode.add("ADD r0, r0, #4");
+            ProgramCode.add("BL printf");
+        } else {
 			ProgramCode.addPost("p_print_" + t + ":");
 			ProgramCode.setPostIndent(true);
 			ProgramCode.addPost("PUSH {lr}");
@@ -45,7 +56,7 @@ public class PrintCode {
 			case BOOL:
 				String[] parts = dataLabel.split("_");
 				addPrintBool(dataLabel, parts[0] + "_" + (Integer.parseInt(parts[1]) + 1));
-				break;			
+				break;
 			default:
 				break;
 			}
