@@ -22,7 +22,12 @@ public class InitialisationNode extends StatNode {
 		scopeHandler.add(ident, sType);
 		
 		int spLoc = StackHandler.getOffset() + type.getSize();
-		
+		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
+		int tempSpLoc = spLoc;
+		while (spLoc > 1024) {
+			ProgramCode.add("SUB sp, sp, #1024");
+			spLoc -= 1024;
+		}
 		ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
 		Reg ret = children.get(1).generate();
 		String strInstr = "STR ";
@@ -30,9 +35,12 @@ public class InitialisationNode extends StatNode {
 			strInstr = "STRB ";
 		}
 		ProgramCode.add(strInstr + ret + ", [sp]");
-		ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
+		while (tempSpLoc > 1024) {
+			ProgramCode.add("ADD sp, sp, #1024");
+			tempSpLoc -= 1024;
+		}
+		ProgramCode.add("ADD sp, sp, " + Arm.imm(tempSpLoc));
 		
-		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
 		RegHandler.ascend();
 		return null;
 	}
