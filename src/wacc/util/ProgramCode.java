@@ -43,7 +43,7 @@ public class ProgramCode {
 		int numEscapes = s.length() - s.replaceAll(Matcher.quoteReplacement("\\"), "").length();
 		System.out.println(numEscapes);
 		//System.out.println(s);
-        data.add("\t.word " + (numEscapes / 2));
+        data.add("\t.word " + (s.length() - (numEscapes / 2)));
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + dataItems++;
 	}
