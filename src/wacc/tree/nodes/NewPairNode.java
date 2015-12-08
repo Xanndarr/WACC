@@ -10,6 +10,7 @@ public class NewPairNode extends AssignRHSNode {
         ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(8));
         ProgramCode.add("BL malloc");
         Reg pairSize = RegHandler.getNextReg();
+        RegHandler.use();
         ProgramCode.add("MOV " + pairSize + ", r0");
 
         //fst
@@ -36,6 +37,7 @@ public class NewPairNode extends AssignRHSNode {
         ProgramCode.add("BL malloc");
         ProgramCode.add(strInstr + sndRet + ", " + Reg.R0.memory());
         ProgramCode.add("STR " + Reg.R0 + ", " + pairSize.memory(4));
+        RegHandler.free(pairSize);
         RegHandler.ascend();
         return pairSize;
     }
