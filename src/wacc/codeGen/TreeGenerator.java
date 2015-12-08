@@ -304,6 +304,11 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
+	public Node visitIdentExp(IdentExpContext ctx) {
+		return new IdentExpNode(ctx.ident().getText());
+	}
+
+	@Override
 	public ParamListNode visitParam_list(Param_listContext ctx) {
 		ParamListNode paramListNode = new ParamListNode();
 		for (ParamContext p : ctx.param()) {
