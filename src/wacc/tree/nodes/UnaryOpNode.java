@@ -24,7 +24,7 @@ public class UnaryOpNode extends ExpNode {
                 nodeType = Type.CHAR;
                 break;
             case LEN:
-                ProgramCode.add("LDR " + operand + ", [" + operand + "]");
+                ProgramCode.add("LDR " + operand + ", " + operand.memory(-Type.INT.getSize()));
             case ORD:
                 nodeType = Type.INT;
                 break;
