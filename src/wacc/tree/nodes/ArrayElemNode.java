@@ -3,9 +3,11 @@ package wacc.tree.nodes;
 import wacc.tree.nodeSupers.ExpNode;
 import wacc.tree.nodeSupers.Node;
 import wacc.util.Arm;
+import wacc.util.Error;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
 import wacc.util.RegHandler;
+import wacc.util.RuntimeErrorCode;
 import wacc.util.StackHandler;
 
 public class ArrayElemNode extends ExpNode {
@@ -24,6 +26,7 @@ public class ArrayElemNode extends ExpNode {
 			ProgramCode.add("MOV r0, " + ret);
 			ProgramCode.add("MOV r1, " + reg);
 			ProgramCode.add("BL p_check_array_bounds");
+			RuntimeErrorCode.addError(Error.ARR_OOB);
 			ProgramCode.add("ADD " + reg + ", " + reg + ", " + Arm.imm(nodeType.getSize()));
 			ProgramCode.add("ADD " + reg + ", " + reg + ", " + ret + ", LSL #2");
 		}
