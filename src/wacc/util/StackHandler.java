@@ -34,6 +34,12 @@ public class StackHandler {
         }
         return null;
     }
+    
+    public static void remove(String ident) {
+    	if (stack.get(currentScope).exists(ident)) {
+    		stack.get(currentScope).remove(ident);
+    	}
+    }
 
     public static int getOffset() {
         return offset;

@@ -38,6 +38,12 @@ public class SymbolTable<K, V> {
 		return "null";
 	}
 	
+	public void remove(K key) {
+		if (exists(key)) {
+			symbolTable.remove(key);
+		}
+	}
+	
 	public boolean exists(K key) {
 		return symbolTable.containsKey(key);
 	}
