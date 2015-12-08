@@ -42,7 +42,7 @@ public class ArrayNode extends AssignRHSNode {
 		IntNode arraySize = new IntNode(children.size());
 		Reg arrSizeRet = arraySize.generate();
 		
-		ProgramCode.add("STR " + arrSizeRet + ", [" + fst + "]");
+		ProgramCode.add("STR " + arrSizeRet + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 		
 		RegHandler.ascend();
 		return fst;
