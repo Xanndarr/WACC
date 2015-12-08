@@ -2,7 +2,6 @@ package wacc.util;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class ProgramCode {
 	
@@ -95,6 +94,16 @@ public class ProgramCode {
 		if (instance == null) {
 			instance = new ProgramCode();
 		}
+	}
+	
+	public static void enterFunction() {
+		mainBak = main;
+		main = new LinkedList<String>();
+	}
+	
+	public static void leaveFunction() {
+		post.addAll(main);
+		main = mainBak;
 	}
 	
 	public static void obscure() {
