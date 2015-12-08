@@ -18,7 +18,9 @@ public class ProgramNode extends Node {
         ProgramCode.add("PUSH " + Reg.R14.stack());
         for (Node child : children) {
         	if (child instanceof FunctionNode) {
-        		Node.visit(child);
+        		visiting = true;
+        		child.generate();
+        		visiting = true;
         	} else {
                 child.generate();
         	}
