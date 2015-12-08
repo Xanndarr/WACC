@@ -37,13 +37,9 @@ public class ProgramCode {
 	
 	public static String addData(String s) {
 		data.add("msg_" + dataItems + ":");
-		System.out.println(s);
-		s = Matcher.quoteReplacement(s);
-		System.out.println(s);
-		int numEscapes = s.length() - s.replaceAll(Matcher.quoteReplacement("\\"), "").length();
-		System.out.println(numEscapes);
-		//System.out.println(s);
-        data.add("\t.word " + (s.length() - (numEscapes / 2)));
+		String temp = Matcher.quoteReplacement(s);
+		int numEscapes = temp.length() - temp.replaceAll(Matcher.quoteReplacement("\\"), "").length();
+        data.add("\t.word " + (temp.length() - (numEscapes / 2)));
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + dataItems++;
 	}
