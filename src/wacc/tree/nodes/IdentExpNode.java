@@ -1,6 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
+import wacc.util.Arm;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
 import wacc.util.RegHandler;
@@ -23,11 +24,19 @@ public class IdentExpNode extends ExpNode {
 	public Reg generate() {
 		Reg ret = RegHandler.getNextReg();
 		nodeType = Type.parse(scopeHandler.get(ident));
+		
 		String ldrInstr = "LDR ";
 		if (nodeType.getSize() == 1) {
 			ldrInstr = "LDRSB ";
 		}
-		ProgramCode.add(ldrInstr + ret + ", " + StackHandler.get(ident));
+		if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
+			ProgramCode.add("LDR " + ret + ", sp");
+		}
+		if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
+			ProgramCode.add(ldrInstr + ret + ", sp, " + Arm.imm(-StackHandler.get(ident).getOffset()));
+		} else {
+			ProgramCode.add(ldrInstr + ret + ", " + StackHandler.get(ident));
+		}
 		return ret;
 	}
 
