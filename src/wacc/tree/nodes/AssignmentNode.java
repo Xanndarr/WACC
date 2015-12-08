@@ -12,10 +12,9 @@ public class AssignmentNode extends StatNode {
 	@Override
 	public Reg generate() {
 		//TODO other LHSs
-
 		RegHandler.descend();
 		Node lhs = children.get(0);
-		Reg ret = RegHandler.peekNextReg();
+		Reg ret = children.get(1).generate();
 		
 		String strInstr = "STR ";
 		if (nodeType.getSize() == 1) {
@@ -25,13 +24,10 @@ public class AssignmentNode extends StatNode {
 		if (lhs instanceof IdentNode) {
 			String ident = ((IdentNode) lhs).getIdent();
 			ProgramCode.add(strInstr + ret + ", " + StackHandler.get(ident));
-		} else if (lhs instanceof PairElemNode) {
-			lhs.generate();
-			ProgramCode.add(strInstr + ret + ", " + Reg.R13.memory());
 		} else {
-            //ArrayElemNode
-
-        }
+			Reg target = lhs.generate();
+			ProgramCode.add("STR " + ret + ", " + target);
+		}
 		
 		RegHandler.ascend();
 		return null;
