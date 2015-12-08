@@ -24,7 +24,9 @@ public class ArrayElemNode extends ExpNode {
 			ProgramCode.add("ADD " + reg + ", sp, " + Arm.imm(-StackHandler.get(ident).getOffset()));
 			Reg ret = child.generate();
 			ProgramCode.add("LDR " + reg + ", " + reg.memory());
-			ProgramCode.add("SUB " + reg + ", " + Arm.imm(Type.INT.getSize()));
+			if (nodeType != Type.STRING) {
+				ProgramCode.add("SUB " + reg + ", " + Arm.imm(Type.INT.getSize()));				
+			}
 			ProgramCode.add("MOV r0, " + ret);
 			ProgramCode.add("MOV r1, " + reg);
 			int spLoc = StackHandler.getOffset();
