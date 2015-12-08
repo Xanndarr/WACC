@@ -24,7 +24,11 @@ public class AssignmentNode extends StatNode {
 		if (lhs instanceof IdentNode) {
 			String ident = ((IdentNode) lhs).getIdent();
 			ProgramCode.add(strInstr + ret + ", " + StackHandler.get(ident));
+		} else {
+			Reg target = lhs.generate();
+			ProgramCode.add("STR " + ret + ", " + target);
 		}
+		
 		RegHandler.ascend();
 		return null;
 	}
