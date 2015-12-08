@@ -33,7 +33,7 @@ public class UnaryOpNode extends ExpNode {
                 nodeType = Type.INT;
                 break;
             case SUB:
-            	ProgramCode.add("RSBS " + operand + ", " + operand + " #0");
+            	ProgramCode.add("RSBS " + operand + ", " + operand + ", #0");
             	ProgramCode.add("BLVS p_throw_overflow_error");
             	RuntimeErrorCode.addError(Error.OVERFLOW);
                 nodeType = Type.INT;
