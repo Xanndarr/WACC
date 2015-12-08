@@ -1,7 +1,6 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.AssignRHSNode;
-import wacc.util.FunctionCode;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
 
