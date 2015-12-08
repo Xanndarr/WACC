@@ -30,6 +30,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idiv");
+                ProgramCode.add("MOV " + operand1 + ", r0");
                 RuntimeErrorCode.addError(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
@@ -38,6 +39,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idivmod");
+                ProgramCode.add("MOV " + operand1 + ", r1");
                 RuntimeErrorCode.addError(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
