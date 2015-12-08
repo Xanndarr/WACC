@@ -16,6 +16,7 @@ public class ArrayElemNode extends ExpNode {
 		String ident = identNode.getIdent();
 		Reg reg = RegHandler.getNextReg();
 		
+		RegHandler.setPeek(true);
 		for (Node child : children.subList(1, children.size())) {
 			ProgramCode.add("ADD " + reg + ", sp, " + Arm.imm(StackHandler.get(ident).getOffset()));
 			Reg ret = child.generate();
@@ -26,6 +27,7 @@ public class ArrayElemNode extends ExpNode {
 			ProgramCode.add("ADD " + reg + ", " + reg + ", " + Arm.imm(nodeType.getSize()));
 			ProgramCode.add("ADD " + reg + ", " + reg + ", " + ret + ", LSL #2");
 		}
+		RegHandler.setPeek(false);
 		
 		ProgramCode.add("LDR " + reg + ", " + reg.memory());
 		return reg;

@@ -26,7 +26,8 @@ public class ArrayNode extends AssignRHSNode {
 		ProgramCode.add("MOV " + fst + ", r0");
 		
 		int sp = Type.INT.getSize();
-		
+
+		RegHandler.setPeek(true);
 		for (Node child : children) {
 			Reg ret = child.generate();
 			if (elemType.getSize() == 1) {
@@ -36,6 +37,7 @@ public class ArrayNode extends AssignRHSNode {
 			}
 			sp += nodeType.getSize();
 		}
+		RegHandler.setPeek(false);
 		
 		IntNode arraySize = new IntNode(children.size());
 		Reg arrSizeRet = arraySize.generate();

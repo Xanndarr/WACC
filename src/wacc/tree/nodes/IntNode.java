@@ -13,7 +13,7 @@ public class IntNode extends ExpNode {
 
     @Override
     public Reg generate() {
-        Reg ret = RegHandler.peekNextReg();
+        Reg ret = RegHandler.getNextReg();
     	nodeType = Type.INT;
     	ProgramCode.add("LDR " + ret + ", " + Arm.mem(n));
     	return ret;
