@@ -1,20 +1,19 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.AssignRHSNode;
-import wacc.tree.nodeSupers.Node;
 import wacc.util.*;
 
 public class NewPairNode extends AssignRHSNode {
 
     @Override
     public Reg generate() {
-        RegHandler.descend();
         ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(8));
         ProgramCode.add("BL malloc");
         Reg pairSize = RegHandler.getNextReg();
         ProgramCode.add("MOV " + pairSize + ", r0");
 
         //fst
+        RegHandler.descend();
         Reg fstRet = children.get(0).generate();
         String strInstr = "STR ";
         if (nodeType.getSize() == 1) {
@@ -24,8 +23,10 @@ public class NewPairNode extends AssignRHSNode {
         ProgramCode.add("BL malloc");
         ProgramCode.add(strInstr + fstRet + ", " + Reg.R0.memory());
         ProgramCode.add("STR " + Reg.R0 + ", " + pairSize.memory());
+        RegHandler.ascend();
 
         //snd
+        RegHandler.descend();
         strInstr = "STR ";
         if (nodeType.getSize() == 1) {
             strInstr = "STRB ";
