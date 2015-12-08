@@ -31,7 +31,7 @@ public enum Type {
 		return size;
 	}
 	
-	public int getBaseSize(String type) {
+	public static int getBaseSize(String type) {
 		if (type.contains("[]")) {
 			return parse(type.replaceAll("[]", "")).getSize();
 		}

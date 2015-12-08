@@ -6,6 +6,7 @@ import wacc.util.ProgramCode;
 import wacc.util.Reg;
 import wacc.util.RegHandler;
 import wacc.util.StackHandler;
+import wacc.util.Type;
 
 public class AssignmentNode extends StatNode {
 
@@ -29,8 +30,13 @@ public class AssignmentNode extends StatNode {
 			lhs.generate();
 			ProgramCode.add(strInstr + ret + ", " + Reg.R13.memory());
 		} else {
+			String ident = ((IdentNode) lhs).getIdent();
 			Reg target = lhs.generate();
-			ProgramCode.add("STR " + ret + ", " + target.memory());
+			if (Type.getBaseSize(scopeHandler.get(ident)) == 1) {
+				ProgramCode.add("STRB " + ret + ", " + target.memory());
+			} else {
+				ProgramCode.add("STR " + ret + ", " + target.memory());
+			}
 		}
 		
 		RegHandler.ascend();
