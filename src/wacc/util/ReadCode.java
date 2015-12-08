@@ -10,9 +10,9 @@ public class ReadCode {
 	private static String addReadData(Type t) {
 		switch (t) {
 		case CHAR:
-			return ProgramCode.addData(" %%c\\0");
+			return ProgramCode.addData(" %c\\0");
 		case INT:
-			return ProgramCode.addData("%%d\\0");
+			return ProgramCode.addData("%d\\0");
 		default:
 			return null;
 		}
