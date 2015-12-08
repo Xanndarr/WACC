@@ -2,7 +2,7 @@ package wacc.util;
 
 public enum Error {
     OVERFLOW("throw_overflow_error"), DIV_BY_ZERO("check_divide_by_zero"), NULL_PTR("check_null_pointer"),
-    ARR_OOB("check_array_bounds");
+    ARR_OOB("check_array_bounds"), NULL_REF("free_pair");
 
     private final String error;
 

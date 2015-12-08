@@ -19,18 +19,25 @@ public class NewPairNode extends AssignRHSNode {
 
         //fst
         Reg fstRet = children.get(0).generate();
+        String strInstr = "STR ";
+        if (nodeType.getSize() == 1) {
+            strInstr = "STRB ";
+        }
         ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(nodeType.getSize()));
         ProgramCode.add("BL malloc");
-        ProgramCode.add("STR " + fstRet + ", " + Reg.R0.memory());
+        ProgramCode.add(strInstr + fstRet + ", " + Reg.R0.memory());
         ProgramCode.add("STR " + Reg.R0 + ", " + pairSize.memory());
 
         //snd
+        strInstr = "STR ";
+        if (nodeType.getSize() == 1) {
+            strInstr = "STRB ";
+        }
         Reg sndRet = children.get(1).generate();
         ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(nodeType.getSize()));
         ProgramCode.add("BL malloc");
-        ProgramCode.add("STR " + fstRet + ", " + Reg.R0.memory());
-        ProgramCode.add("STR " + Reg.R0 + ", " + pairSize.memory(nodeType.getSize()));
-
+        ProgramCode.add(strInstr + sndRet + ", " + Reg.R0.memory());
+        ProgramCode.add("STR " + Reg.R0 + ", " + pairSize.memory(4));
         return pairSize;
     }
 

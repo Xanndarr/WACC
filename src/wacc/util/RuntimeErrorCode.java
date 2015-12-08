@@ -19,6 +19,8 @@ public class RuntimeErrorCode {
             	String fst = ProgramCode.addData("ArrayIndexOutOfBoundsError: negative index\\n\\0");
             	ProgramCode.addData("ArrayIndexOutOfBoundsError: index too large\\n\\0");
             	return fst;
+            case NULL_REF:
+                return ProgramCode.addData("NullReferenceError: dereference a null reference\\n\\0");
             default:
                 return null;
         }
@@ -54,6 +56,19 @@ public class RuntimeErrorCode {
             	ProgramCode.addPost("LDRCS r0, " + Arm.mem(secondLabel));
             	ProgramCode.addPost("BLCS p_throw_runtime_error");
             	break;
+            case NULL_REF:
+                ProgramCode.addPost("CMP r0, #0");
+                ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
+                ProgramCode.addPost("BEQ p_throw_runtime_error");
+                ProgramCode.addPost("PUSH {r0}");
+                ProgramCode.addPost("LDR r0, [r0]");
+                ProgramCode.addPost("BL free");
+                ProgramCode.addPost("LDR r0, [sp]");
+                ProgramCode.addPost("LDR r0, [r0, #4]");
+                ProgramCode.addPost("BL free");
+                ProgramCode.addPost("POP {r0}");
+                ProgramCode.addPost("BL free");
+                break;
             default:
                 break;
         }

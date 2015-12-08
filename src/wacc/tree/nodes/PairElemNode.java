@@ -1,6 +1,8 @@
 package wacc.tree.nodes;
 
+import wacc.symbolTable.ScopeHandler;
 import wacc.tree.nodeSupers.AssignRHSNode;
+import wacc.tree.nodeSupers.Node;
 import wacc.util.*;
 import wacc.util.Error;
 
@@ -30,12 +32,17 @@ public class PairElemNode extends AssignRHSNode {
                 ProgramCode.add("LDR " + ret + ", " + ret.memory());
                 break;
             case SND:
-                ProgramCode.add("LDR " + ret + ", " + ret.memory(/*SIZE OF FST*/));
+                ProgramCode.add("LDR " + ret + ", " + ret.memory(4));
 				break;
 			default:
 				break;
 		}
-        ProgramCode.add("LDR " + ret + ", " + ret.memory());
+        String strInstr = "LDR ";
+        Node.visit(children.get(0));
+        if (nodeType.getSize() == 1) {
+            strInstr = "LDRSB ";
+        }
+        ProgramCode.add(strInstr + ret + ", " + ret.memory());
 		return ret;
     }
 
