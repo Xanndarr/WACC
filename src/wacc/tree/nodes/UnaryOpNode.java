@@ -15,6 +15,9 @@ public class UnaryOpNode extends ExpNode {
     public Reg generate() {
         RegHandler.descend();
         Reg operand = children.get(0).generate();
+        if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
+        	ProgramCode.add("LDR " + operand + ", " + operand.memory());
+        }
         switch (op) {
             case NOT:
                 ProgramCode.add("EOR  " + operand + ", " + operand + ", #1");
