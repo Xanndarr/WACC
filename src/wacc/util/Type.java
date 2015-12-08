@@ -2,7 +2,7 @@ package wacc.util;
 
 public enum Type {
 	
-	BOOL("bool", 1), CHAR("char", 1), STRING("string", 4), INT("int", 4), ARRAY("[]", 4), PAIR("pair", 4), NULL("NULL", 4);
+	BOOL("bool", 1), CHAR("char", 1), STRING("string", 4), INT("int", 4), ARRAY("[]", 4), PAIR("pair", 4), NULL("null", 4), LN("ln", 0);
 
 	private String sType;
 	private int size;

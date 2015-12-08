@@ -22,7 +22,7 @@ public class PrintNode extends StatNode {
 			if (nodeType == Type.CHAR) {
 				ProgramCode.add("BL putchar");
 			} else {
-				if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
+				if (nodeType == Type.ARRAY || nodeType == Type.NULL) {
 					ProgramCode.add("BL p_print_reference");
 				} else {
 					ProgramCode.add("BL p_print_" + nodeType);
