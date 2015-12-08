@@ -16,7 +16,11 @@ public class PrintlnNode extends StatNode {
 			if (nodeType == Type.CHAR) {
 				ProgramCode.add("BL putchar");
 			} else {
-				ProgramCode.add("BL p_print_" + nodeType);
+				if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
+					ProgramCode.add("BL p_print_reference");
+				} else {
+					ProgramCode.add("BL p_print_" + nodeType);
+				}
 				PrintCode.addPrint(nodeType);
 			}
 			PrintCode.addPrint(Type.NULL);
