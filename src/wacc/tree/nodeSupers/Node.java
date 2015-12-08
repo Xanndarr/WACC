@@ -1,7 +1,9 @@
 package wacc.tree.nodeSupers;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import wacc.symbolTable.ScopeHandler;
@@ -14,6 +16,7 @@ public abstract class Node {
 	protected List<Node> children = new LinkedList<Node>();
 	protected static Type nodeType = null;
 	protected static final ScopeHandler scopeHandler = new ScopeHandler();
+	protected static final Map<String, Node> functions = new HashMap<String, Node>();
 	
 	public abstract Reg generate();
 
