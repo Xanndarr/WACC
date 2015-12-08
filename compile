@@ -5,6 +5,7 @@
 
 MAIN_FILE="wacc/WACC"
 COMPILE_FILE=$1
+JAVA=/usr/lib/jvm/jdk-8-oracle-x64/bin/java
 
-java -cp bin:lib/antlr-4.4-complete.jar ${MAIN_FILE} ${COMPILE_FILE} < ${COMPILE_FILE}
+${JAVA} -cp bin:lib/antlr-4.4-complete.jar ${MAIN_FILE} ${COMPILE_FILE} < ${COMPILE_FILE}
 exit $?
