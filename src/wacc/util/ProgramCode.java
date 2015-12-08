@@ -2,6 +2,7 @@ package wacc.util;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 public class ProgramCode {
 	
@@ -36,9 +37,13 @@ public class ProgramCode {
 	
 	public static String addData(String s) {
 		data.add("msg_" + dataItems + ":");
-		int numSlashEscapes = s.length() - s.replaceAll("\\\\", "").length();
-		int numEscapes = s.length() - s.replaceAll("\\", "").length();
-        data.add("\t.word " + (numEscapes + numSlashEscapes));
+		System.out.println(s);
+		s = Matcher.quoteReplacement(s);
+		System.out.println(s);
+		int numEscapes = s.length() - s.replaceAll(Matcher.quoteReplacement("\\"), "").length();
+		System.out.println(numEscapes);
+		//System.out.println(s);
+        data.add("\t.word " + (numEscapes / 2));
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + dataItems++;
 	}
