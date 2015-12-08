@@ -37,7 +37,7 @@ public class ArrayElemNode extends ExpNode {
 		}
 		RegHandler.setPeek(false);
 		
-		//ProgramCode.add("LDR " + reg + ", " + reg.memory());
+		ProgramCode.add("LDR " + reg + ", " + reg.memory());
 		return reg;
 	}
 
