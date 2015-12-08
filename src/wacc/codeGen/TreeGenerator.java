@@ -235,7 +235,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public ParamNode visitParam(ParamContext ctx) {
-		return new ParamNode(Type.parse(ctx.type().getText()), ctx.ident().getText());
+		return new ParamNode(ctx.ident().getText(), ctx.type().getText());
 	}
 
 	@Override
