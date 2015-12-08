@@ -14,6 +14,10 @@ public class IdentExpNode extends ExpNode {
 	public IdentExpNode(String ident) {
 		this.ident = ident;
 	}
+	
+	public String getIdent() {
+		return ident;
+	}
 
 	@Override
 	public Reg generate() {

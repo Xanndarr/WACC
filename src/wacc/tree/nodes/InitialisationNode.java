@@ -1,12 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.StatNode;
-import wacc.util.Arm;
-import wacc.util.ProgramCode;
-import wacc.util.Reg;
-import wacc.util.StackHandler;
-import wacc.util.StackLocation;
-import wacc.util.Type;
+import wacc.util.*;
 
 public class InitialisationNode extends StatNode {
 	
@@ -21,12 +16,18 @@ public class InitialisationNode extends StatNode {
 	@Override
 	public Reg generate() {
 		//TODO all the other assign_rhs
+		RegHandler.descend();
 		IdentNode identNode = (IdentNode) children.get(0);
 		String ident = identNode.getIdent();
 		scopeHandler.add(ident, sType);
 		
 		int spLoc = StackHandler.getOffset() + type.getSize();
-		
+		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
+		int tempSpLoc = spLoc;
+		while (spLoc > 1024) {
+			ProgramCode.add("SUB sp, sp, #1024");
+			spLoc -= 1024;
+		}
 		ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
 		Reg ret = children.get(1).generate();
 		String strInstr = "STR ";
@@ -34,9 +35,13 @@ public class InitialisationNode extends StatNode {
 			strInstr = "STRB ";
 		}
 		ProgramCode.add(strInstr + ret + ", [sp]");
-		ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
+		while (tempSpLoc > 1024) {
+			ProgramCode.add("ADD sp, sp, #1024");
+			tempSpLoc -= 1024;
+		}
+		ProgramCode.add("ADD sp, sp, " + Arm.imm(tempSpLoc));
 		
-		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
+		RegHandler.ascend();
 		return null;
 	}
 

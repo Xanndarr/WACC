@@ -16,10 +16,12 @@ public class BinaryOpNode extends ExpNode {
     public Reg generate() {
         RegHandler.descend();
         Reg operand1 = children.get(0).generate();
+        RegHandler.use();
         Reg operand2 = children.get(1).generate();
+        operand2 = RegHandler.free(operand2);
         switch (op) {
             case MULT:
-                ProgramCode.add("SMULL " + operand1 + ", " + operand2 + ", " + operand2 + ", " + operand1);
+                ProgramCode.add("SMULL " + operand1 + ", " + operand2 + ", " + operand1 + ", " + operand2);
                 ProgramCode.add("CMP " + operand2 + ", " + operand1 + ", ASR #31");
                 ProgramCode.add("BLNE p_throw_overflow_error");
                 RuntimeErrorCode.addError(Error.OVERFLOW);
@@ -30,6 +32,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idiv");
+                ProgramCode.add("MOV " + operand1 + ", r0");
                 RuntimeErrorCode.addError(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;
@@ -38,6 +41,7 @@ public class BinaryOpNode extends ExpNode {
                 ProgramCode.add("MOV r1, " + operand2);
                 ProgramCode.add("BL p_check_divide_by_zero");
                 ProgramCode.add("BL __aeabi_idivmod");
+                ProgramCode.add("MOV " + operand1 + ", r1");
                 RuntimeErrorCode.addError(Error.DIV_BY_ZERO);
                 nodeType = Type.INT;
                 break;

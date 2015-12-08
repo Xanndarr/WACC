@@ -1,6 +1,5 @@
 package wacc.tree.nodes;
 
-import wacc.symbolTable.ScopeHandler;
 import wacc.tree.nodeSupers.AssignRHSNode;
 import wacc.tree.nodeSupers.Node;
 import wacc.util.*;
@@ -21,7 +20,7 @@ public class PairElemNode extends AssignRHSNode {
     @Override
     public Reg generate() {
         Reg ret = RegHandler.getNextReg();
-        IdentNode identNode = (IdentNode) children.get(0);
+        IdentExpNode identNode = (IdentExpNode) children.get(0);
         StackLocation identLoc = StackHandler.get(identNode.getIdent());
         ProgramCode.add("LDR " + ret + ", " + identLoc);
         ProgramCode.add("MOV r0, " + ret);

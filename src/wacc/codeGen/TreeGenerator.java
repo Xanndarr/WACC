@@ -304,7 +304,7 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
-	public Node visitIdentExp(IdentExpContext ctx) {
+	public IdentExpNode visitIdentExp(IdentExpContext ctx) {
 		return new IdentExpNode(ctx.ident().getText());
 	}
 
@@ -351,6 +351,21 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
+	public ExpNode visitExpRHS(ExpRHSContext ctx) {
+		return (ExpNode) visit(ctx.exp());
+	}
+
+	@Override
+	public ArrayNode visitArrayLitRHS(ArrayLitRHSContext ctx) {
+		return (ArrayNode) visit(ctx.array_lit());
+	}
+
+	@Override
+	public PairElemNode visitPairElemRHS(PairElemRHSContext ctx) {
+		return (PairElemNode) visit(ctx.pair_elem());
+	}
+
+	@Override
 	public PairElemNode visitPair_elem(Pair_elemContext ctx) {
 		PairPos pos;
 		if (ctx.FST() == null) {
@@ -368,6 +383,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public CharNode visitChar(CharContext ctx) {
+		if (ctx.getText().contains("\\")) {
+			return new CharNode(ctx.getText().charAt(2));
+		}
 		return new CharNode(ctx.getText().charAt(1));
 	}
 

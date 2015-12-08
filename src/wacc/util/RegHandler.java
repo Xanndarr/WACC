@@ -1,50 +1,50 @@
 package wacc.util;
 
-import wacc.symbolTable.SymbolTable;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class RegHandler {
 
-    //0 represents the index for global scope
-    private static int GLOBAL_SCOPE = 0;
-    private static int currentScope = GLOBAL_SCOPE;
-
     private static RegHandler instance;
-    private static Map<Integer, SymbolTable<Reg, Boolean>> tables;
+    private static Stack<LinkedList<Reg>> regs;
+    private static int used = 0;
+    private static int stacked = 0;
+    private static boolean peek = false;
 
     private RegHandler() {
-        tables = new HashMap<Integer, SymbolTable<Reg, Boolean>>();
-        tables.put(GLOBAL_SCOPE, new SymbolTable<Reg, Boolean>());
+        regs = new Stack<LinkedList<Reg>>();
+        regs.push(new LinkedList<Reg>());
     }
 
-    public static void add(Reg reg, Boolean used) {
-        tables.get(currentScope).put(reg, used);
-    }
-
-    public static Boolean get(Reg reg) {
-        for (int i = currentScope; i >= GLOBAL_SCOPE; i--) {
-            if (tables.get(i).exists(reg)) {
-                return tables.get(i).get(reg);
-            }
+    public static void use() {
+        used++;
+        if (used > Reg.R11.ordinal() - Reg.R4.ordinal()) {
+            ProgramCode.add("PUSH " + Reg.R11.stack());
+            stacked++;
         }
-        return null;
-    }
 
-    public static boolean isUsedGlobally(Reg reg) {
-        for (int i = currentScope; i >= GLOBAL_SCOPE; i--) {
-            if (tables.get(i).exists(reg)) {
-                return true;
-            }
+    }
+    
+    public static Reg free(Reg r) {
+        used--;
+        if (stacked > 0) {
+            ProgramCode.add("POP " + Reg.R12.stack());
+            stacked--;
+            return Reg.R12;
         }
-        return false;
+        return r;
     }
 
     public static Reg getNextReg() {
-        for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
-            if (!tables.get(currentScope).exists(Reg.values()[i])) {
-                add(Reg.values()[i], true);
+    	if (peek) {
+    		return peekNextReg();
+    	}
+        if (stacked > 0) {
+            return Reg.R11;
+        }
+        for (int i = Reg.R4.ordinal() + used - stacked; i <= Reg.R12.ordinal(); i++) {
+            if (!regs.peek().contains(Reg.values()[i])) {
+                regs.peek().add(Reg.values()[i]);
                 return Reg.values()[i];
             }
         }
@@ -52,28 +52,28 @@ public class RegHandler {
     }
     
     public static Reg peekNextReg() {
-    	for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
-            if (!tables.get(currentScope).exists(Reg.values()[i])) {
+        if (stacked > 0) {
+            return Reg.R11;
+        }
+    	for (int i = Reg.R4.ordinal() + used - stacked; i <= Reg.R12.ordinal(); i++) {
+            if (!regs.peek().contains(Reg.values()[i])) {
                 return Reg.values()[i];
             }
         }
         return null;
     }
 
-    public static boolean isUsedLocally(Reg reg) {
-        return tables.get(currentScope).exists(reg);
-    }
-
     public static void descend() {
-        currentScope++;
-        tables.put(currentScope, new SymbolTable<Reg, Boolean>());
+        regs.push(new LinkedList<Reg>());
     }
 
     public static void ascend() {
-        tables.remove(currentScope);
-        currentScope--;
+        regs.pop();
     }
 
+    public static void setPeek(boolean peek) {
+    	RegHandler.peek = peek;
+    }
 
     public static void createInstance() {
         if (instance == null) {

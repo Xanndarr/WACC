@@ -5,7 +5,7 @@ public enum BinaryOp {
 	MULT("*"), DIV("/"), MOD("%"),
 	ADD("+"), SUB("-"),
 	GT(">"), GTE(">="), LT("<"), LTE("<="),
-	EQ("="), NEQ("!="),
+	EQ("=="), NEQ("!="),
 	AND("&&"), OR("||"),
 	INVALID_OP("");
 	
