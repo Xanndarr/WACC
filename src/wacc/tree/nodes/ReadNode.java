@@ -13,8 +13,11 @@ public class ReadNode extends StatNode {
     		ProgramCode.add("ADD " + ret + ", sp, " + Arm.imm(0));
     		ProgramCode.add("MOV r0, " + ret);
 
+            int spLoc = StackHandler.getOffset();
+            ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
     		ReadCode.addRead(t);
     		ProgramCode.add("BL p_read_" + t);
+            ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
     	}
         return null;
     }
