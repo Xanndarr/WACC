@@ -6,7 +6,6 @@ import wacc.tree.nodeSupers.*;
 import wacc.tree.nodes.*;
 import wacc.tree.nodes.PairElemNode.PairPos;
 import wacc.util.BinaryOp;
-import wacc.util.Type;
 import wacc.util.UnaryOp;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
@@ -343,7 +342,6 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	public FunctionCallNode visitFunCallRHS(FunCallRHSContext ctx) {
 		IdentNode ident = (IdentNode) visit(ctx.ident());
 		FunctionCallNode func = new FunctionCallNode(ident.getIdent());
-		func.addChild(ident);
 		if (ctx.arg_list() != null) {
 			func.addChild(visit(ctx.arg_list()));
 		}
