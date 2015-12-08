@@ -17,7 +17,11 @@ public class ProgramNode extends Node {
 
         ProgramCode.add("PUSH " + Reg.R14.stack());
         for (Node child : children) {
-            child.generate();
+        	if (child instanceof FunctionNode) {
+        		Node.visit(child);
+        	} else {
+                child.generate();
+        	}
         }
 		ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(0));
         ProgramCode.add("POP " + Reg.R15.stack());
