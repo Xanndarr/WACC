@@ -8,6 +8,7 @@ public class PrintCode {
 	private static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
 	
 	private static String addPrintData(Type t) {
+        System.out.println("GOT HERE: " + t);
 		switch (t) {
 		case STRING:
 			return ProgramCode.addData("%.*s\\0");
@@ -17,9 +18,9 @@ public class PrintCode {
 			String tempRet = ProgramCode.addData("true\\0");
 			ProgramCode.addData("false\\0");
 			return tempRet;
-		case NULL:
+		case LN:
 			return ProgramCode.addData("\\0");
-        case PAIR:
+        case NULL:
         case ARRAY:
             return ProgramCode.addData("%p\\0");
 		default:
