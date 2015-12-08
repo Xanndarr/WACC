@@ -108,5 +108,19 @@ public class TextEditor extends JFrame {
       JOptionPane.showMessageDialog(this, "File not found");
     }
   }
+  
+  private void saveFile(String filename) {
+    try {
+        FileWriter w = new FileWriter(filename);
+        area.write(w);
+        w.close();
+        currentFilename = filename;
+        setTitle(currentFilename);
+        changeFlag = false;
+        Save.setEnabled(false);
+    }
+    catch(IOException e) {
+    }
+}
 
 }
