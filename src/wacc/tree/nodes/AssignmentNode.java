@@ -13,7 +13,6 @@ public class AssignmentNode extends StatNode {
 	public Reg generate() {
 		//TODO other LHSs
 
-		ProgramCode.add("-----------------------------");
 		RegHandler.descend();
 		Node lhs = children.get(0);
 		Reg ret = RegHandler.peekNextReg();
@@ -35,8 +34,6 @@ public class AssignmentNode extends StatNode {
         }
 		
 		RegHandler.ascend();
-
-        ProgramCode.add("-----------------------------");
 		return null;
 	}
 
