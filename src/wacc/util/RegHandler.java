@@ -13,6 +13,8 @@ public class RegHandler {
 
     private static RegHandler instance;
     private static Map<Integer, SymbolTable<Reg, Boolean>> tables;
+    
+    private static boolean peek = false;
 
     private RegHandler() {
         tables = new HashMap<Integer, SymbolTable<Reg, Boolean>>();
@@ -42,6 +44,9 @@ public class RegHandler {
     }
 
     public static Reg getNextReg() {
+    	if (peek) {
+    		return peekNextReg();
+    	}
         for (int i = Reg.R4.ordinal(); i <= Reg.R12.ordinal(); i++) {
             if (!tables.get(currentScope).exists(Reg.values()[i])) {
                 add(Reg.values()[i], true);
@@ -74,6 +79,9 @@ public class RegHandler {
         currentScope--;
     }
 
+    public static void setPeek(boolean peek) {
+    	RegHandler.peek = peek;
+    }
 
     public static void createInstance() {
         if (instance == null) {

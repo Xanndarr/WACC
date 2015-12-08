@@ -1,6 +1,5 @@
 package wacc.tree.nodes;
 
-import wacc.symbolTable.ScopeHandler;
 import wacc.tree.nodeSupers.AssignRHSNode;
 import wacc.tree.nodeSupers.Node;
 import wacc.util.*;
