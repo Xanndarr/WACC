@@ -1,10 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
-import wacc.util.ProgramCode;
-import wacc.util.Reg;
-import wacc.util.Type;
-import wacc.util.UnaryOp;
+import wacc.util.*;
 
 public class UnaryOpNode extends ExpNode {
 
@@ -16,6 +13,7 @@ public class UnaryOpNode extends ExpNode {
 
     @Override
     public Reg generate() {
+        RegHandler.descend();
         Reg operand = children.get(0).generate();
         switch (op) {
             case NOT:
@@ -35,6 +33,7 @@ public class UnaryOpNode extends ExpNode {
             default:
                 break;
         }
+        RegHandler.ascend();
         return operand;
     }
 }

@@ -14,8 +14,8 @@ public class ReadNode extends StatNode {
     		Reg ret = children.get(0).generate();
     		ProgramCode.add("ADD " + ret + ", sp, " + Arm.imm(0));
     		ProgramCode.add("MOV r0, " + ret);
-    		
-    		ReadCode.addRead(nodeType);    		
+
+    		ReadCode.addRead(nodeType);
     		ProgramCode.add("BL p_read_" + nodeType);
     	}
         return null;

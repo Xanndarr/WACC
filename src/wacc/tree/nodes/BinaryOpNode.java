@@ -14,6 +14,7 @@ public class BinaryOpNode extends ExpNode {
 
     @Override
     public Reg generate() {
+        RegHandler.descend();
         Reg operand1 = children.get(0).generate();
         Reg operand2 = children.get(1).generate();
         switch (op) {
@@ -99,6 +100,7 @@ public class BinaryOpNode extends ExpNode {
             default:
                 break;
         }
+        RegHandler.ascend();
         return operand1;
     }
 
