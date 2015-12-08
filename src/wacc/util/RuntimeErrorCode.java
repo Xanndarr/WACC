@@ -27,52 +27,58 @@ public class RuntimeErrorCode {
     }
 
     private static void produceError(Error e) {
-        ProgramCode.setPostIndent(false);
-        String dataLabel = addErrorData(e);
-        ProgramCode.addPost("p_" + e + ":");
-        ProgramCode.setPostIndent(true);
-        ProgramCode.addPost("PUSH {lr}");
-        switch (e) {
-            case OVERFLOW:
-                ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
-                ProgramCode.addPost("BL p_throw_runtime_error");
-                break;
-            case DIV_BY_ZERO:
-                ProgramCode.addPost("CMP r1, #0");
-                ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
-                ProgramCode.addPost("BLEQ p_throw_runtime_error");
-                break;
-            case NULL_PTR:
-                ProgramCode.addPost("CMP r0, #0");
-                ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
-                ProgramCode.addPost("BLEQ p_throw_runtime_error");
-                break;
-            case ARR_OOB:
-            	String secondLabel = "msg_" + (Integer.parseInt(dataLabel.replaceAll("msg_", "")) + 1);
-            	ProgramCode.addPost("LDRLT r0, " + Arm.mem(dataLabel));
-            	ProgramCode.addPost("BLLT p_throw_runtime_error");
-            	ProgramCode.addPost("LDR r1, [r1]");
-            	ProgramCode.addPost("CMP r0, r1");
-            	ProgramCode.addPost("LDRCS r0, " + Arm.mem(secondLabel));
-            	ProgramCode.addPost("BLCS p_throw_runtime_error");
-            	break;
-            case NULL_REF:
-                ProgramCode.addPost("CMP r0, #0");
-                ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
-                ProgramCode.addPost("BEQ p_throw_runtime_error");
-                ProgramCode.addPost("PUSH {r0}");
-                ProgramCode.addPost("LDR r0, [r0]");
-                ProgramCode.addPost("BL free");
-                ProgramCode.addPost("LDR r0, [sp]");
-                ProgramCode.addPost("LDR r0, [r0, #4]");
-                ProgramCode.addPost("BL free");
-                ProgramCode.addPost("POP {r0}");
-                ProgramCode.addPost("BL free");
-                break;
-            default:
-                break;
+        if (e == Error.OVERFLOW) {
+            ProgramCode.setPostIndent(false);
+            String dataLabel = addErrorData(e);
+            ProgramCode.addPost("p_" + e + ":");
+            ProgramCode.setPostIndent(true);
+            ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
+            ProgramCode.addPost("BL p_throw_runtime_error");
+        } else {
+            ProgramCode.setPostIndent(false);
+            String dataLabel = addErrorData(e);
+            ProgramCode.addPost("p_" + e + ":");
+            ProgramCode.setPostIndent(true);
+            ProgramCode.addPost("PUSH {lr}");
+            switch (e) {
+                case DIV_BY_ZERO:
+                    ProgramCode.addPost("CMP r1, #0");
+                    ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
+                    ProgramCode.addPost("BLEQ p_throw_runtime_error");
+                    break;
+                case NULL_PTR:
+                    ProgramCode.addPost("CMP r0, #0");
+                    ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
+                    ProgramCode.addPost("BLEQ p_throw_runtime_error");
+                    break;
+                case ARR_OOB:
+                    String secondLabel = "msg_" + (Integer.parseInt(dataLabel.replaceAll("msg_", "")) + 1);
+                    ProgramCode.addPost("LDRLT r0, " + Arm.mem(dataLabel));
+                    ProgramCode.addPost("BLLT p_throw_runtime_error");
+                    ProgramCode.addPost("LDR r1, [r1]");
+                    ProgramCode.addPost("CMP r0, r1");
+                    ProgramCode.addPost("LDRCS r0, " + Arm.mem(secondLabel));
+                    ProgramCode.addPost("BLCS p_throw_runtime_error");
+                    break;
+                case NULL_REF:
+                    ProgramCode.addPost("CMP r0, #0");
+                    ProgramCode.addPost("LDREQ r0, " + Arm.mem(dataLabel));
+                    ProgramCode.addPost("BEQ p_throw_runtime_error");
+                    ProgramCode.addPost("PUSH {r0}");
+                    ProgramCode.addPost("LDR r0, [r0]");
+                    ProgramCode.addPost("BL free");
+                    ProgramCode.addPost("LDR r0, [sp]");
+                    ProgramCode.addPost("LDR r0, [r0, #4]");
+                    ProgramCode.addPost("BL free");
+                    ProgramCode.addPost("POP {r0}");
+                    ProgramCode.addPost("BL free");
+                    break;
+                default:
+                    break;
+            }
+            ProgramCode.addPost("POP {pc}");
         }
-        ProgramCode.addPost("POP {pc}");
+
         if (!printedErrorLabels.contains(Error.RUNTIME)) {
             addRuntimeError();
             printedErrorLabels.add(Error.RUNTIME);
