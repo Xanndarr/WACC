@@ -28,13 +28,13 @@ public class PrintCode {
 	}
 	
 	private static void addPrintFunc(Type t, String dataLabel) {
-		if (t == Type.NULL) {
+		if (t == Type.LN) {
 			ProgramCode.addPost("p_print_ln:");
 			ProgramCode.setPostIndent(true);
 			ProgramCode.addPost("PUSH {lr}");
 			addPrintln(dataLabel);
 			ProgramCode.addPost("BL puts");
-		} else if (t == Type.ARRAY || t == Type.PAIR) {
+		} else if (t == Type.ARRAY || t == Type.NULL) {
             ProgramCode.addPost("p_print_reference:");
             ProgramCode.setPostIndent(true);
             ProgramCode.addPost("PUSH {lr}");
@@ -56,7 +56,6 @@ public class PrintCode {
 			case BOOL:
 				String[] parts = dataLabel.split("_");
 				addPrintBool(dataLabel, parts[0] + "_" + (Integer.parseInt(parts[1]) + 1));
-				break;
 			default:
 				break;
 			}
