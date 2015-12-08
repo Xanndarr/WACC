@@ -19,7 +19,11 @@ public class IdentExpNode extends ExpNode {
 	public Reg generate() {
 		Reg ret = RegHandler.getNextReg();
 		nodeType = Type.parse(scopeHandler.get(ident));
-		ProgramCode.add("LDR " + ret + ", " + StackHandler.get(ident));
+		String ldrInstr = "LDR ";
+		if (nodeType.getSize() == 1) {
+			ldrInstr = "LDRSB ";
+		}
+		ProgramCode.add(ldrInstr + ret + ", " + StackHandler.get(ident));
 		return ret;
 	}
 
