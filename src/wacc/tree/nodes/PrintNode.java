@@ -7,6 +7,7 @@ public class PrintNode extends StatNode {
 	
 	@Override
 	public Reg generate() {
+        RegHandler.descend();
 		if (children.get(0) != null) {
 			Reg ret = children.get(0).generate();
 			ProgramCode.add("SUB sp, sp, " + Arm.imm(StackHandler.getOffset()));
@@ -20,6 +21,7 @@ public class PrintNode extends StatNode {
 			}
 			ProgramCode.add("ADD sp, sp, " + Arm.imm(StackHandler.getOffset()));
 		}
+        RegHandler.ascend();
 		return null;
 	}
 
