@@ -2,6 +2,7 @@ package wacc.util;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ProgramCode {
 	
@@ -36,9 +37,13 @@ public class ProgramCode {
 	
 	public static String addData(String s) {
 		data.add("msg_" + dataItems + ":");
-		if (s.contains("\\")) {
-			data.add("\t.word " + (s.length() - "\\".length()));
-		} else {
+		if (s.contains("\\0")) {
+            if (s.contains("\\n")) {
+                data.add("\t.word " + (s.length() - "\\".length() * 2));
+            } else {
+                data.add("\t.word " + (s.length() - "\\".length()));
+            }
+        } else {
 			data.add("\t.word " + s.length());
 		}
 		data.add("\t.ascii \"" + s + "\"");
