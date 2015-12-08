@@ -73,7 +73,10 @@ public class RuntimeErrorCode {
                 break;
         }
         ProgramCode.addPost("POP {pc}");
-        addRuntimeError();
+        if (!printedErrorLabels.contains(Error.RUNTIME)) {
+            addRuntimeError();
+            printedErrorLabels.add(Error.RUNTIME);
+        }
     }
 
     private static void addRuntimeError() {
