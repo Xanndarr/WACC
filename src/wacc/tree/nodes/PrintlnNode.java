@@ -1,10 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.StatNode;
-import wacc.util.PrintCode;
-import wacc.util.ProgramCode;
-import wacc.util.Reg;
-import wacc.util.Type;
+import wacc.util.*;
 
 public class PrintlnNode extends StatNode {
 
@@ -12,6 +9,7 @@ public class PrintlnNode extends StatNode {
 	public Reg generate() {
 		if (children.get(0) != null) {
 			Reg ret = children.get(0).generate();
+            ProgramCode.add("SUB sp, sp, " + Arm.imm(StackHandler.getOffset()));
 			ProgramCode.add("MOV r0, " + ret);
 			
 			if (nodeType == Type.CHAR) {
@@ -22,7 +20,8 @@ public class PrintlnNode extends StatNode {
 			}
 			PrintCode.addPrint(Type.NULL);
 			ProgramCode.add("BL p_print_ln");
-		}
+            ProgramCode.add("ADD sp, sp, " + Arm.imm(StackHandler.getOffset()));
+        }
 		return null;
 	}
 
