@@ -26,7 +26,7 @@ public class AssignmentNode extends StatNode {
 			ProgramCode.add(strInstr + ret + ", " + StackHandler.get(ident));
 		} else {
 			Reg target = lhs.generate();
-			ProgramCode.add("STR " + ret + ", " + target);
+			ProgramCode.add("STR " + ret + ", " + target.memory());
 		}
 		
 		RegHandler.ascend();
