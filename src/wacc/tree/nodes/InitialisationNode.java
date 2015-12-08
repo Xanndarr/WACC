@@ -1,12 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.StatNode;
-import wacc.util.Arm;
-import wacc.util.ProgramCode;
-import wacc.util.Reg;
-import wacc.util.StackHandler;
-import wacc.util.StackLocation;
-import wacc.util.Type;
+import wacc.util.*;
 
 public class InitialisationNode extends StatNode {
 	
@@ -21,6 +16,7 @@ public class InitialisationNode extends StatNode {
 	@Override
 	public Reg generate() {
 		//TODO all the other assign_rhs
+		RegHandler.descend();
 		IdentNode identNode = (IdentNode) children.get(0);
 		String ident = identNode.getIdent();
 		scopeHandler.add(ident, sType);
@@ -37,6 +33,7 @@ public class InitialisationNode extends StatNode {
 		ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
 		
 		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
+		RegHandler.ascend();
 		return null;
 	}
 

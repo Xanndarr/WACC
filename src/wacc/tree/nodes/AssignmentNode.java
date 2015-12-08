@@ -4,6 +4,7 @@ import wacc.tree.nodeSupers.Node;
 import wacc.tree.nodeSupers.StatNode;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
+import wacc.util.RegHandler;
 import wacc.util.StackHandler;
 
 public class AssignmentNode extends StatNode {
@@ -11,6 +12,7 @@ public class AssignmentNode extends StatNode {
 	@Override
 	public Reg generate() {
 		//TODO other LHSs
+		RegHandler.descend();
 		Node lhs = children.get(0);
 		Reg ret = children.get(1).generate();
 		
@@ -23,6 +25,7 @@ public class AssignmentNode extends StatNode {
 			String ident = ((IdentNode) lhs).getIdent();
 			ProgramCode.add(strInstr + ret + ", " + StackHandler.get(ident));
 		}
+		RegHandler.ascend();
 		return null;
 	}
 
