@@ -26,13 +26,14 @@ public class ArrayNode extends AssignRHSNode {
 		ProgramCode.add("MOV " + fst + ", r0");
 		
 		int sp = Type.INT.getSize();
+
+		RegHandler.setPeek(true);
 		
 		IntNode arraySize = new IntNode(children.size());
 		Reg arrSizeRet = arraySize.generate();
 		
 		ProgramCode.add("STR " + arrSizeRet + ", [" + fst + ", " + Arm.imm(-sp) + "]");
-
-		RegHandler.setPeek(true);
+		
 		for (Node child : children) {
 			sp += nodeType.getSize();
 			Reg ret = child.generate();

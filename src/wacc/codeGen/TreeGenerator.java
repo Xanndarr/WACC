@@ -381,6 +381,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public CharNode visitChar(CharContext ctx) {
+		if (ctx.getText().contains("\\")) {
+			return new CharNode(ctx.getText().charAt(2));
+		}
 		return new CharNode(ctx.getText().charAt(1));
 	}
 
