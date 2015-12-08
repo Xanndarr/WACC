@@ -8,7 +8,7 @@ public class FreeNode extends StatNode {
 
 	@Override
 	public Reg generate() {
-        String ident = ((IdentNode) children.get(0)).getIdent();
+        String ident = ((IdentExpNode) children.get(0)).getIdent();
         Reg freeAdd = RegHandler.getNextReg();
         ProgramCode.add("LDR " + freeAdd + ", "  + StackHandler.get(ident));
         ProgramCode.add("MOV " + Reg.R0  + ", " + freeAdd);
