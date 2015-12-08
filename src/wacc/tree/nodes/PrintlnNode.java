@@ -22,14 +22,14 @@ public class PrintlnNode extends StatNode {
 			if (nodeType == Type.CHAR) {
 				ProgramCode.add("BL putchar");
 			} else {
-				if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
+				if (nodeType == Type.ARRAY || nodeType == Type.NULL) {
 					ProgramCode.add("BL p_print_reference");
 				} else {
 					ProgramCode.add("BL p_print_" + nodeType);
 				}
 				PrintCode.addPrint(nodeType);
 			}
-			PrintCode.addPrint(Type.NULL);
+			PrintCode.addPrint(Type.LN);
 			ProgramCode.add("BL p_print_ln");
 			while (temp > 1024) {
 				ProgramCode.add("ADD sp, sp, #1024");

@@ -92,12 +92,16 @@ public class ProgramCode {
 	}
 	
 	public static void enterFunction() {
+		postBak = post;
+		post = new LinkedList<String>();
+		
 		mainBak = main;
-		main = new LinkedList<String>();
+		main = post;
 	}
 	
 	public static void leaveFunction() {
-		post.addAll(main);
+		postBak.addAll(post);
+		post = postBak;
 		main = mainBak;
 	}
 	

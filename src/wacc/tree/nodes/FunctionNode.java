@@ -1,18 +1,15 @@
 package wacc.tree.nodes;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import wacc.tree.nodeSupers.Node;
 import wacc.tree.nodeSupers.StatNode;
 import wacc.util.ProgramCode;
 import wacc.util.Reg;
+import wacc.util.RegHandler;
 
 public class FunctionNode extends StatNode {
 	
 	private final String name;
 	private final String type;
-	private static List<String> printedFunctionLabels = new LinkedList<String>();
 
 	public FunctionNode(String name, String type) {
 		this.name = name;
@@ -23,41 +20,34 @@ public class FunctionNode extends StatNode {
 	@Override
 	public Reg generate() {
 		//scopeHandler.descendFun();
-		//scopeHandler.descend();
+		scopeHandler.descend();
 		
-		scopeHandler.add(name, type);
 		if (!functions.containsKey(name)) {
 			functions.put(name, this);
-		} else {
-			addFunc(name, children);
+			scopeHandler.add(name, type);
+			ProgramCode.enterFunction();
+			ProgramCode.setPostIndent(false);
+			ProgramCode.addPost("f_" + name + ":");
+			ProgramCode.setPostIndent(true);
+			
+			Reg ret = RegHandler.getNextReg();
+			ProgramCode.addPost("PUSH {lr}");
+			System.out.println(children.size());
+			for (Node node : children) {
+				System.out.println(node);
+				node.generate();
+			}
+			ProgramCode.addPost("POP {pc}");
+			ProgramCode.addPost("POP {pc}");
+	        ProgramCode.addPost(".ltorg");
+			ProgramCode.leaveFunction();
+			
+			ProgramCode.setPostIndent(false);
 		}
 		
-		
-		//scopeHandler.ascend();
+		scopeHandler.ascend();
 		//scopeHandler.ascendFun();
-		return null;
-	}
-	
-	private static void addFunction(String name, List<Node> children) {
-		ProgramCode.enterFunction();
-		ProgramCode.setIndent(false);
-		ProgramCode.add("f_" + name + ":");
-		ProgramCode.setIndent(true);
-		ProgramCode.add("PUSH {lr}");
-		for (Node node : children) {
-			node.generate();
-		}
-		ProgramCode.add("POP {pc}");
-		ProgramCode.add("POP {pc}");
-        ProgramCode.add(".ltorg");
-		ProgramCode.leaveFunction();
-	}
-	
-	public static void addFunc(String name, List<Node> children) {
-		if (!printedFunctionLabels.contains(name)) {
-			addFunction(name, children);
-            printedFunctionLabels.add(name);
-		}
+		return Reg.R0;
 	}
 	
 }
