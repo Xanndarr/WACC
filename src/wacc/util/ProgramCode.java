@@ -39,7 +39,7 @@ public class ProgramCode {
 		data.add("msg_" + dataItems + ":");
 		String temp = Matcher.quoteReplacement(s);
 		int numEscapes = temp.length() - temp.replaceAll(Matcher.quoteReplacement("\\"), "").length();
-        data.add("\t.word " + (temp.length() - (numEscapes / 2)));
+        data.add("\t.word " + (temp.length() - numEscapes));
 		data.add("\t.ascii \"" + s + "\"");
 		return "msg_" + dataItems++;
 	}
