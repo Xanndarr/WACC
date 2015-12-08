@@ -8,11 +8,8 @@ public class NewPairNode extends AssignRHSNode {
 
     @Override
     public Reg generate() {
-        Node.visit(children.get(0));
-        int totalSize = nodeType.getSize();
-        Node.visit(children.get(1));
-        totalSize += nodeType.getSize();
-        ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(totalSize));
+        RegHandler.descend();
+        ProgramCode.add("LDR " + Reg.R0 + ", " + Arm.mem(8));
         ProgramCode.add("BL malloc");
         Reg pairSize = RegHandler.getNextReg();
         ProgramCode.add("MOV " + pairSize + ", r0");
@@ -38,6 +35,7 @@ public class NewPairNode extends AssignRHSNode {
         ProgramCode.add("BL malloc");
         ProgramCode.add(strInstr + sndRet + ", " + Reg.R0.memory());
         ProgramCode.add("STR " + Reg.R0 + ", " + pairSize.memory(4));
+        RegHandler.ascend();
         return pairSize;
     }
 
