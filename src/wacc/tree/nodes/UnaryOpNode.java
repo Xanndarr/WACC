@@ -2,6 +2,7 @@ package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.ExpNode;
 import wacc.util.*;
+import wacc.util.Error;
 
 public class UnaryOpNode extends ExpNode {
 
@@ -32,6 +33,9 @@ public class UnaryOpNode extends ExpNode {
                 nodeType = Type.INT;
                 break;
             case SUB:
+            	ProgramCode.add("RSBS " + operand + ", " + operand + " #0");
+            	ProgramCode.add("BLVS p_throw_overflow_error");
+            	RuntimeErrorCode.addError(Error.OVERFLOW);
                 nodeType = Type.INT;
             default:
                 break;
