@@ -17,6 +17,7 @@ public abstract class Node {
 	protected static Type nodeType = null;
 	protected static final ScopeHandler scopeHandler = new ScopeHandler();
 	protected static final Map<String, Node> functions = new HashMap<String, Node>();
+	protected static boolean visiting = false;
 	
 	public abstract Reg generate();
 

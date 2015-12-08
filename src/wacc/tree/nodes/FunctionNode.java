@@ -1,5 +1,8 @@
 package wacc.tree.nodes;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import wacc.tree.nodeSupers.Node;
 import wacc.tree.nodeSupers.StatNode;
 import wacc.util.ProgramCode;
@@ -10,6 +13,8 @@ public class FunctionNode extends StatNode {
 	
 	private final String name;
 	private final String type;
+	
+	private final static List<String> printedFuns = new LinkedList<String>();
 
 	public FunctionNode(String name, String type) {
 		this.name = name;
@@ -24,7 +29,10 @@ public class FunctionNode extends StatNode {
 		
 		if (!functions.containsKey(name)) {
 			functions.put(name, this);
-			scopeHandler.add(name, type);
+			scopeHandler.add(name, type);			
+		}
+		
+		if (!printedFuns.contains(name) && !visiting) {
 			ProgramCode.enterFunction();
 			ProgramCode.setPostIndent(false);
 			ProgramCode.addPost("f_" + name + ":");
@@ -43,8 +51,9 @@ public class FunctionNode extends StatNode {
 			ProgramCode.leaveFunction();
 			
 			ProgramCode.setPostIndent(false);
+			printedFuns.add(name);
 		}
-		
+			
 		scopeHandler.ascend();
 		//scopeHandler.ascendFun();
 		return Reg.R0;
