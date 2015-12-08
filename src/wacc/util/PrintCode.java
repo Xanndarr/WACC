@@ -38,10 +38,10 @@ public class PrintCode {
             ProgramCode.addPost("p_print_reference:");
             ProgramCode.setPostIndent(true);
             ProgramCode.addPost("PUSH {lr}");
-            ProgramCode.add("MOV r1, r0");
-            ProgramCode.add("LDR r0, " + Arm.mem(dataLabel));
-            ProgramCode.add("ADD r0, r0, #4");
-            ProgramCode.add("BL printf");
+            ProgramCode.addPost("MOV r1, r0");
+            ProgramCode.addPost("LDR r0, " + Arm.mem(dataLabel));
+            ProgramCode.addPost("ADD r0, r0, #4");
+            ProgramCode.addPost("BL printf");
         } else {
 			ProgramCode.addPost("p_print_" + t + ":");
 			ProgramCode.setPostIndent(true);
