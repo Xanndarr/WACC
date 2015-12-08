@@ -1,4 +1,4 @@
-package text.editor;
+package wacc.ide;
 
 import java.awt.*;
 import java.awt.event.*;
