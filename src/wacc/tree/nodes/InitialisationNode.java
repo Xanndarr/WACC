@@ -34,7 +34,7 @@ public class InitialisationNode extends StatNode {
 			strInstr = "STRB ";
 		}
 		ProgramCode.add(strInstr + ret + ", [sp]");
-		//ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
+		ProgramCode.add("ADD sp, sp, " + Arm.imm(spLoc));
 		
 		StackHandler.add(ident, new StackLocation(spLoc), type.getSize());
 		return null;
