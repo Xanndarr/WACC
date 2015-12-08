@@ -14,9 +14,14 @@ public class AssignmentNode extends StatNode {
 		Node lhs = children.get(0);
 		Reg ret = children.get(1).generate();
 		
+		String strInstr = "STR ";
+		if (nodeType.getSize() == 1) {
+			strInstr = "STRB ";
+		}
+		
 		if (lhs instanceof IdentNode) {
 			String ident = ((IdentNode) lhs).getIdent();
-			ProgramCode.add("STR " + ret + ", " + StackHandler.get(ident));
+			ProgramCode.add(strInstr + ret + ", " + StackHandler.get(ident));
 		}
 		return null;
 	}
