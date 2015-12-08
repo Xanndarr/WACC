@@ -8,7 +8,6 @@ public class PrintCode {
 	private static final Map<Type, String> printedTypeLabels = new HashMap<Type, String>();
 	
 	private static String addPrintData(Type t) {
-        System.out.println("GOT HERE: " + t);
 		switch (t) {
 		case STRING:
 			return ProgramCode.addData("%.*s\\0");
