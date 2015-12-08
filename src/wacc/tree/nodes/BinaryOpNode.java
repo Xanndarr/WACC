@@ -89,8 +89,8 @@ public class BinaryOpNode extends ExpNode {
                 break;
             case NEQ:
                 ProgramCode.add("CMP " + operand1 + ", " + operand2);
-                ProgramCode.add("MOVEQ " + operand1 + ", #1");
-                ProgramCode.add("MOVNE " + operand1 + ", #0");
+                ProgramCode.add("MOVEQ " + operand1 + ", #0");
+                ProgramCode.add("MOVNE " + operand1 + ", #1");
                 nodeType = Type.BOOL;
                 break;
             case AND:
