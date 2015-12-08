@@ -31,9 +31,9 @@ public class ArrayNode extends AssignRHSNode {
 		for (Node child : children) {
 			Reg ret = child.generate();
 			if (elemType.getSize() == 1) {
-				ProgramCode.add("STRB " + ret + ", [" + fst + ", " + Arm.imm(sp) + "]");
+				ProgramCode.add("STRB " + ret + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 			} else {
-				ProgramCode.add("STR " + ret + ", [" + fst + ", " + Arm.imm(sp) + "]");
+				ProgramCode.add("STR " + ret + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 			}
 			sp += nodeType.getSize();
 		}
