@@ -33,8 +33,7 @@ public class IdentExpNode extends ExpNode {
 			ProgramCode.add("LDR " + ret + ", sp");
 		}
 		if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
-			ProgramCode.add(ldrInstr + ret + ", sp");
-			ProgramCode.add("SUB " + ret + ", " + ret + ", " + Arm.imm(StackHandler.get(ident).getOffset()));
+			ProgramCode.add(ldrInstr + ret + ", sp, " + Arm.imm(-StackHandler.get(ident).getOffset()));
 		} else {
 			ProgramCode.add(ldrInstr + ret + ", " + StackHandler.get(ident));
 		}
