@@ -26,22 +26,16 @@ public class PairElemNode extends AssignRHSNode {
         ProgramCode.add("MOV r0, " + ret);
         ProgramCode.add("BL p_check_null_pointer");
         RuntimeErrorCode.addError(Error.NULL_PTR);
-		switch (pos) {
-			case FST:
-                ProgramCode.add("LDR " + ret + ", " + ret.memory());
-                break;
-            case SND:
-                ProgramCode.add("LDR " + ret + ", " + ret.memory(4));
-				break;
-			default:
-				break;
-		}
+        String spLoc = ret.memory();
+		if (pos == PairPos.SND) {
+            spLoc = ret.memory(4);
+        }
         String strInstr = "LDR ";
         Node.visit(children.get(0));
         if (nodeType.getSize() == 1) {
             strInstr = "LDRSB ";
         }
-        ProgramCode.add(strInstr + ret + ", " + ret.memory());
+        ProgramCode.add(strInstr + ret + ", " + spLoc);
 		return ret;
     }
 

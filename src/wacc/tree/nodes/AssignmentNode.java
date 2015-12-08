@@ -15,19 +15,22 @@ public class AssignmentNode extends StatNode {
 		//TODO other LHSs
 		RegHandler.descend();
 		Node lhs = children.get(0);
-		Reg ret = children.get(1).generate();
-		
-		String strInstr = "STR ";
-		if (nodeType.getSize() == 1) {
-			strInstr = "STRB ";
-		}
-		
+		Reg ret  = children.get(1).generate();
+        RegHandler.use();
+        String strInstr = "STR ";
+        if (nodeType.getSize() == 1) {
+            strInstr = "STRB ";
+        }
 		if (lhs instanceof IdentNode) {
 			String ident = ((IdentNode) lhs).getIdent();
 			ProgramCode.add(strInstr + ret + ", " + StackHandler.get(ident));
-		} else {
+		} else if (lhs instanceof PairElemNode) {
+            Reg target = lhs.generate();;
+            ProgramCode.add(strInstr + ret + ", " + target.memory());
+        } else {
 			String ident = ((IdentNode) lhs).getIdent();
 			Reg target = lhs.generate();
+            ProgramCode.add("STR " + ret + ", " + target.memory());
 			if (Type.getBaseSize(scopeHandler.get(ident)) == 1) {
 				ProgramCode.add("STRB " + ret + ", " + target.memory());
 			} else {
