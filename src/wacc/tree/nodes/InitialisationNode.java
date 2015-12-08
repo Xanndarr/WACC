@@ -28,8 +28,8 @@ public class InitialisationNode extends StatNode {
 			ProgramCode.add("SUB sp, sp, #1024");
 			spLoc -= 1024;
 		}
-		ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
 		Reg ret = children.get(1).generate();
+		ProgramCode.add("SUB sp, sp, " + Arm.imm(spLoc));
 		String strInstr = "STR ";
 		if (type.getSize() == 1) {
 			strInstr = "STRB ";
