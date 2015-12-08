@@ -26,23 +26,23 @@ public class ArrayNode extends AssignRHSNode {
 		ProgramCode.add("MOV " + fst + ", r0");
 		
 		int sp = Type.INT.getSize();
+		
+		IntNode arraySize = new IntNode(children.size());
+		Reg arrSizeRet = arraySize.generate();
+		
+		ProgramCode.add("STR " + arrSizeRet + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 
 		RegHandler.setPeek(true);
 		for (Node child : children) {
+			sp += nodeType.getSize();
 			Reg ret = child.generate();
 			if (elemType.getSize() == 1) {
 				ProgramCode.add("STRB " + ret + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 			} else {
 				ProgramCode.add("STR " + ret + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 			}
-			sp += nodeType.getSize();
 		}
 		RegHandler.setPeek(false);
-		
-		IntNode arraySize = new IntNode(children.size());
-		Reg arrSizeRet = arraySize.generate();
-		
-		ProgramCode.add("STR " + arrSizeRet + ", [" + fst + ", " + Arm.imm(-sp) + "]");
 		
 		RegHandler.ascend();
 		return fst;
