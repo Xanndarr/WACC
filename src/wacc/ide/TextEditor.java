@@ -25,6 +25,21 @@ public class TextEditor extends JFrame {
     }
   };
 
+  Action Save = new AbstractAction("Save", new ImageIcon("save.gif")) {
+    public void actionPerformed(ActionEvent e) {
+      if (!currentFilename.equals("Untitled"))
+        saveFile(currentFilename);
+      else
+        saveFileAs();
+    }
+  };
+
+  Action SaveAs = new AbstractAction("Save as...") {
+    public void actionPerformed(ActionEvent e) {
+      saveFileAs();
+    }
+  };
+
   // Listener
   private KeyListener k = new KeyAdapter() {
     public void keyPressed(KeyEvent e) {
@@ -108,19 +123,18 @@ public class TextEditor extends JFrame {
       JOptionPane.showMessageDialog(this, "File not found");
     }
   }
-  
+
   private void saveFile(String filename) {
     try {
-        FileWriter w = new FileWriter(filename);
-        area.write(w);
-        w.close();
-        currentFilename = filename;
-        setTitle(currentFilename);
-        changeFlag = false;
-        Save.setEnabled(false);
+      FileWriter w = new FileWriter(filename);
+      area.write(w);
+      w.close();
+      currentFilename = filename;
+      setTitle(currentFilename);
+      changeFlag = false;
+      Save.setEnabled(false);
+    } catch (IOException e) {
     }
-    catch(IOException e) {
-    }
-}
+  }
 
 }
