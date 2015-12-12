@@ -25,7 +25,7 @@ public class TextEditor extends JFrame {
     }
   };
 
-  Action Save = new AbstractAction("Save", new ImageIcon("save.gif")) {
+  private Action Save = new AbstractAction("Save", new ImageIcon("save.gif")) {
     public void actionPerformed(ActionEvent e) {
       if (!currentFilename.equals("Untitled"))
         saveFile(currentFilename);
@@ -34,11 +34,24 @@ public class TextEditor extends JFrame {
     }
   };
 
-  Action SaveAs = new AbstractAction("Save as...") {
+  private Action SaveAs = new AbstractAction("Save as...") {
     public void actionPerformed(ActionEvent e) {
       saveFileAs();
     }
   };
+  
+  private Action Quit = new AbstractAction("Quit") {
+    public void actionPerformed(ActionEvent e) {
+      saveOld();
+      System.exit(0);
+    }
+  };
+
+  //adds some utility actions   
+  private ActionMap m = area.getActionMap();
+  private Action Cut = m.get(DefaultEditorKit.cutAction);
+  private Action Copy = m.get(DefaultEditorKit.copyAction);
+  private Action Paste = m.get(DefaultEditorKit.pasteAction);
 
   // Listener
   private KeyListener k = new KeyAdapter() {
@@ -67,7 +80,6 @@ public class TextEditor extends JFrame {
 
     // populates menu options
     // TODO: add Actions for each menu option
-    file.add(New);
     file.add(Open);
     file.add(Save);
     file.add(Quit);
@@ -95,6 +107,10 @@ public class TextEditor extends JFrame {
     setTitle(currentFilename);
     setVisible(true);
 
+  }
+
+  public static void main(String[] arg) {
+    new TextEditor();
   }
 
   private void saveFileAs() {
