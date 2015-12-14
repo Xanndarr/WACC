@@ -27,6 +27,8 @@ IS: 'is' ;
 //assigning
 CALL: 'call' ;
 NEWPAIR: 'newpair' ;
+FOR: 'for' ;
+IN: 'in' ;
 
 MULT: '*' ;
 DIV: '/' ;
@@ -55,6 +57,7 @@ OPEN_SQ_BRACK: '[' ;
 CLOSE_SQ_BRACK: ']' ;
 COMMA: ',' ;
 ASSIGN: '=' ;
+GAP: '..' ;
 
 fragment DIGIT: [0-9] ;
 fragment SIGN: SUB | ADD ;

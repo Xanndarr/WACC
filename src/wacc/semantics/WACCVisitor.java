@@ -3,6 +3,8 @@ package wacc.semantics;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
@@ -279,6 +281,32 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 			err.println("While condition expressions must evaluate to bool type.", ctx.exp());
 		}
 		scopeHandler.descend();
+		boolean tempHasReturn = hasReturn;
+		visit(ctx.stat());
+		hasReturn = tempHasReturn;
+		scopeHandler.ascend();
+		return null;
+	}
+	
+	@Override
+	public Void visitFor(ForContext ctx) {
+		//DONE loop variable ident must not exist in scope
+		//DONE Range boundary expressions must evaluate to an int
+		//DONE check if loop body has return
+		//DONE sets type of loop variable to int
+		if (scopeHandler.exists(ctx.ident().getText())) {
+			err.println("For loop ident must not exist in this scope", ctx.ident());
+		}
+		visit(ctx.range().exp(0));
+		if (!nodeType.equals("int")) {
+			err.println("For range boundaries must evaluate to int type.", ctx.range().exp(0));
+		}
+		visit(ctx.range().exp(1));
+		if (!nodeType.equals("int")) {
+			err.println("For range boundaries must evaluate to int type.", ctx.range().exp(1));
+		}
+		scopeHandler.descend();
+		scopeHandler.add(ctx.ident().getText(), "int");
 		boolean tempHasReturn = hasReturn;
 		visit(ctx.stat());
 		hasReturn = tempHasReturn;

@@ -52,6 +52,20 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		whileNode.addChild(stat);
 		return whileNode;
 	}
+	
+	@Override
+	public ForNode visitFor(ForContext ctx) {
+		ForNode forNode = new ForNode();
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		forNode.addChild(ident);
+		ExpNode startBound = (ExpNode) visit(ctx.range().exp(0));
+		forNode.addChild(startBound);
+		ExpNode endBound = (ExpNode) visit(ctx.range().exp(1));
+		forNode.addChild(endBound);
+		StatNode stat = (StatNode) visit(ctx.stat());
+		forNode.addChild(stat);
+		return forNode;
+	}
 
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {

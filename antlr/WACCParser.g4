@@ -20,8 +20,11 @@ stat: SKIP 								#skip
     | WHILE exp DO stat DONE 			#while
     | BEGIN stat END 					#begin
     | stat SEMICOLON stat 				#sequence
-    | RETURN exp 						#return 
+    | RETURN exp 						#return
+    | FOR ident IN range DO stat DONE   #for
     ;
+
+range: exp GAP exp ;
 
 base_type: INT | CHAR | STRING | BOOL ;
 
