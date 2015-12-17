@@ -13,6 +13,7 @@ public class ForNode extends StatNode {
 
 	@Override
 	public Reg generate() {
+		//TODO
     	scopeHandler.descend();
     	
     	InitialisationNode init = new InitialisationNode("int");
@@ -32,7 +33,7 @@ public class ForNode extends StatNode {
         ProgramCode.setIndent(true);
         
 		String ident = ((IdentNode) children.get(0)).getIdent();
-        ProgramCode.add("ADDS " + downBound + ", " + downBound + ", " + Arm.imm(1));
+        ProgramCode.add("ADD " + downBound + ", " + downBound + ", " + Arm.imm(1));
 		ProgramCode.add("STR " + downBound + ", " + StackHandler.get(ident));
         
         children.get(3).generate();
