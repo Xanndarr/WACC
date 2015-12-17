@@ -42,7 +42,7 @@ public class InitialisationNode extends StatNode {
 		ProgramCode.add("ADD sp, sp, " + Arm.imm(tempSpLoc));
 		
 		RegHandler.ascend();
-		return null;
+		return ret;
 	}
 
 }
