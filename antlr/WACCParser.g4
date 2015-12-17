@@ -22,6 +22,11 @@ stat: SKIP 								#skip
     | stat SEMICOLON stat 				#sequence
     | RETURN exp 						#return
     | FOR ident IN range DO stat DONE   #for
+    | DO stat WHILE exp DONE            #doWhile
+    | BREAK                             #break
+    | CONTINUE                          #continue
+    | exp side_effect_op exp            #sideEffectOp
+    | short_assign exp                  #shortAssign
     ;
 
 range: exp GAP exp ;
@@ -68,7 +73,11 @@ int_lit: number
 
 number: INT_LIT ;
 
-unary_op: NOT | SUB | LEN | ORD | CHR ;
+unary_op: NOT | SUB | LEN | ORD | CHR;
+
+side_effect_op: MULTASS | DIVASS | MODASS | ADDASS | SUBASS;
+
+short_assign: INC | DEC ;
 
 dm_arithmetic_op: MULT | DIV | MOD ;
 as_arithmetic_op: ADD | SUB ;

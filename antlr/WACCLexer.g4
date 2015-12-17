@@ -29,6 +29,8 @@ CALL: 'call' ;
 NEWPAIR: 'newpair' ;
 FOR: 'for' ;
 IN: 'in' ;
+BREAK: 'break' ;
+CONTINUE: 'continue' ;
 
 MULT: '*' ;
 DIV: '/' ;
@@ -48,6 +50,15 @@ NOT: '!' ;
 LEN: 'len' ;
 ORD: 'ord' ;
 CHR: 'chr' ;
+
+INC: '++' ;
+DEC: '--' ;
+
+ADDASS: '+=' ;
+SUBASS: '-=' ;
+MULTASS: '*=' ;
+DIVASS: '/=' ;
+MODASS: '%=' ;
 
 //punctuation
 SEMICOLON: ';' ;
