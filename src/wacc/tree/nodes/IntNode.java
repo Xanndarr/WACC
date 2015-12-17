@@ -10,7 +10,11 @@ public class IntNode extends ExpNode {
     public IntNode(int n) {
         this.n = n;
     }
-
+    
+    public int getVal() {
+    	return n;
+    }
+    
     @Override
     public Reg generate() {
         Reg ret = RegHandler.getNextReg();

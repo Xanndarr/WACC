@@ -14,6 +14,7 @@ public class ForNode extends StatNode {
 	public Reg generate() {
 		//TODO
     	scopeHandler.descend();
+    	RegHandler.descend();
     	
     	InitialisationNode init = new InitialisationNode("int");
     	init.addChild(children.get(0));
@@ -21,7 +22,7 @@ public class ForNode extends StatNode {
     	init.addChild(rhs);
     	Reg downBound = init.generate();
     	RegHandler.use();
-        Reg upBound = children.get(2).generate();
+        int upBound = ((IntNode) children.get(2)).getVal();
     	
         String compLabel = ProgramCode.generateUniqueLabel();
         String repeatLabel = ProgramCode.generateUniqueLabel();
@@ -41,11 +42,12 @@ public class ForNode extends StatNode {
         ProgramCode.add(compLabel + ":");
         ProgramCode.setIndent(true);
         
-        ProgramCode.add("CMP " + downBound + ", " + upBound);
+        ProgramCode.add("CMP " + downBound + ", " + Arm.imm(upBound));
         ProgramCode.add("BGT " + repeatLabel);
         
     	RegHandler.free(downBound);
         scopeHandler.ascend();
+        RegHandler.ascend();
         return null;
 	}
 
