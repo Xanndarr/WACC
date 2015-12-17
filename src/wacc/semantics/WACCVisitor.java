@@ -3,8 +3,6 @@ package wacc.semantics;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-
 import wacc.antlr.WACCParser.*;
 import wacc.symbolTable.FunctionHandler;
 import wacc.symbolTable.ScopeHandler;
