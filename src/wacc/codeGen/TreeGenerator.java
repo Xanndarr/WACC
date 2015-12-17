@@ -6,7 +6,6 @@ import wacc.tree.nodeSupers.*;
 import wacc.tree.nodes.*;
 import wacc.tree.nodes.PairElemNode.PairPos;
 import wacc.util.BinaryOp;
-import wacc.util.Type;
 import wacc.util.UnaryOp;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
@@ -184,6 +183,18 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		initNode.addChild(ident);
 		initNode.addChild(rhs);
 		return initNode;
+	}
+
+	@Override
+	public Node visitShortAssign(ShortAssignContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitShortAssign(ctx);
+	}
+
+	@Override
+	public Node visitSideEffectOp(SideEffectOpContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitSideEffectOp(ctx);
 	}
 
 	@Override
@@ -414,6 +425,26 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public SkipNode visitSkip(SkipContext ctx) {
 		return new SkipNode();
+	}
+
+	@Override
+	public Node visitDoWhile(DoWhileContext ctx) {
+		DoWhileNode doWhileNode = new DoWhileNode();
+		StatNode stat = (StatNode) visit(ctx.stat());
+		doWhileNode.addChild(stat);
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		doWhileNode.addChild(exp);
+		return doWhileNode;
+	}
+
+	@Override
+	public Node visitContinue(ContinueContext ctx) {
+		return new ContinueNode();
+	}
+
+	@Override
+	public Node visitBreak(BreakContext ctx) {
+		return new BreakNode();
 	}
 
 }
