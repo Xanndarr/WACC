@@ -21,7 +21,7 @@ public class ErrorReporter {
 		Token token = ctx.getStart();
 		String fullError = token.getLine() + ":" + token.getCharPositionInLine() +" Semantic Error: " + error; 
 		logError(fullError);
-		logNos(token.getLine(), token.getCharPositionInLine());
+		logNos(token.getLine());
 		out.println(fullError);
 		errorCode = 200;
 	}
@@ -37,16 +37,24 @@ public class ErrorReporter {
 		return errorCode;
 	}
 	
+	public String getErrors(){
+	  return errors.toString();
+	}
+	
+	public List<Integer> getNos(){
+	  return nos;
+	}
+	
 	private void logError(String error){
 	    errors.append(error);
 	    errors.append("\n");
 	}
 	
 
-    private void logNos(int line, int charPositionInLine) {
+    private void logNos(int line) {
         nos.add(line);
-        nos.add(charPositionInLine);
     
   }
+    
 
 }
