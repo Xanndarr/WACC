@@ -6,14 +6,17 @@ import java.io.*;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.plaf.ComboBoxUI;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 import javax.swing.text.*;
 import javax.swing.text.Highlighter.HighlightPainter;
 
 import wacc.ErrorReporter;
 import wacc.WACC;
 
-public class TextEditor extends JFrame {
- 
+public class EWACCs extends JFrame {
+  private JTextArea console = new JTextArea(8,120);
   private JTextArea area = new JTextArea(20, 120);
   private JFileChooser finder = new JFileChooser(System.getProperty("user.dir"));
   private String currentFilename = "Untitled";
@@ -55,6 +58,7 @@ public class TextEditor extends JFrame {
   private Action Compile = new AbstractAction("Compile") {
     public void actionPerformed(ActionEvent e) {
       saveOld();
+      console.setText("");
       WACC wacc = new WACC();
       wacc.lowkey = true;
       String[] fileLoc = {currentFilename};
@@ -66,7 +70,7 @@ public class TextEditor extends JFrame {
         e1.printStackTrace();
       }
       ErrorReporter er = wacc.getErrorReporter();
-      errorBox(er.getErrors());
+      errorConsole(er.getErrors());
       highlightErrors(er.getNos());
     }
   };
@@ -86,14 +90,21 @@ public class TextEditor extends JFrame {
     }
   };
 
-  public TextEditor() {
+  public EWACCs() {
     // Initialises textarea and adds scroll bars
     area.setFont(new Font("Monospaced", Font.PLAIN, 12));
-    JScrollPane scroll = new JScrollPane(area,
+    JScrollPane areaScroll = new JScrollPane(area,
         JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
         JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-    add(scroll, BorderLayout.CENTER);
-
+    //same for the console
+    console.setFont(new Font("Monospaced", Font.PLAIN,12));
+    JScrollPane consoleScroll = new JScrollPane(console,
+        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    JPanel panel = new JPanel(new GridLayout(2, 1));
+    panel.add(areaScroll);
+    panel.add(consoleScroll);
+    add(panel);
     // Creates menu
     JMenuBar JMB = new JMenuBar();
     setJMenuBar(JMB);
@@ -135,7 +146,7 @@ public class TextEditor extends JFrame {
   }
 
   public static void main(String[] arg) {
-    new TextEditor();
+    new EWACCs();
   }
 
   private void saveFileAs() {
@@ -178,17 +189,13 @@ public class TextEditor extends JFrame {
     }
   }
   
-  private void errorBox(String error){
-    JFrame frame = new JFrame();
-    JOptionPane.showMessageDialog(frame,
-        error,
-        "Compile error",
-        JOptionPane.ERROR_MESSAGE);
+  private void errorConsole(String error){
+    console.append(error);
     
   }
   
 
-  protected void highlightErrors(List<Integer> nos) {
+  private void highlightErrors(List<Integer> nos) {
     Highlighter h = area.getHighlighter();
     HighlightPainter painter = 
         new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
