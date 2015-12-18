@@ -29,7 +29,10 @@ public class ErrorReporter {
 
     public void printlnSyntax(String error, ParserRuleContext ctx) {
 		Token token = ctx.getStart();
-		out.println(token.getLine() + ":" + token.getCharPositionInLine() +" Syntax Error: " + error);
+		String fullError = token.getLine() + ":" + token.getCharPositionInLine() +" Syntax Error: " + error;
+		logError(fullError);
+		logNos(token.getLine());
+		out.println(fullError);
 		errorCode = 100;
 	}
 	
