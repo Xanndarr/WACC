@@ -26,7 +26,7 @@ stat: SKIP 								#skip
     | BREAK                             #break
     | CONTINUE                          #continue
     | ident side_effect_op exp          #sideEffectOp
-    | short_assign ident                #shortAssign
+    | ident short_assign                #shortAssign
     ;
 
 range: exp GAP exp ;
