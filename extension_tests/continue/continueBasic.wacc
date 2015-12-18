@@ -1,0 +1,10 @@
+begin
+  for i in 1 .. 5 do
+    if i == 2 then
+      continue
+    else
+      break
+    fi;
+    println i
+  done
+end

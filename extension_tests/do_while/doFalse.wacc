@@ -1,0 +1,5 @@
+begin
+  do
+    println "This is only being printed once!"
+  while false done
+end

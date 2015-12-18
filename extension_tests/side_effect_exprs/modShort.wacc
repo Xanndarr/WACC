@@ -1,0 +1,5 @@
+begin
+  int i = 5;
+  i %= 3;
+  println i
+end
