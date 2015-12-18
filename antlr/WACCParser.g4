@@ -27,6 +27,7 @@ stat: SKIP 								#skip
     | CONTINUE                          #continue
     | ident side_effect_op exp          #sideEffectOp
     | ident short_assign                #shortAssign
+    | IF exp THEN stat FI               #ifShort
     ;
 
 range: exp GAP exp ;
@@ -50,6 +51,9 @@ pair_elem: FST exp
 pair_type: PAIR OPEN_PAR pair_elem_type COMMA pair_elem_type CLOSE_PAR;
 
 exp: int_lit                	#int
+   | BIN_LIT                    #binary
+   | HEX_LIT                    #hexadecimal
+   | OCT_LIT                    #octal
    | BOOL_LIT               	#bool
    | CHAR_LIT               	#char
    | STRING_LIT             	#string
