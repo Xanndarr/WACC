@@ -1,0 +1,5 @@
+begin
+  for i in 1 .. 5 do
+    println i
+  done
+end

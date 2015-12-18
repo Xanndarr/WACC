@@ -11,6 +11,8 @@ import wacc.codeGen.TreeGenerator;
 import wacc.semantics.WACCVisitor;
 
 public class WACC {
+  private static ErrorReporter er;
+  public static boolean lowkey = false;
     public static void main(String[] args) throws Exception {
         //create a charStream that reads from stdin
         ANTLRInputStream input = new ANTLRInputStream(System.in);
@@ -33,17 +35,18 @@ public class WACC {
         ParseTree parseTree = parser.program();
 
         //Exit if syntactic errors are present
-        if (parser.getNumberOfSyntaxErrors() > 0) {
+        if (parser.getNumberOfSyntaxErrors() > 0 && !lowkey) {
             System.exit(100);
         }
 
         ErrorReporter err = new ErrorReporter(System.err);
+        er = err;
         WACCVisitor visitor = new WACCVisitor(err);
         visitor.visit(parseTree);
 
         //Exit if semantic errors are present
         int returnCode = err.getReturnCode();
-        if (returnCode != 0) {
+        if (returnCode != 0 && !lowkey) {
             System.exit(returnCode);
         }
         
@@ -58,5 +61,9 @@ public class WACC {
         AssemblyWriter writer = new AssemblyWriter(fileName);
         internalTree.generate();
         writer.write();
+    }
+    
+    public ErrorReporter getErrorReporter(){
+      return er;
     }
 }

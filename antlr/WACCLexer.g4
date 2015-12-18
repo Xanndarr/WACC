@@ -27,6 +27,10 @@ IS: 'is' ;
 //assigning
 CALL: 'call' ;
 NEWPAIR: 'newpair' ;
+FOR: 'for' ;
+IN: 'in' ;
+BREAK: 'break' ;
+CONTINUE: 'continue' ;
 
 MULT: '*' ;
 DIV: '/' ;
@@ -47,6 +51,15 @@ LEN: 'len' ;
 ORD: 'ord' ;
 CHR: 'chr' ;
 
+INC: '++' ;
+DEC: '--' ;
+
+ADDASS: '+=' ;
+SUBASS: '-=' ;
+MULTASS: '*=' ;
+DIVASS: '/=' ;
+MODASS: '%=' ;
+
 //punctuation
 SEMICOLON: ';' ;
 OPEN_PAR: '(' ;
@@ -55,10 +68,20 @@ OPEN_SQ_BRACK: '[' ;
 CLOSE_SQ_BRACK: ']' ;
 COMMA: ',' ;
 ASSIGN: '=' ;
+GAP: '..' ;
 
 fragment DIGIT: [0-9] ;
 fragment SIGN: SUB | ADD ;
 INT_LIT: SIGN? DIGIT+ ;
+
+fragment BINARY: [0-1] ;
+BIN_LIT: '0b' SIGN? BINARY+ ;
+
+fragment HEXADECIMAL: [0-9A-F] ;
+HEX_LIT: '0h' SIGN? HEXADECIMAL+ ;
+
+fragment OCTAL: [0-7] ;
+OCT_LIT: '0o' SIGN? OCTAL+ ;
 
 fragment FALSE: 'false' ;
 fragment TRUE: 'true' ;

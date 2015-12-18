@@ -6,7 +6,6 @@ import wacc.tree.nodeSupers.*;
 import wacc.tree.nodes.*;
 import wacc.tree.nodes.PairElemNode.PairPos;
 import wacc.util.BinaryOp;
-import wacc.util.Type;
 import wacc.util.UnaryOp;
 
 public class TreeGenerator extends WACCParserBaseVisitor<Node>{
@@ -52,6 +51,20 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		whileNode.addChild(stat);
 		return whileNode;
 	}
+	
+	@Override
+	public ForNode visitFor(ForContext ctx) {
+		ForNode forNode = new ForNode();
+		IdentNode ident = (IdentNode) visit(ctx.ident());
+		forNode.addChild(ident);
+		ExpNode startBound = (ExpNode) visit(ctx.range().exp(0));
+		forNode.addChild(startBound);
+		ExpNode endBound = (ExpNode) visit(ctx.range().exp(1));
+		forNode.addChild(endBound);
+		StatNode stat = (StatNode) visit(ctx.stat());
+		forNode.addChild(stat);
+		return forNode;
+	}
 
 	@Override
 	public BinaryOpNode visitAndOpExp(AndOpExpContext ctx) {
@@ -71,6 +84,16 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		for (StatContext stat : ctx.stat()) {
 			ifNode.addChild(visit(stat));
 		}
+		return ifNode;
+	}
+
+	@Override
+	public IfNode visitIfShort(IfShortContext ctx) {
+		IfNode ifNode = new IfNode();
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		ifNode.addChild(exp);
+		ifNode.addChild(visit(ctx.stat()));
+		ifNode.addChild(new SkipNode());
 		return ifNode;
 	}
 
@@ -170,6 +193,32 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 		initNode.addChild(ident);
 		initNode.addChild(rhs);
 		return initNode;
+	}
+
+	@Override
+	public AssignmentNode visitShortAssign(ShortAssignContext ctx) {
+		IdentNode lhs = new IdentNode(ctx.ident().getText());
+		BinaryOpNode binOp = new BinaryOpNode(BinaryOp.swap(ctx.short_assign().getText()));
+		IntNode binOpRhs = new IntNode(1);
+		binOp.addChild(lhs);
+		binOp.addChild(binOpRhs);
+		AssignmentNode assign = new AssignmentNode();
+		assign.addChild(lhs);
+		assign.addChild(binOp);
+		return assign;
+	}
+
+	@Override
+	public AssignmentNode visitSideEffectOp(SideEffectOpContext ctx) {
+		IdentNode lhs = new IdentNode(ctx.ident().getText());
+		BinaryOpNode binOp = new BinaryOpNode(BinaryOp.swap(ctx.side_effect_op().getText()));
+		ExpNode binOpRhs = (ExpNode) visit(ctx.exp());
+		binOp.addChild(lhs);
+		binOp.addChild(binOpRhs);
+		AssignmentNode assign = new AssignmentNode();
+		assign.addChild(lhs);
+		assign.addChild(binOp);
+		return assign;	
 	}
 
 	@Override
@@ -295,6 +344,24 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
+	public IntNode visitBinary(BinaryContext ctx) {
+		int bin = Integer.parseInt(ctx.getText().replace("0b", ""), 2);
+		return new IntNode(bin);
+	}
+	
+	@Override
+	public IntNode visitHexadecimal(HexadecimalContext ctx) {
+		int hex = Integer.parseInt(ctx.getText().replace("0h", ""), 16);
+		return new IntNode(hex);
+	}
+	
+	@Override
+	public IntNode visitOctal(OctalContext ctx) {
+		int oct = Integer.parseInt(ctx.getText().replace("0o", ""), 8);
+		return new IntNode(oct);
+	}
+
+	@Override
 	public ArgListNode visitArg_list(Arg_listContext ctx) {
 		ArgListNode args = new ArgListNode();
 		for (ExpContext arg : ctx.exp()) {
@@ -400,6 +467,26 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public SkipNode visitSkip(SkipContext ctx) {
 		return new SkipNode();
+	}
+
+	@Override
+	public Node visitDoWhile(DoWhileContext ctx) {
+		DoWhileNode doWhileNode = new DoWhileNode();
+		StatNode stat = (StatNode) visit(ctx.stat());
+		doWhileNode.addChild(stat);
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		doWhileNode.addChild(exp);
+		return doWhileNode;
+	}
+
+	@Override
+	public Node visitContinue(ContinueContext ctx) {
+		return new ContinueNode();
+	}
+
+	@Override
+	public Node visitBreak(BreakContext ctx) {
+		return new BreakNode();
 	}
 
 }

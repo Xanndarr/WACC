@@ -12,9 +12,9 @@ public class UnaryOpNode extends ExpNode {
         this.op = op;
     }
 
-    @Override
-    public Reg generate() {
-        RegHandler.descend();
+	@Override
+	public Reg generate() {
+		RegHandler.descend();
         Reg operand = children.get(0).generate();
         if (nodeType == Type.ARRAY || nodeType == Type.PAIR) {
         	ProgramCode.add("LDR " + operand + ", " + operand.memory());
@@ -42,5 +42,6 @@ public class UnaryOpNode extends ExpNode {
         }
         RegHandler.ascend();
         return operand;
-    }
+	}
+
 }

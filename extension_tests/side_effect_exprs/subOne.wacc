@@ -1,0 +1,5 @@
+begin
+  int i = 1;
+  i--;
+  println i
+end

@@ -268,6 +268,22 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		hasReturn = ifHasReturn;
 		return null;
 	}
+	
+	@Override
+	public Void visitIfShort(IfShortContext ctx) {
+		visit(ctx.exp());
+		if (!nodeType.equals("bool")) {
+			err.println("If statement expressions must evaluate to bool type.", ctx.exp());
+		}
+		boolean ifHasReturn = true;
+		scopeHandler.descend();
+		hasReturn = false;
+		visit(ctx.stat());
+		ifHasReturn = ifHasReturn && hasReturn;
+		scopeHandler.ascend();
+		hasReturn = ifHasReturn;
+		return null;
+	}
 
 	@Override
 	public Void visitWhile(WhileContext ctx) {
@@ -279,6 +295,32 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 			err.println("While condition expressions must evaluate to bool type.", ctx.exp());
 		}
 		scopeHandler.descend();
+		boolean tempHasReturn = hasReturn;
+		visit(ctx.stat());
+		hasReturn = tempHasReturn;
+		scopeHandler.ascend();
+		return null;
+	}
+
+	@Override
+	public Void visitFor(ForContext ctx) {
+		// DONE loop variable ident must not exist in scope
+		// DONE Range boundary expressions must evaluate to an int
+		// DONE check if loop body has return
+		// DONE sets type of loop variable to int
+		if (scopeHandler.exists(ctx.ident().getText())) {
+			err.println("For loop ident must not exist in this scope", ctx.ident());
+		}
+		visit(ctx.range().exp(0));
+		if (!nodeType.equals("int")) {
+			err.println("For range boundaries must evaluate to int type.", ctx.range().exp(0));
+		}
+		visit(ctx.range().exp(1));
+		if (!nodeType.equals("int")) {
+			err.println("For range boundaries must evaluate to int type.", ctx.range().exp(1));
+		}
+		scopeHandler.descend();
+		scopeHandler.add(ctx.ident().getText(), "int");
 		boolean tempHasReturn = hasReturn;
 		visit(ctx.stat());
 		hasReturn = tempHasReturn;
@@ -320,6 +362,39 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 	public Void visitInt(IntContext ctx) {
 		nodeType = "int";
 		return super.visitInt(ctx);
+	}
+	
+	@Override
+	public Void visitBinary(BinaryContext ctx) {
+		nodeType = "int";
+		int bin = Integer.parseInt(ctx.getText().replace("0b", ""), 2);
+		boolean isTooBig = (Math.abs(bin) > Integer.MAX_VALUE);
+		if (isTooBig) {
+			err.printlnSyntax("A function must always be able to return.", ctx);
+		}
+		return super.visitBinary(ctx);
+	}
+	
+	@Override
+	public Void visitHexadecimal(HexadecimalContext ctx) {
+		nodeType = "int";
+		int hex = Integer.parseInt(ctx.getText().replace("0h", ""), 16);
+		boolean isTooBig = (Math.abs(hex) > Integer.MAX_VALUE);
+		if (isTooBig) {
+			err.printlnSyntax("A function must always be able to return.", ctx);
+		}
+		return super.visitHexadecimal(ctx);
+	}
+	
+	@Override
+	public Void visitOctal(OctalContext ctx) {
+		nodeType = "int";
+		int oct = Integer.parseInt(ctx.getText().replace("0o", ""), 8);
+		boolean isTooBig = (Math.abs(oct) > Integer.MAX_VALUE);
+		if (isTooBig) {
+			err.printlnSyntax("A function must always be able to return.", ctx);
+		}
+		return super.visitOctal(ctx);
 	}
 
 	@Override
@@ -436,6 +511,39 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		}
 
 		return lhsType;
+	}
+
+	@Override
+	public Void visitShortAssign(ShortAssignContext ctx) {
+		if (!scopeHandler.exists(ctx.ident().getText())) {
+			err.println("Variable " + ctx.ident().getText() + " does not exist in the current scope", ctx.ident());
+		}
+		visit(ctx.ident());
+		if (!nodeType.equals("int")) {
+			err.println("The " + ctx.short_assign().getText() + " operator only works for int types.",
+					ctx.short_assign());
+		}
+		nodeType = "int";
+		return null;
+	}
+
+	@Override
+	public Void visitSideEffectOp(SideEffectOpContext ctx) {
+		if (!scopeHandler.exists(ctx.ident().getText())) {
+			err.println("Variable " + ctx.ident().getText() + " does not exist in the current scope", ctx.ident());
+		}
+		visit(ctx.ident());
+		if (!nodeType.equals("int")) {
+			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.",
+					ctx.side_effect_op());
+		}
+		visit(ctx.exp());
+		if (!nodeType.equals("int")) {
+			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.",
+					ctx.side_effect_op());
+		}
+		nodeType = "int";
+		return null;
 	}
 
 	// Binary ops are in order of precedence
