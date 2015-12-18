@@ -188,20 +188,28 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public Node visitShortAssign(ShortAssignContext ctx) {
 		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.exp());
-		AssignRHSNode rhs = new IntNode(1);
+		ExpNode binOp = new BinaryOpNode(BinaryOp.parse(ctx.short_assign().getText()));
+		ExpNode binOpLhs = (ExpNode) visit(ctx.exp());
+		ExpNode binOpRhs = new IntNode(1);
+		binOp.addChild(binOpLhs);
+		binOp.addChild(binOpRhs);
 		AssignmentNode assign = new AssignmentNode();
 		assign.addChild(lhs);
-		assign.addChild(rhs);
+		assign.addChild(binOp);
 		return assign;
 	}
 
 	@Override
 	public Node visitSideEffectOp(SideEffectOpContext ctx) {
 		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.exp(0));
-		AssignLHSNode rhs = (AssignLHSNode) visit(ctx.exp(1));
+		ExpNode binOp = new BinaryOpNode(BinaryOp.parse(ctx.side_effect_op().getText()));
+		ExpNode binOpLhs = (ExpNode) visit(ctx.exp(0));
+		ExpNode binOpRhs = (ExpNode) visit(ctx.exp(1));
+		binOp.addChild(binOpLhs);
+		binOp.addChild(binOpRhs);
 		AssignmentNode assign = new AssignmentNode();
 		assign.addChild(lhs);
-		assign.addChild(rhs);
+		assign.addChild(binOp);
 		return assign;	
 	}
 
