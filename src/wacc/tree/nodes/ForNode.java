@@ -32,18 +32,17 @@ public class ForNode extends StatNode {
         ProgramCode.add(repeatLabel + ":");
         ProgramCode.setIndent(true);
         
-		String ident = ((IdentNode) children.get(0)).getIdent();
+        children.get(3).generate();
+        String ident = ((IdentNode) children.get(0)).getIdent();
         ProgramCode.add("ADD " + downBound + ", " + downBound + ", " + Arm.imm(1));
 		ProgramCode.add("STR " + downBound + ", " + StackHandler.get(ident));
-        
-        children.get(3).generate();
         
         ProgramCode.setIndent(false);
         ProgramCode.add(compLabel + ":");
         ProgramCode.setIndent(true);
         
-        ProgramCode.add("CMP " + downBound + ", " + Arm.imm(upBound));
-        ProgramCode.add("BGT " + repeatLabel);
+        ProgramCode.add("CMP " + downBound + ", " + Arm.imm(upBound + 1));
+        ProgramCode.add("BLT " + repeatLabel);
         
     	RegHandler.free(downBound);
         scopeHandler.ascend();
