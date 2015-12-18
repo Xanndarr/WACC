@@ -18,13 +18,13 @@ public class DoWhileNode extends StatNode {
         ProgramCode.add(repeatLabel + ":");
         ProgramCode.setIndent(true);
 
-        children.get(1).generate();
+        children.get(0).generate();
 
         ProgramCode.setIndent(false);
         ProgramCode.add(compLabel + ":");
         ProgramCode.setIndent(true);
 
-        Reg condRet = children.get(0).generate();
+        Reg condRet = children.get(1).generate();
         ProgramCode.add("CMP " + condRet + ", " + Arm.imm(1));
         ProgramCode.add("BEQ " + repeatLabel);
 
