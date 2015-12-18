@@ -7,8 +7,11 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class TextEditor extends JFrame {
+import wacc.ErrorReporter;
+import wacc.WACC;
 
+public class TextEditor extends JFrame {
+ 
   private JTextArea area = new JTextArea(20, 120);
   private JFileChooser finder = new JFileChooser(System.getProperty("user.dir"));
   private String currentFilename = "Untitled";
@@ -44,6 +47,26 @@ public class TextEditor extends JFrame {
     public void actionPerformed(ActionEvent e) {
       saveOld();
       System.exit(0);
+    }
+  };
+  
+  private Action Compile = new AbstractAction("Compile") {
+    public void actionPerformed(ActionEvent e) {
+      saveOld();
+      WACC wacc = new WACC();
+      wacc.lowkey = true;
+      String[] fileLoc = {currentFilename};
+      try {
+        System.out.println("compiling");
+        System.setIn(new FileInputStream(currentFilename));
+        wacc.main(fileLoc);
+        System.out.println("done");
+      } catch (Exception e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+      ErrorReporter er = wacc.getErrorReporter();
+      errorBox(er.getErrors());
     }
   };
 
@@ -84,6 +107,7 @@ public class TextEditor extends JFrame {
     file.add(Save);
     file.add(Quit);
     file.add(SaveAs);
+    file.add(Compile);
     file.addSeparator();
     for (int i = 0; i < 4; i++) {
       file.getItem(i).setIcon(null);
@@ -151,6 +175,15 @@ public class TextEditor extends JFrame {
       Save.setEnabled(false);
     } catch (IOException e) {
     }
+  }
+  
+  private void errorBox(String error){
+    JFrame frame = new JFrame();
+    JOptionPane.showMessageDialog(frame,
+        error,
+        "Compile error",
+        JOptionPane.ERROR_MESSAGE);
+    
   }
 
 }

@@ -37,6 +37,14 @@ public class ErrorReporter {
 		return errorCode;
 	}
 	
+	public String getErrors(){
+	  return errors.toString();
+	}
+	
+	public List<Integer> getNos(){
+	  return nos;
+	}
+	
 	private void logError(String error){
 	    errors.append(error);
 	    errors.append("\n");
@@ -48,5 +56,6 @@ public class ErrorReporter {
         nos.add(charPositionInLine);
     
   }
+    
 
 }
