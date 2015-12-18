@@ -466,10 +466,10 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitShortAssign(ShortAssignContext ctx) {
-		if (!scopeHandler.exists(ctx.exp().getText())) {
-			err.println("Variable " + ctx.exp().getText() + " does not exist in the current scope", ctx.exp());
+		if (!scopeHandler.exists(ctx.ident().getText())) {
+			err.println("Variable " + ctx.ident().getText() + " does not exist in the current scope", ctx.ident());
 		}
-		visit(ctx.exp());
+		visit(ctx.ident());
 		if (!nodeType.equals("int")) {
 			err.println("The " + ctx.short_assign().getText() + " operator only works for int types.", ctx.short_assign());
 		}
@@ -479,14 +479,14 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitSideEffectOp(SideEffectOpContext ctx) {
-		if (!scopeHandler.exists(ctx.exp(0).getText())) {
-			err.println("Variable " + ctx.exp(0).getText() + " does not exist in the current scope", ctx.exp(0));
+		if (!scopeHandler.exists(ctx.ident().getText())) {
+			err.println("Variable " + ctx.ident().getText() + " does not exist in the current scope", ctx.ident());
 		}
-		visit(ctx.exp(0));
+		visit(ctx.ident());
 		if (!nodeType.equals("int")) {
 			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.", ctx.side_effect_op());
 		}
-		visit(ctx.exp(1));
+		visit(ctx.exp());
 		if (!nodeType.equals("int")) {
 			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.", ctx.side_effect_op());
 		}

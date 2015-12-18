@@ -187,9 +187,9 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public Node visitShortAssign(ShortAssignContext ctx) {
-		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.exp());
-		ExpNode binOp = new BinaryOpNode(BinaryOp.parse(ctx.short_assign().getText()));
-		ExpNode binOpLhs = (ExpNode) visit(ctx.exp());
+		IdentExpNode lhs = new IdentExpNode(ctx.ident().getText());
+		ExpNode binOp = new BinaryOpNode(BinaryOp.swap(ctx.short_assign().getText()));
+		ExpNode binOpLhs = (ExpNode) visit(ctx.ident());
 		ExpNode binOpRhs = new IntNode(1);
 		binOp.addChild(binOpLhs);
 		binOp.addChild(binOpRhs);
@@ -201,10 +201,10 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public Node visitSideEffectOp(SideEffectOpContext ctx) {
-		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.exp(0));
-		ExpNode binOp = new BinaryOpNode(BinaryOp.parse(ctx.side_effect_op().getText()));
-		ExpNode binOpLhs = (ExpNode) visit(ctx.exp(0));
-		ExpNode binOpRhs = (ExpNode) visit(ctx.exp(1));
+		IdentExpNode lhs = new IdentExpNode(ctx.ident().getText());
+		ExpNode binOp = new BinaryOpNode(BinaryOp.swap(ctx.side_effect_op().getText()));
+		ExpNode binOpLhs = (ExpNode) visit(ctx.ident());
+		ExpNode binOpRhs = (ExpNode) visit(ctx.exp());
 		binOp.addChild(binOpLhs);
 		binOp.addChild(binOpRhs);
 		AssignmentNode assign = new AssignmentNode();

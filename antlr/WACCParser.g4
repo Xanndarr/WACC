@@ -25,8 +25,8 @@ stat: SKIP 								#skip
     | DO stat WHILE exp DONE            #doWhile
     | BREAK                             #break
     | CONTINUE                          #continue
-    | exp side_effect_op exp            #sideEffectOp
-    | short_assign exp                  #shortAssign
+    | ident side_effect_op exp          #sideEffectOp
+    | short_assign ident                #shortAssign
     ;
 
 range: exp GAP exp ;
