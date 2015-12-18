@@ -28,7 +28,6 @@ public class DoWhileNode extends StatNode {
         ProgramCode.add("CMP " + condRet + ", " + Arm.imm(1));
         ProgramCode.add("BEQ " + repeatLabel);
 
-        
         scopeHandler.ascend();
         return null;
 	}
