@@ -5,12 +5,17 @@ import wacc.util.ProgramCode;
 import wacc.util.Reg;
 
 public class ContinueNode extends StatNode {
+	
+	private String label;
 
 	@Override
 	public Reg generate() {
-		//TODO
-		ProgramCode.add("B after_loop");
+		label = ProgramCode.generateUniqueLabel();
 		return null;
+	}
+	
+	public String getLabel() {
+		return label;
 	}
 
 }
