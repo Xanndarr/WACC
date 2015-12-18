@@ -1,6 +1,7 @@
 package wacc.tree.nodes;
 
 import wacc.tree.nodeSupers.AssignRHSNode;
+import wacc.tree.nodeSupers.Node;
 import wacc.tree.nodeSupers.StatNode;
 import wacc.util.Arm;
 import wacc.util.ProgramCode;
@@ -12,7 +13,6 @@ public class ForNode extends StatNode {
 
 	@Override
 	public Reg generate() {
-		//TODO
     	scopeHandler.descend();
     	RegHandler.descend();
     	
@@ -33,6 +33,8 @@ public class ForNode extends StatNode {
         ProgramCode.setIndent(true);
         
         children.get(3).generate();
+        checkContinue();
+        
         String ident = ((IdentNode) children.get(0)).getIdent();
         ProgramCode.add("ADD " + downBound + ", " + downBound + ", " + Arm.imm(1));
 		ProgramCode.add("STR " + downBound + ", " + StackHandler.get(ident));
@@ -43,6 +45,8 @@ public class ForNode extends StatNode {
         
         ProgramCode.add("CMP " + downBound + ", " + Arm.imm(upBound + 1));
         ProgramCode.add("BLT " + repeatLabel);
+
+        checkBreak();
         
     	RegHandler.free(downBound);
         scopeHandler.ascend();
