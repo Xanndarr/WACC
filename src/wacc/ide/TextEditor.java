@@ -3,9 +3,11 @@ package wacc.ide;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.text.*;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 import wacc.ErrorReporter;
 import wacc.WACC;
@@ -57,16 +59,15 @@ public class TextEditor extends JFrame {
       wacc.lowkey = true;
       String[] fileLoc = {currentFilename};
       try {
-        System.out.println("compiling");
         System.setIn(new FileInputStream(currentFilename));
         wacc.main(fileLoc);
-        System.out.println("done");
       } catch (Exception e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
       ErrorReporter er = wacc.getErrorReporter();
       errorBox(er.getErrors());
+      highlightErrors(er.getNos());
     }
   };
 
@@ -184,6 +185,22 @@ public class TextEditor extends JFrame {
         "Compile error",
         JOptionPane.ERROR_MESSAGE);
     
+  }
+  
+
+  protected void highlightErrors(List<Integer> nos) {
+    Highlighter h = area.getHighlighter();
+    HighlightPainter painter = 
+        new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
+    try {
+      for(int no:nos){
+        h.addHighlight(area.getLineStartOffset(no-1), area.getLineEndOffset(no-1), painter);
+      }
+     
+    } catch (BadLocationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
 }
