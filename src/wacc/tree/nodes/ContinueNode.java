@@ -11,11 +11,14 @@ public class ContinueNode extends StatNode {
 	@Override
 	public Reg generate() {
 		label = ProgramCode.generateUniqueLabel();
+		ProgramCode.add("B " + label);
+		hasContinue = true;
+		lastContinue = this;
 		return null;
 	}
 	
-	public String getLabel() {
-		return label;
+	public void createBranch() {
+		ProgramCode.add(label + ":");
 	}
 
 }
