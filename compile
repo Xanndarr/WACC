@@ -2,6 +2,7 @@
 # Bash front-end for your compiler.
 # You are free to change the language used for this script,
 # but do *not* change its name.
+#
 
 MAIN_FILE="wacc/WACC"
 COMPILE_FILE=$1
