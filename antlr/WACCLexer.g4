@@ -74,6 +74,15 @@ fragment DIGIT: [0-9] ;
 fragment SIGN: SUB | ADD ;
 INT_LIT: SIGN? DIGIT+ ;
 
+fragment BINARY: [0-1] ;
+BIN_LIT: '0b' SIGN? BINARY+ ;
+
+fragment HEXADECIMAL: [0-9A-F] ;
+HEX_LIT: '0h' SIGN? HEXADECIMAL+ ;
+
+fragment OCTAL: [0-7] ;
+OCT_LIT: '0o' SIGN? OCTAL+ ;
+
 fragment FALSE: 'false' ;
 fragment TRUE: 'true' ;
 BOOL_LIT: TRUE | FALSE ;
