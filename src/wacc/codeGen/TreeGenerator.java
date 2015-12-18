@@ -187,14 +187,22 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 
 	@Override
 	public Node visitShortAssign(ShortAssignContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitShortAssign(ctx);
+		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.exp());
+		AssignRHSNode rhs = new IntNode(1);
+		AssignmentNode assign = new AssignmentNode();
+		assign.addChild(lhs);
+		assign.addChild(rhs);
+		return assign;
 	}
 
 	@Override
 	public Node visitSideEffectOp(SideEffectOpContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitSideEffectOp(ctx);
+		AssignLHSNode lhs = (AssignLHSNode) visit(ctx.exp(0));
+		AssignLHSNode rhs = (AssignLHSNode) visit(ctx.exp(1));
+		AssignmentNode assign = new AssignmentNode();
+		assign.addChild(lhs);
+		assign.addChild(rhs);
+		return assign;	
 	}
 
 	@Override

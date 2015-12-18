@@ -285,13 +285,13 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		scopeHandler.ascend();
 		return null;
 	}
-	
+
 	@Override
 	public Void visitFor(ForContext ctx) {
-		//DONE loop variable ident must not exist in scope
-		//DONE Range boundary expressions must evaluate to an int
-		//DONE check if loop body has return
-		//DONE sets type of loop variable to int
+		// DONE loop variable ident must not exist in scope
+		// DONE Range boundary expressions must evaluate to an int
+		// DONE check if loop body has return
+		// DONE sets type of loop variable to int
 		if (scopeHandler.exists(ctx.ident().getText())) {
 			err.println("For loop ident must not exist in this scope", ctx.ident());
 		}
@@ -462,6 +462,36 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		}
 
 		return lhsType;
+	}
+
+	@Override
+	public Void visitShortAssign(ShortAssignContext ctx) {
+		if (!scopeHandler.exists(ctx.exp().getText())) {
+			err.println("Variable " + ctx.exp().getText() + " does not exist in the current scope", ctx.exp());
+		}
+		visit(ctx.exp());
+		if (!nodeType.equals("int")) {
+			err.println("The " + ctx.short_assign().getText() + " operator only works for int types.", ctx.short_assign());
+		}
+		nodeType = "int";
+		return null;
+	}
+
+	@Override
+	public Void visitSideEffectOp(SideEffectOpContext ctx) {
+		if (!scopeHandler.exists(ctx.exp(0).getText())) {
+			err.println("Variable " + ctx.exp(0).getText() + " does not exist in the current scope", ctx.exp(0));
+		}
+		visit(ctx.exp(0));
+		if (!nodeType.equals("int")) {
+			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.", ctx.side_effect_op());
+		}
+		visit(ctx.exp(1));
+		if (!nodeType.equals("int")) {
+			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.", ctx.side_effect_op());
+		}
+		nodeType = "int";
+		return null;
 	}
 
 	// Binary ops are in order of precedence
