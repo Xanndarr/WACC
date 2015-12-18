@@ -88,6 +88,16 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	}
 
 	@Override
+	public IfNode visitIfShort(IfShortContext ctx) {
+		IfNode ifNode = new IfNode();
+		ExpNode exp = (ExpNode) visit(ctx.exp());
+		ifNode.addChild(exp);
+		ifNode.addChild(visit(ctx.stat()));
+		ifNode.addChild(new SkipNode());
+		return ifNode;
+	}
+
+	@Override
 	public ReadNode visitRead(ReadContext ctx) {
 		ReadNode read = new ReadNode();
 		Node lhs; 
@@ -331,6 +341,24 @@ public class TreeGenerator extends WACCParserBaseVisitor<Node>{
 	@Override
 	public IntNode visitInt(IntContext ctx) {
 		return new IntNode(Integer.parseInt(ctx.getText()));
+	}
+
+	@Override
+	public IntNode visitBinary(BinaryContext ctx) {
+		int bin = Integer.parseInt(ctx.getText().replace("0b", ""), 2);
+		return new IntNode(bin);
+	}
+	
+	@Override
+	public IntNode visitHexadecimal(HexadecimalContext ctx) {
+		int hex = Integer.parseInt(ctx.getText().replace("0h", ""), 16);
+		return new IntNode(hex);
+	}
+	
+	@Override
+	public IntNode visitOctal(OctalContext ctx) {
+		int oct = Integer.parseInt(ctx.getText().replace("0o", ""), 8);
+		return new IntNode(oct);
 	}
 
 	@Override
