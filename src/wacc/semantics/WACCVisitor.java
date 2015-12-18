@@ -268,6 +268,22 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		hasReturn = ifHasReturn;
 		return null;
 	}
+	
+	@Override
+	public Void visitIfShort(IfShortContext ctx) {
+		visit(ctx.exp());
+		if (!nodeType.equals("bool")) {
+			err.println("If statement expressions must evaluate to bool type.", ctx.exp());
+		}
+		boolean ifHasReturn = true;
+		scopeHandler.descend();
+		hasReturn = false;
+		visit(ctx.stat());
+		ifHasReturn = ifHasReturn && hasReturn;
+		scopeHandler.ascend();
+		hasReturn = ifHasReturn;
+		return null;
+	}
 
 	@Override
 	public Void visitWhile(WhileContext ctx) {
@@ -346,6 +362,39 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 	public Void visitInt(IntContext ctx) {
 		nodeType = "int";
 		return super.visitInt(ctx);
+	}
+	
+	@Override
+	public Void visitBinary(BinaryContext ctx) {
+		nodeType = "int";
+		int bin = Integer.parseInt(ctx.getText().replace("0b", ""), 2);
+		boolean isTooBig = (Math.abs(bin) > Integer.MAX_VALUE);
+		if (isTooBig) {
+			err.printlnSyntax("A function must always be able to return.", ctx);
+		}
+		return super.visitBinary(ctx);
+	}
+	
+	@Override
+	public Void visitHexadecimal(HexadecimalContext ctx) {
+		nodeType = "int";
+		int hex = Integer.parseInt(ctx.getText().replace("0h", ""), 16);
+		boolean isTooBig = (Math.abs(hex) > Integer.MAX_VALUE);
+		if (isTooBig) {
+			err.printlnSyntax("A function must always be able to return.", ctx);
+		}
+		return super.visitHexadecimal(ctx);
+	}
+	
+	@Override
+	public Void visitOctal(OctalContext ctx) {
+		nodeType = "int";
+		int oct = Integer.parseInt(ctx.getText().replace("0o", ""), 8);
+		boolean isTooBig = (Math.abs(oct) > Integer.MAX_VALUE);
+		if (isTooBig) {
+			err.printlnSyntax("A function must always be able to return.", ctx);
+		}
+		return super.visitOctal(ctx);
 	}
 
 	@Override
@@ -471,7 +520,8 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		}
 		visit(ctx.ident());
 		if (!nodeType.equals("int")) {
-			err.println("The " + ctx.short_assign().getText() + " operator only works for int types.", ctx.short_assign());
+			err.println("The " + ctx.short_assign().getText() + " operator only works for int types.",
+					ctx.short_assign());
 		}
 		nodeType = "int";
 		return null;
@@ -484,11 +534,13 @@ public class WACCVisitor extends WACCParserBaseVisitor<Void> {
 		}
 		visit(ctx.ident());
 		if (!nodeType.equals("int")) {
-			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.", ctx.side_effect_op());
+			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.",
+					ctx.side_effect_op());
 		}
 		visit(ctx.exp());
 		if (!nodeType.equals("int")) {
-			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.", ctx.side_effect_op());
+			err.println("The " + ctx.side_effect_op().getText() + " operator only works for int types.",
+					ctx.side_effect_op());
 		}
 		nodeType = "int";
 		return null;
